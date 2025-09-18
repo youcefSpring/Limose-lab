@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\EquipmentController;
 use App\Http\Controllers\Web\EventController;
 use App\Http\Controllers\Web\CollaborationController;
 use App\Http\Controllers\Web\FundingController;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,34 +51,16 @@ Route::prefix('frontend')->name('frontend.')->group(function () {
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
-
-    Route::post('/login', function () {
-        // Handle login logic
-        return redirect()->route('dashboard.index');
-    });
-
-    Route::get('/register', function () {
-        return view('auth.register');
-    })->name('register');
-
-    Route::post('/register', function () {
-        // Handle registration logic
-        return redirect()->route('dashboard.index');
-    });
-
-    Route::get('/forgot-password', function () {
-        return view('auth.forgot-password');
-    })->name('password.request');
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', function () {
-        auth()->logout();
-        return redirect()->route('home');
-    })->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Protected Web Routes
