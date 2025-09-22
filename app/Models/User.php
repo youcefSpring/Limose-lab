@@ -29,6 +29,11 @@ class User extends Authenticatable
         'status',
         'orcid',
         'phone',
+        'is_active',
+        'department',
+        'position',
+        'preferred_language',
+        'bio',
     ];
 
     /**

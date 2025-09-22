@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('journal', 255)->nullable();
             $table->string('conference', 255)->nullable();
             $table->string('publisher', 255)->nullable();
-            $table->string('doi', 500)->nullable()->unique();
+            $table->string('doi', 200)->nullable()->unique();
             $table->year('publication_year');
             $table->string('volume', 50)->nullable();
             $table->string('issue', 50)->nullable();
