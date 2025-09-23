@@ -1,309 +1,373 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="dashboard-container">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 fw-bold text-dark">{{ __('Dashboard') }}</h1>
-            <p class="text-muted mb-0">{{ __('Welcome back, :name', ['name' => auth()->user()->name]) }}</p>
-        </div>
-        <div class="d-flex gap-2">
-            <button type="button" class="btn btn-outline-primary" id="refreshDashboard">
-                <i class="fas fa-sync-alt me-2"></i>{{ __('Refresh') }}
-            </button>
-            <button type="button" class="btn btn-outline-secondary" id="exportDashboard">
-                <i class="fas fa-download me-2"></i>{{ __('Export') }}
-            </button>
-        </div>
-    </div>
-
-    <!-- Role-based Dashboard Content -->
-    @if(auth()->user()->isAdmin())
-        @include('dashboard.partials.admin-dashboard')
-    @elseif(auth()->user()->isLabManager())
-        @include('dashboard.partials.lab-manager-dashboard')
-    @elseif(auth()->user()->isResearcher())
-        @include('dashboard.partials.researcher-dashboard')
-    @else
-        @include('dashboard.partials.visitor-dashboard')
-    @endif
-
-    <!-- System Activity Chart -->
-    <div class="row mt-4">
+<div class="container-fluid">
+    <!-- Welcome Header -->
+    <div class="row mb-4">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-chart-line me-2 text-primary"></i>{{ __('System Activity') }}
-                    </h5>
-                </div>
+            <div class="card bg-primary text-white">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="activityChart" style="height: 300px;"></div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h3 mb-2">{{ __('Welcome back, :name!', ['name' => auth()->user()->name]) }}</h1>
+                            <p class="mb-0 opacity-75">{{ __('Here\'s what\'s happening in your laboratory today') }}</p>
                         </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">{{ __('Recent Activities') }}</h6>
-                            <div id="recentActivitiesList" class="list-group list-group-flush">
-                                <div class="text-center text-muted py-3">
-                                    <i class="fas fa-spinner fa-spin me-2"></i>{{ __('Loading...') }}
-                                </div>
-                            </div>
+                        <div class="text-end">
+                            <div class="h5 mb-1">{{ now()->format('l, F j, Y') }}</div>
+                            <div class="opacity-75">{{ now()->format('g:i A') }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
 
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-$(document).ready(function() {
-    let dashboardData = @json($dashboardData ?? []);
-    let activityChart = null;
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <i class="fas fa-project-diagram fa-2x text-primary mb-2"></i>
+                    <h4 class="mb-1">{{ $stats['active_projects'] ?? '8' }}</h4>
+                    <p class="text-muted mb-0">{{ __('Active Projects') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-success">
+                <div class="card-body text-center">
+                    <i class="fas fa-microscope fa-2x text-success mb-2"></i>
+                    <h4 class="mb-1">{{ $stats['available_equipment'] ?? '15' }}</h4>
+                    <p class="text-muted mb-0">{{ __('Available Equipment') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-warning">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-2x text-warning mb-2"></i>
+                    <h4 class="mb-1">{{ $stats['upcoming_events'] ?? '3' }}</h4>
+                    <p class="text-muted mb-0">{{ __('Upcoming Events') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-info">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-alt fa-2x text-info mb-2"></i>
+                    <h4 class="mb-1">{{ $stats['recent_publications'] ?? '12' }}</h4>
+                    <p class="text-muted mb-0">{{ __('Recent Publications') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Initialize dashboard
-    initializeDashboard();
+    <!-- Main Content -->
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+            <!-- Recent Activities -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-clock me-2"></i>{{ __('Recent Activities') }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-primary"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">{{ __('Project Update: Molecular Biology Research') }}</h6>
+                                <p class="timeline-description text-muted">{{ __('New experimental results uploaded by Dr. Sarah Johnson') }}</p>
+                                <small class="text-muted">{{ __('2 hours ago') }}</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">{{ __('Equipment Reserved: High-Power Microscope') }}</h6>
+                                <p class="timeline-description text-muted">{{ __('Reserved for tomorrow 9:00 AM - 12:00 PM') }}</p>
+                                <small class="text-muted">{{ __('4 hours ago') }}</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-warning"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">{{ __('Event Reminder: Weekly Lab Meeting') }}</h6>
+                                <p class="timeline-description text-muted">{{ __('Tomorrow at 2:00 PM in Conference Room A') }}</p>
+                                <small class="text-muted">{{ __('6 hours ago') }}</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-info"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">{{ __('New Publication: Protein Analysis Study') }}</h6>
+                                <p class="timeline-description text-muted">{{ __('Published in Journal of Molecular Biology') }}</p>
+                                <small class="text-muted">{{ __('1 day ago') }}</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-secondary"></div>
+                            <div class="timeline-content">
+                                <h6 class="timeline-title">{{ __('Collaboration Request: University Partners') }}</h6>
+                                <p class="timeline-description text-muted">{{ __('New collaboration proposal received') }}</p>
+                                <small class="text-muted">{{ __('2 days ago') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    // Refresh button handler
-    $('#refreshDashboard').on('click', function() {
-        refreshDashboardData();
-    });
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-bolt me-2"></i>{{ __('Quick Actions') }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <a href="{{ route('projects.create') }}" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="fas fa-plus-circle fa-2x mb-2"></i>
+                                <span>{{ __('New Project') }}</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ route('equipment.reservations') }}" class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="fas fa-calendar-plus fa-2x mb-2"></i>
+                                <span>{{ __('Reserve Equipment') }}</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ route('events.create') }}" class="btn btn-outline-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+                                <span>{{ __('Schedule Event') }}</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ route('publications.create') }}" class="btn btn-outline-info w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="fas fa-file-plus fa-2x mb-2"></i>
+                                <span>{{ __('Add Publication') }}</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ route('researchers.index') }}" class="btn btn-outline-secondary w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="fas fa-users fa-2x mb-2"></i>
+                                <span>{{ __('Browse Researchers') }}</span>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ route('collaborations.create') }}" class="btn btn-outline-dark w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="fas fa-handshake fa-2x mb-2"></i>
+                                <span>{{ __('New Collaboration') }}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // Export button handler
-    $('#exportDashboard').on('click', function() {
-        exportDashboard();
-    });
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Today's Schedule -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-calendar-day me-2"></i>{{ __('Today\'s Schedule') }}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                                <strong>{{ __('Equipment Check') }}</strong><br>
+                                <small class="text-muted">{{ __('9:00 AM - Lab A') }}</small>
+                            </div>
+                            <span class="badge bg-primary">{{ __('Upcoming') }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                                <strong>{{ __('Research Meeting') }}</strong><br>
+                                <small class="text-muted">{{ __('11:00 AM - Conference Room') }}</small>
+                            </div>
+                            <span class="badge bg-warning">{{ __('In 2 hours') }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                                <strong>{{ __('Lab Safety Training') }}</strong><br>
+                                <small class="text-muted">{{ __('2:00 PM - Training Room') }}</small>
+                            </div>
+                            <span class="badge bg-info">{{ __('Scheduled') }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <div>
+                                <strong>{{ __('Equipment Maintenance') }}</strong><br>
+                                <small class="text-muted">{{ __('4:00 PM - Lab B') }}</small>
+                            </div>
+                            <span class="badge bg-secondary">{{ __('Optional') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function initializeDashboard() {
-        loadRecentActivities();
-        initializeActivityChart();
-    }
-
-    function refreshDashboardData() {
-        const btn = $('#refreshDashboard');
-        const originalHtml = btn.html();
-        btn.html('<i class="fas fa-spinner fa-spin me-2"></i>{{ __("Refreshing...") }}').prop('disabled', true);
-
-        showLoading();
-
-        $.get('/api/v1/analytics/dashboard')
-            .done(function(response) {
-                if (response.status === 'success') {
-                    dashboardData = response.data;
-                    updateDashboardStats();
-                    loadRecentActivities();
-                    updateActivityChart();
-
-                    // Show success message
-                    showAlert('success', '{{ __("Dashboard data refreshed successfully") }}');
-                }
-            })
-            .fail(function(xhr) {
-                console.error('Failed to refresh dashboard:', xhr);
-                showAlert('danger', '{{ __("Failed to refresh dashboard data") }}');
-            })
-            .always(function() {
-                btn.html(originalHtml).prop('disabled', false);
-                hideLoading();
-            });
-    }
-
-    function loadRecentActivities() {
-        const container = $('#recentActivitiesList');
-
-        $.get('/api/v1/analytics/recent-activities')
-            .done(function(response) {
-                container.empty();
-
-                if (response.status === 'success' && response.data.activities) {
-                    const activities = response.data.activities;
-
-                    if (activities.length === 0) {
-                        container.html('<div class="text-center text-muted py-3">{{ __("No recent activities") }}</div>');
-                        return;
-                    }
-
-                    activities.forEach(function(activity) {
-                        const activityItem = $(`
-                            <div class="list-group-item border-0 px-0 py-2">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="rounded-circle d-flex align-items-center justify-content-center"
-                                             style="width: 32px; height: 32px; background-color: ${getActivityColor(activity.type)};">
-                                            <i class="${getActivityIcon(activity.type)} text-white" style="font-size: 12px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <div class="fw-medium">${activity.description}</div>
-                                        <small class="text-muted">${formatDateTime(activity.created_at)}</small>
-                                    </div>
+            <!-- Notifications -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-bell me-2"></i>{{ __('Recent Notifications') }}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-primary text-white rounded-circle p-2 me-3">
+                                    <i class="fas fa-exclamation fa-sm"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <strong>{{ __('Maintenance Required') }}</strong><br>
+                                    <small class="text-muted">{{ __('PCR Machine needs calibration') }}</small>
                                 </div>
                             </div>
-                        `);
-                        container.append(activityItem);
-                    });
-                } else {
-                    container.html('<div class="text-center text-muted py-3">{{ __("No recent activities") }}</div>');
-                }
-            })
-            .fail(function(xhr) {
-                console.error('Failed to load activities:', xhr);
-                container.html('<div class="text-center text-danger py-3">{{ __("Failed to load activities") }}</div>');
-            });
-    }
-
-    function initializeActivityChart() {
-        const ctx = document.getElementById('activityChart');
-        if (!ctx) return;
-
-        const chartData = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: '{{ __("Activities") }}',
-                data: [12, 19, 3, 5, 2, 3],
-                borderColor: '#1976d2',
-                backgroundColor: 'rgba(25, 118, 210, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
-        };
-
-        activityChart = new Chart(ctx, {
-            type: 'line',
-            data: chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateActivityChart() {
-        if (activityChart) {
-            // Update chart with new data
-            activityChart.update();
-        }
-    }
-
-    function updateDashboardStats() {
-        // Update stats cards with new data
-        if (dashboardData.overview) {
-            Object.keys(dashboardData.overview).forEach(function(key) {
-                const element = $(`[data-stat="${key}"]`);
-                if (element.length) {
-                    element.text(dashboardData.overview[key]);
-                }
-            });
-        }
-    }
-
-    function exportDashboard() {
-        const btn = $('#exportDashboard');
-        const originalHtml = btn.html();
-        btn.html('<i class="fas fa-spinner fa-spin me-2"></i>{{ __("Exporting...") }}').prop('disabled', true);
-
-        $.get('/api/v1/analytics/export', {
-                format: 'pdf'
-            })
-            .done(function(response, status, xhr) {
-                // Create download link
-                const blob = new Blob([response], { type: 'application/pdf' });
-                const url = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', `dashboard-export-${new Date().toISOString().split('T')[0]}.pdf`);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-                window.URL.revokeObjectURL(url);
-
-                showAlert('success', '{{ __("Dashboard exported successfully") }}');
-            })
-            .fail(function(xhr) {
-                console.error('Export failed:', xhr);
-                showAlert('danger', '{{ __("Failed to export dashboard") }}');
-            })
-            .always(function() {
-                btn.html(originalHtml).prop('disabled', false);
-            });
-    }
-
-    function getActivityIcon(type) {
-        const icons = {
-            'project_created': 'fas fa-folder-plus',
-            'publication_added': 'fas fa-book-plus',
-            'equipment_reserved': 'fas fa-calendar-plus',
-            'user_registered': 'fas fa-user-plus',
-            'event_created': 'fas fa-calendar-star',
-            'collaboration_started': 'fas fa-handshake'
-        };
-        return icons[type] || 'fas fa-info-circle';
-    }
-
-    function getActivityColor(type) {
-        const colors = {
-            'project_created': '#1976d2',
-            'publication_added': '#4caf50',
-            'equipment_reserved': '#ff9800',
-            'user_registered': '#2196f3',
-            'event_created': '#9c27b0',
-            'collaboration_started': '#009688'
-        };
-        return colors[type] || '#757575';
-    }
-
-    function formatDateTime(dateTime) {
-        const date = new Date(dateTime);
-        return date.toLocaleString('{{ app()->getLocale() }}', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
-
-    function showAlert(type, message) {
-        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-        const iconClass = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-
-        const alert = $(`
-            <div class="alert ${alertClass} alert-dismissible fade show alert-slide" role="alert">
-                <i class="${iconClass} me-2"></i>${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-success text-white rounded-circle p-2 me-3">
+                                    <i class="fas fa-check fa-sm"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <strong>{{ __('Project Approved') }}</strong><br>
+                                    <small class="text-muted">{{ __('Funding approved for new study') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-start">
+                                <div class="bg-warning text-white rounded-circle p-2 me-3">
+                                    <i class="fas fa-clock fa-sm"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <strong>{{ __('Deadline Reminder') }}</strong><br>
+                                    <small class="text-muted">{{ __('Report due in 3 days') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        `);
 
-        $('#dashboard-container').prepend(alert);
+            <!-- System Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-cog me-2"></i>{{ __('System Status') }}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span>{{ __('Equipment Availability') }}</span>
+                            <strong class="text-success">{{ __('85%') }}</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span>{{ __('Lab Utilization') }}</span>
+                            <strong class="text-warning">{{ __('72%') }}</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: 72%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span>{{ __('Project Progress') }}</span>
+                            <strong class="text-info">{{ __('68%') }}</strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" style="width: 68%"></div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <small class="text-muted">{{ __('Last updated: 5 minutes ago') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        // Auto dismiss after 5 seconds
-        setTimeout(function() {
-            alert.alert('close');
-        }, 5000);
-    }
-});
-</script>
-@endpush
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #dee2e6;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -25px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #dee2e6;
+}
+
+.timeline-content {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border-left: 3px solid #dee2e6;
+}
+
+.timeline-title {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.timeline-description {
+    margin-bottom: 5px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-warning:hover,
+.btn-outline-info:hover,
+.btn-outline-secondary:hover,
+.btn-outline-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+</style>
+@endsection

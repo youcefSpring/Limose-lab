@@ -30,6 +30,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request): View
     {
+        $this->authorize('viewAny', Project::class);
+
         $filters = $request->only([
             'search', 'status', 'researcher_id', 'funding_id',
             'start_date_from', 'start_date_to'

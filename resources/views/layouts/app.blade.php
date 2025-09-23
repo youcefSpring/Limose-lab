@@ -113,7 +113,7 @@
             border-radius: 8px;
         }
 
-        /* Modern sidebar */
+        /* Modern sidebar - Simple fixed approach */
         .sidebar {
             background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
             border-right: 1px solid #e2e8f0;
@@ -125,10 +125,33 @@
             left: 0;
             z-index: 1040;
             overflow-y: auto;
+            padding: 1rem 0;
         }
 
-        .sidebar .offcanvas-body {
-            padding: 1rem 0;
+        /* Desktop: Always show sidebar */
+        @media (min-width: 992px) {
+            .sidebar {
+                display: block;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile: Hide sidebar by default */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                display: none;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.mobile-open {
+                display: block;
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
         }
 
         .sidebar-heading {
@@ -442,9 +465,10 @@
         @media (max-width: 991.98px) {
             .sidebar {
                 position: fixed;
-                top: 0;
+                top: 70px;
                 left: -100%;
                 transition: left 0.3s ease;
+                z-index: 1050;
             }
 
             .sidebar.show {
@@ -502,7 +526,7 @@
                 </a>
 
                 <!-- Mobile Toggle -->
-                <button class="btn btn-outline-light d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                <button class="btn btn-outline-light d-lg-none" type="button" id="mobile-menu-toggle">
                     <i class="fas fa-bars"></i>
                 </button>
 
@@ -543,27 +567,19 @@
 
                     <!-- Notifications -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-light btn-sm position-relative" type="button" data-bs-toggle="dropdown" id="notificationsBtn">
+                        <a href="{{ route('dashboard.notifications') }}" class="btn btn-outline-light btn-sm position-relative">
                             <i class="fas fa-bell"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="notificationBadge">0</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" style="width: 380px; max-height: 500px; overflow-y: auto;" id="notificationsDropdown">
-                            <div class="dropdown-header d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">{{ __('Notifications') }}</h6>
-                                <small class="text-muted" id="notificationCount">0 {{ __('new') }}</small>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                            <div id="notificationsList">
-                                <div class="dropdown-item text-center text-muted py-3">
-                                    <i class="fas fa-bell-slash mb-2 d-block"></i>
-                                    {{ __('Loading...') }}
-                                </div>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-center fw-medium" href="{{ route('dashboard.notifications') }}">
-                                {{ __('View All Notifications') }}
-                            </a>
-                        </div>
+                            @php
+                                try {
+                                    $unreadCount = auth()->user()->unreadNotifications->count();
+                                } catch (\Exception $e) {
+                                    $unreadCount = 0; // Default to 0 if notifications table not properly set up
+                                }
+                            @endphp
+                            @if($unreadCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ $unreadCount }}</span>
+                            @endif
+                        </a>
                     </div>
 
                     <!-- User Menu -->
@@ -592,9 +608,12 @@
                                 <i class="fas fa-cog me-2"></i>{{ __('Settings') }}
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#" id="logoutBtn">
-                                <i class="fas fa-sign-out-alt me-2"></i>{{ __('Logout') }}
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="fas fa-sign-out-alt me-2"></i>{{ __('Logout') }}
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -602,12 +621,16 @@
         </nav>
 
         <!-- Modern Sidebar -->
-        <div class="offcanvas offcanvas-start sidebar" tabindex="-1" id="sidebar" data-bs-backdrop="false">
-            <div class="offcanvas-header d-lg-none">
-                <h5 class="offcanvas-title fw-bold">{{ __('Navigation') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="sidebar" id="sidebar">
+            <!-- Mobile Header -->
+            <div class="d-lg-none p-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">{{ __('Navigation') }}</h5>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="mobile-menu-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
-            <div class="offcanvas-body p-0">
                 <!-- User Info -->
                 <div class="user-info">
                     <div class="d-flex align-items-center gap-3">
@@ -835,122 +858,40 @@
     <!-- Custom JavaScript -->
     <script>
         $(document).ready(function() {
-            // Setup CSRF token for all AJAX requests
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // Global loading functions
-            window.showLoading = function() {
-                $('#loadingOverlay').removeClass('d-none');
-            };
-
-            window.hideLoading = function() {
-                $('#loadingOverlay').addClass('d-none');
-            };
-
-            // Global search
-            $('#searchBtn, #globalSearch').on('click keyup', function(e) {
-                if (e.type === 'click' || e.key === 'Enter') {
-                    const query = $('#globalSearch').val().trim();
+            // Global search - redirect to search page instead of AJAX
+            $('#globalSearch').on('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const query = $(this).val().trim();
                     if (query) {
-                        console.log('Searching for:', query);
-                        // Implement global search functionality
+                        window.location.href = '/search?q=' + encodeURIComponent(query);
                     }
                 }
             });
 
-            // Load notifications
-            function loadNotifications() {
-                $.get('/api/v1/notifications')
-                    .done(function(response) {
-                        if (response.status === 'success') {
-                            updateNotifications(response.data.notifications, response.data.unread_count);
-                        }
-                    })
-                    .fail(function(xhr) {
-                        console.error('Failed to load notifications:', xhr);
-                    });
-            }
-
-            function updateNotifications(notifications, unreadCount) {
-                // Update badge
-                const badge = $('#notificationBadge');
-                if (unreadCount > 0) {
-                    badge.text(unreadCount).removeClass('d-none');
-                } else {
-                    badge.addClass('d-none');
-                }
-
-                // Update dropdown
-                const list = $('#notificationsList');
-                list.empty();
-
-                if (notifications.length === 0) {
-                    list.append('<div class="dropdown-item text-center text-muted">{{ __('No notifications') }}</div>');
-                } else {
-                    notifications.forEach(function(notification) {
-                        const item = $(`
-                            <a class="dropdown-item notification-item ${!notification.is_read ? 'bg-light' : ''}"
-                               href="#" data-id="${notification.id}">
-                                <div class="fw-medium">${notification.title}</div>
-                                <div class="text-muted small">${notification.message}</div>
-                                <div class="text-muted small">${new Date(notification.created_at).toLocaleDateString()}</div>
-                            </a>
-                        `);
-                        list.append(item);
-                    });
-                }
-            }
-
-            // Mark notification as read
-            $(document).on('click', '.notification-item', function(e) {
-                e.preventDefault();
-                const id = $(this).data('id');
-                const item = $(this);
-
-                $.ajax({
-                    url: `/api/v1/notifications/${id}/read`,
-                    type: 'PUT',
-                    success: function() {
-                        item.removeClass('bg-light');
-                        const currentCount = parseInt($('#notificationBadge').text()) || 0;
-                        if (currentCount > 1) {
-                            $('#notificationBadge').text(currentCount - 1);
-                        } else {
-                            $('#notificationBadge').addClass('d-none');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('Failed to mark notification as read:', xhr);
-                    }
-                });
+            // Simple sidebar toggle for mobile
+            $('#mobile-menu-toggle').on('click', function() {
+                $('#sidebar').addClass('show');
             });
 
-            // Logout functionality
-            $('#logoutBtn').on('click', function(e) {
-                e.preventDefault();
-
-                $.post('/api/v1/auth/logout')
-                    .always(function() {
-                        window.location.href = '/';
-                    });
+            $('#mobile-menu-close').on('click', function() {
+                $('#sidebar').removeClass('show');
             });
 
-            // Initialize sidebar for desktop
-            if (window.innerWidth >= 992) {
-                const sidebar = new bootstrap.Offcanvas('#sidebar');
-                sidebar.show();
-
-                // Prevent backdrop on desktop
-                $('#sidebar').on('show.bs.offcanvas', function() {
-                    if (window.innerWidth >= 992) {
-                        $(this).attr('data-bs-backdrop', 'false');
+            // Close sidebar when clicking outside on mobile
+            $(document).on('click', function(e) {
+                if (window.innerWidth < 992) {
+                    if (!$(e.target).closest('#sidebar, #mobile-menu-toggle').length) {
+                        $('#sidebar').removeClass('show');
                     }
-                });
-            }
+                }
+            });
+
+            // Handle window resize
+            $(window).on('resize', function() {
+                if (window.innerWidth >= 992) {
+                    $('#sidebar').removeClass('show');
+                }
+            });
 
             // Mark active navigation
             const currentPath = window.location.pathname;
@@ -961,8 +902,10 @@
                 }
             });
 
-            // Load notifications on page load
-            loadNotifications();
+            // Auto-dismiss alerts after 5 seconds
+            setTimeout(function() {
+                $('.alert').fadeOut();
+            }, 5000);
         });
     </script>
 

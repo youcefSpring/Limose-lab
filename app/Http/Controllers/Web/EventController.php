@@ -20,7 +20,7 @@ class EventController extends Controller
         private ResearcherService $researcherService,
         private ApiEventController $apiController
     ) {
-        $this->middleware('auth');
+       
     }
 
     /**

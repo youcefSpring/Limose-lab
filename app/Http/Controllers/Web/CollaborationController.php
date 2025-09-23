@@ -22,7 +22,7 @@ class CollaborationController extends Controller
         private ProjectService $projectService,
         private ApiCollaborationController $apiController
     ) {
-        $this->middleware('auth');
+       
     }
 
     /**

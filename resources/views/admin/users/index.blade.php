@@ -1,53 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="admin-users-app">
+<div class="container-fluid">
     <!-- Page Header -->
-    <div class="d-flex justify-space-between align-center mb-6">
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="text-h4 font-weight-bold">
-                {{ __('User Management') }}
-            </h1>
-            <p class="text-subtitle-1 text-grey-darken-1 mt-1">
-                {{ __('Manage system users and their permissions') }}
-            </p>
+            <h1 class="h3 fw-bold text-dark">{{ __('User Management') }}</h1>
+            <p class="text-muted mb-0">{{ __('Manage system users and their permissions') }}</p>
         </div>
 
-        <div class="d-flex ga-2">
-            <v-btn
-                color="primary"
-                prepend-icon="mdi-plus"
-                @click="showCreateDialog = true"
-            >
-                {{ __('Add User') }}
-            </v-btn>
-
-            <v-btn
-                color="secondary"
-                prepend-icon="mdi-download"
-                variant="outlined"
-                @click="exportUsers"
-            >
-                {{ __('Export') }}
-            </v-btn>
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>{{ __('Add User') }}
+            </a>
+            <a href="{{ route('admin.users.index', array_merge(request()->all(), ['export' => 'excel'])) }}"
+               class="btn btn-outline-secondary">
+                <i class="fas fa-download me-2"></i>{{ __('Export') }}
+            </a>
         </div>
     </div>
 
     <!-- Statistics Cards -->
-    <v-row class="mb-6">
-        <v-col cols="12" sm="6" md="3">
-            <v-card color="primary" variant="flat">
-                <v-card-text class="text-white">
-                    <div class="d-flex align-center">
-                        <div class="flex-grow-1">
-                            <div class="text-h4 font-weight-bold">@{{ stats.total_users }}</div>
-                            <div class="text-subtitle-1">{{ __('Total Users') }}</div>
-                        </div>
-                        <v-icon size="48" class="opacity-75">mdi-account-group</v-icon>
-                    </div>
-                </v-card-text>
-            </v-card>
-        </v-col>
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x text-primary mb-2"></i>
+                    <h3 class="mb-1">{{ $stats['total_users'] ?? '0' }}</h3>
+                    <p class="text-muted mb-0">{{ __('Total Users') }}</p>
+                </div>
+            </div>
+        </div>
 
         <v-col cols="12" sm="6" md="3">
             <v-card color="success" variant="flat">
@@ -234,11 +217,29 @@
                 </template>
 
                 <template v-slot:item.role="{ item }">
-                    <x-status-chip :status="item.role" />
+                    <v-chip
+                        :color="getStatusColor(item.role)"
+                        size="small"
+                        variant="flat"
+                    >
+                        <template v-slot:prepend>
+                            <v-icon size="small">@{{ getStatusIcon(item.role) }}</v-icon>
+                        </template>
+                        @{{ getStatusText(item.role) }}
+                    </v-chip>
                 </template>
 
                 <template v-slot:item.status="{ item }">
-                    <x-status-chip :status="item.status" />
+                    <v-chip
+                        :color="getStatusColor(item.status)"
+                        size="small"
+                        variant="flat"
+                    >
+                        <template v-slot:prepend>
+                            <v-icon size="small">@{{ getStatusIcon(item.status) }}</v-icon>
+                        </template>
+                        @{{ getStatusText(item.status) }}
+                    </v-chip>
                 </template>
 
                 <template v-slot:item.last_login="{ item }">
@@ -645,6 +646,54 @@ const adminUsersApp = createApp({
                 hour: '2-digit',
                 minute: '2-digit'
             });
+        },
+
+        getStatusColor(status) {
+            const colors = {
+                'active': 'success',
+                'inactive': 'grey',
+                'pending': 'warning',
+                'completed': 'success',
+                'cancelled': 'error',
+                'suspended': 'orange',
+                'admin': 'red',
+                'researcher': 'blue',
+                'lab_manager': 'green',
+                'visitor': 'grey'
+            };
+            return colors[status] || 'grey';
+        },
+
+        getStatusIcon(status) {
+            const icons = {
+                'active': 'mdi-check-circle',
+                'inactive': 'mdi-pause-circle',
+                'pending': 'mdi-clock',
+                'completed': 'mdi-check',
+                'cancelled': 'mdi-cancel',
+                'suspended': 'mdi-pause',
+                'admin': 'mdi-shield-crown',
+                'researcher': 'mdi-flask',
+                'lab_manager': 'mdi-microscope',
+                'visitor': 'mdi-account-eye'
+            };
+            return icons[status] || 'mdi-help';
+        },
+
+        getStatusText(status) {
+            const texts = {
+                'active': '{{ __("Active") }}',
+                'inactive': '{{ __("Inactive") }}',
+                'pending': '{{ __("Pending") }}',
+                'completed': '{{ __("Completed") }}',
+                'cancelled': '{{ __("Cancelled") }}',
+                'suspended': '{{ __("Suspended") }}',
+                'admin': '{{ __("Admin") }}',
+                'researcher': '{{ __("Researcher") }}',
+                'lab_manager': '{{ __("Lab Manager") }}',
+                'visitor': '{{ __("Visitor") }}'
+            };
+            return texts[status] || status.charAt(0).toUpperCase() + status.slice(1);
         }
     },
     mounted() {

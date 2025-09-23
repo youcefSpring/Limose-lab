@@ -26,7 +26,7 @@ class ProjectResearcherSeeder extends Seeder
             $selectedResearchers = $availableResearchers->random(min($numResearchers - 1, $availableResearchers->count()));
 
             // Add PI to the project
-            DB::table('project_researcher')->insert([
+            DB::table('project_members')->insert([
                 'project_id' => $project->id,
                 'user_id' => $project->principal_investigator_id,
                 'role' => 'principal_investigator',
@@ -44,7 +44,7 @@ class ProjectResearcherSeeder extends Seeder
                 $roles = ['co_investigator', 'research_scientist', 'postdoc', 'graduate_student'];
                 $role = $roles[array_rand($roles)];
 
-                DB::table('project_researcher')->insert([
+                DB::table('project_members')->insert([
                     'project_id' => $project->id,
                     'user_id' => $researcher->id,
                     'role' => $role,

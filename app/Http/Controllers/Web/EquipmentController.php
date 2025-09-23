@@ -20,7 +20,7 @@ class EquipmentController extends Controller
         private ResearcherService $researcherService,
         private ApiEquipmentController $apiController
     ) {
-        $this->middleware('auth');
+       
     }
 
     /**
@@ -219,40 +219,12 @@ class EquipmentController extends Controller
     }
 
     /**
-     * Search equipment (AJAX endpoint)
+     * Search equipment (redirects to index with search parameters)
      */
-    public function search(Request $request)
+    public function search(Request $request): RedirectResponse
     {
-        if ($request->expectsJson()) {
-            return $this->apiController->search($request);
-        }
-
-        // For non-AJAX requests, redirect to index with search parameters
         return redirect()->route('equipment.index', $request->only([
-            'query', 'type', 'status', 'location'
+            'search', 'type', 'status', 'location'
         ]));
-    }
-
-    /**
-     * Check equipment availability (AJAX endpoint)
-     */
-    public function checkAvailability(Request $request, Equipment $equipment)
-    {
-        $request->validate([
-            'start_datetime' => 'required|date',
-            'end_datetime' => 'required|date|after:start_datetime',
-        ]);
-
-        $availability = $this->equipmentService->checkAvailability(
-            $equipment,
-            $request->start_datetime,
-            $request->end_datetime
-        );
-
-        return response()->json([
-            'available' => $availability['available'],
-            'conflicts' => $availability['conflicts'] ?? [],
-            'suggestions' => $availability['suggestions'] ?? []
-        ]);
     }
 }

@@ -146,7 +146,16 @@
 
                         <template v-slot:append>
                             <div class="text-end">
-                                <x-status-chip :status="project.status" size="small" />
+                                <v-chip
+                                    :color="getStatusColor(project.status)"
+                                    size="small"
+                                    variant="flat"
+                                >
+                                    <template v-slot:prepend>
+                                        <v-icon size="small">@{{ getStatusIcon(project.status) }}</v-icon>
+                                    </template>
+                                    @{{ getStatusText(project.status) }}
+                                </v-chip>
                                 <div class="text-caption text-grey mt-1">
                                     @{{ formatDate(project.start_date) }}
                                 </div>
@@ -245,7 +254,16 @@
                             @{{ publication.journal }} • @{{ publication.publication_year }}
                         </v-list-item-subtitle>
                         <template v-slot:append>
-                            <x-status-chip :status="publication.type" size="x-small" />
+                            <v-chip
+                                :color="getStatusColor(publication.type)"
+                                size="x-small"
+                                variant="flat"
+                            >
+                                <template v-slot:prepend>
+                                    <v-icon size="small">@{{ getStatusIcon(publication.type) }}</v-icon>
+                                </template>
+                                @{{ getStatusText(publication.type) }}
+                            </v-chip>
                         </template>
                     </v-list-item>
                 </v-list>

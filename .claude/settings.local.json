@@ -4,7 +4,8 @@
       "Bash(mkdir:*)",
       "Bash(php artisan:*)",
       "Bash(composer install:*)",
-      "Bash(composer:*)"
+      "Bash(composer:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

@@ -5,322 +5,226 @@
     'label' => 'Upload File',
     'hint' => '',
     'required' => false,
-    'showList' => true,
-    'allowedTypes' => [],
-    'previewImages' => true
+    'showPreview' => true,
+    'name' => 'file',
+    'id' => null,
+    'allowedTypes' => []
 ])
 
+@php
+    $inputId = $id ?? 'file-upload-' . uniqid();
+@endphp
+
 <div class="file-upload-component">
-    <v-file-input
-        v-model="files"
-        :label="'{{ $label }}'"
-        :hint="'{{ $hint }}'"
-        :accept="'{{ $accept }}'"
-        :multiple="{{ $multiple ? 'true' : 'false' }}"
-        :required="{{ $required ? 'true' : 'false' }}"
-        :rules="fileRules"
-        prepend-icon="mdi-paperclip"
-        show-size
-        counter
-        variant="outlined"
-        {{ $attributes }}
-        @change="handleFileChange"
-    >
-        <template v-slot:selection="{ fileNames }">
-            <template v-for="fileName in fileNames" :key="fileName">
-                <v-chip
-                    size="small"
-                    label
-                    color="primary"
-                    class="me-2"
-                >
-                    @{{ fileName }}
-                </v-chip>
-            </template>
-        </template>
-    </v-file-input>
+    <div class="mb-3">
+        <label for="{{ $inputId }}" class="form-label">
+            {{ $label }}
+            @if($required)
+                <span class="text-danger">*</span>
+            @endif
+        </label>
 
-    <!-- File Preview -->
-    @if($showList)
-        <div v-if="uploadedFiles.length > 0" class="mt-4">
-            <v-list density="compact">
-                <v-list-subheader>{{ __('Uploaded Files') }}</v-list-subheader>
-                <v-list-item
-                    v-for="(file, index) in uploadedFiles"
-                    :key="index"
-                    class="px-0"
-                >
-                    <template v-slot:prepend>
-                        <v-avatar v-if="file.type && file.type.startsWith('image/') && previewImages">
-                            <v-img :src="file.preview" :alt="file.name"></v-img>
-                        </v-avatar>
-                        <v-icon v-else>
-                            @{{ getFileIcon(file.type) }}
-                        </v-icon>
-                    </template>
+        <input type="file"
+               class="form-control @error($name) is-invalid @enderror"
+               id="{{ $inputId }}"
+               name="{{ $multiple ? $name . '[]' : $name }}"
+               accept="{{ $accept }}"
+               @if($multiple) multiple @endif
+               @if($required) required @endif
+               onchange="handleFileSelect(this)"
+               {{ $attributes }}>
 
-                    <v-list-item-title>@{{ file.name }}</v-list-item-title>
-                    <v-list-item-subtitle>
-                        @{{ formatFileSize(file.size) }}
-                        <span v-if="file.type"> • @{{ file.type }}</span>
-                    </v-list-item-subtitle>
+        @if($hint)
+            <div class="form-text">{{ $hint }}</div>
+        @endif
 
-                    <template v-slot:append>
-                        <v-progress-circular
-                            v-if="file.uploading"
-                            :model-value="file.progress"
-                            size="20"
-                            width="2"
-                            color="primary"
-                        ></v-progress-circular>
+        @if($maxSize)
+            <div class="form-text">
+                {{ __('Maximum file size: :size MB', ['size' => $maxSize]) }}
+                @if(!empty($allowedTypes))
+                    <br>{{ __('Allowed types: :types', ['types' => implode(', ', $allowedTypes)]) }}
+                @endif
+            </div>
+        @endif
 
-                        <v-icon
-                            v-else-if="file.uploaded"
-                            color="success"
-                            size="small"
-                        >
-                            mdi-check-circle
-                        </v-icon>
+        @error($name)
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
 
-                        <v-btn
-                            v-else
-                            icon="mdi-delete"
-                            size="small"
-                            variant="text"
-                            color="error"
-                            @click="removeFile(index)"
-                        ></v-btn>
-                    </template>
-                </v-list-item>
-            </v-list>
+    @if($showPreview)
+    <!-- File Preview Area -->
+    <div id="{{ $inputId }}-preview" class="file-preview-area" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="fas fa-file me-2"></i>{{ __('Selected Files') }}
+                </h6>
+            </div>
+            <div class="card-body">
+                <div id="{{ $inputId }}-file-list" class="file-list">
+                    <!-- Files will be displayed here -->
+                </div>
+            </div>
         </div>
+    </div>
     @endif
-
-    <!-- Upload Progress -->
-    <v-progress-linear
-        v-if="uploading"
-        v-model="uploadProgress"
-        color="primary"
-        height="6"
-        class="mt-2"
-    ></v-progress-linear>
-
-    <!-- Error Messages -->
-    <v-alert
-        v-if="uploadError"
-        type="error"
-        variant="tonal"
-        density="compact"
-        class="mt-2"
-        closable
-        @click:close="uploadError = ''"
-    >
-        @{{ uploadError }}
-    </v-alert>
 </div>
 
+@if($showPreview)
 <script>
-export default {
-    props: {
-        accept: {
-            type: String,
-            default: '*'
-        },
-        multiple: {
-            type: Boolean,
-            default: false
-        },
-        maxSize: {
-            type: Number,
-            default: 10 // MB
-        },
-        allowedTypes: {
-            type: Array,
-            default: () => []
-        },
-        previewImages: {
-            type: Boolean,
-            default: {{ $previewImages ? 'true' : 'false' }}
-        },
-        uploadUrl: {
-            type: String,
-            required: true
-        }
-    },
-    data() {
-        return {
-            files: [],
-            uploadedFiles: [],
-            uploading: false,
-            uploadProgress: 0,
-            uploadError: ''
-        }
-    },
-    computed: {
-        fileRules() {
-            return [
-                value => {
-                    if (!value || value.length === 0) return true;
+function handleFileSelect(input) {
+    const inputId = input.id;
+    const previewArea = document.getElementById(inputId + '-preview');
+    const fileList = document.getElementById(inputId + '-file-list');
+    const files = input.files;
 
-                    const files = Array.isArray(value) ? value : [value];
+    if (files.length === 0) {
+        previewArea.style.display = 'none';
+        return;
+    }
 
-                    for (const file of files) {
-                        // Check file size
-                        if (file.size > this.maxSize * 1024 * 1024) {
-                            return `{{ __('File size must be less than') }} ${this.maxSize}MB`;
-                        }
+    // Show preview area
+    previewArea.style.display = 'block';
+    fileList.innerHTML = '';
 
-                        // Check file type
-                        if (this.allowedTypes.length > 0 && !this.allowedTypes.includes(file.type)) {
-                            return `{{ __('File type not allowed') }}`;
-                        }
-                    }
+    // Display each file
+    Array.from(files).forEach((file, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item d-flex align-items-center justify-content-between p-2 border rounded mb-2';
 
-                    return true;
-                }
-            ];
-        }
-    },
-    methods: {
-        handleFileChange(files) {
-            if (!files || files.length === 0) return;
+        const fileInfo = document.createElement('div');
+        fileInfo.className = 'd-flex align-items-center';
 
-            const fileArray = Array.isArray(files) ? files : [files];
+        const fileIcon = document.createElement('i');
+        fileIcon.className = 'fas ' + getFileIcon(file.type) + ' me-2 text-primary';
 
-            fileArray.forEach(file => {
-                const fileData = {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    file: file,
-                    uploading: false,
-                    uploaded: false,
-                    progress: 0,
-                    preview: null
-                };
+        const fileDetails = document.createElement('div');
+        fileDetails.innerHTML = `
+            <div class="fw-medium">${file.name}</div>
+            <small class="text-muted">${formatFileSize(file.size)} • ${file.type || 'Unknown type'}</small>
+        `;
 
-                // Generate preview for images
-                if (file.type && file.type.startsWith('image/') && this.previewImages) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        fileData.preview = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
+        fileInfo.appendChild(fileIcon);
+        fileInfo.appendChild(fileDetails);
 
-                this.uploadedFiles.push(fileData);
-            });
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-sm btn-outline-danger';
+        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+        removeBtn.onclick = function() {
+            removeFileFromInput(input, index);
+        };
 
-            // Auto-upload if enabled
-            if (this.autoUpload) {
-                this.uploadFiles();
-            }
-        },
+        fileItem.appendChild(fileInfo);
+        fileItem.appendChild(removeBtn);
+        fileList.appendChild(fileItem);
+    });
 
-        async uploadFiles() {
-            const filesToUpload = this.uploadedFiles.filter(f => !f.uploaded && !f.uploading);
+    // Validate files
+    validateFiles(input, files);
+}
 
-            if (filesToUpload.length === 0) return;
+function removeFileFromInput(input, indexToRemove) {
+    const dt = new DataTransfer();
+    const files = input.files;
 
-            this.uploading = true;
-            this.uploadError = '';
-
-            for (const fileData of filesToUpload) {
-                try {
-                    await this.uploadSingleFile(fileData);
-                } catch (error) {
-                    this.uploadError = error.message || '{{ __("Upload failed") }}';
-                    break;
-                }
-            }
-
-            this.uploading = false;
-        },
-
-        async uploadSingleFile(fileData) {
-            const formData = new FormData();
-            formData.append('file', fileData.file);
-
-            fileData.uploading = true;
-
-            try {
-                const response = await axios.post(this.uploadUrl, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: (progressEvent) => {
-                        fileData.progress = Math.round(
-                            (progressEvent.loaded * 100) / progressEvent.total
-                        );
-
-                        // Update overall progress
-                        const totalProgress = this.uploadedFiles.reduce((sum, f) => {
-                            return sum + (f.uploading ? f.progress : (f.uploaded ? 100 : 0));
-                        }, 0);
-                        this.uploadProgress = totalProgress / this.uploadedFiles.length;
-                    }
-                });
-
-                fileData.uploaded = true;
-                fileData.uploading = false;
-                fileData.progress = 100;
-                fileData.url = response.data.data.file.url;
-                fileData.id = response.data.data.file.id;
-
-                // Emit uploaded event
-                this.$emit('uploaded', fileData);
-
-            } catch (error) {
-                fileData.uploading = false;
-                fileData.progress = 0;
-                throw error;
-            }
-        },
-
-        removeFile(index) {
-            this.uploadedFiles.splice(index, 1);
-        },
-
-        getFileIcon(type) {
-            if (!type) return 'mdi-file';
-
-            if (type.startsWith('image/')) return 'mdi-file-image';
-            if (type.startsWith('video/')) return 'mdi-file-video';
-            if (type.startsWith('audio/')) return 'mdi-file-music';
-            if (type.includes('pdf')) return 'mdi-file-pdf-box';
-            if (type.includes('word') || type.includes('document')) return 'mdi-file-word';
-            if (type.includes('excel') || type.includes('spreadsheet')) return 'mdi-file-excel';
-            if (type.includes('powerpoint') || type.includes('presentation')) return 'mdi-file-powerpoint';
-            if (type.includes('zip') || type.includes('rar') || type.includes('7z')) return 'mdi-folder-zip';
-            if (type.includes('text')) return 'mdi-file-document';
-
-            return 'mdi-file';
-        },
-
-        formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    for (let i = 0; i < files.length; i++) {
+        if (i !== indexToRemove) {
+            dt.items.add(files[i]);
         }
     }
+
+    input.files = dt.files;
+    handleFileSelect(input);
+}
+
+function validateFiles(input, files) {
+    const maxSize = {{ $maxSize }} * 1024 * 1024; // Convert MB to bytes
+    const allowedTypes = @json($allowedTypes);
+    let hasError = false;
+    let errorMessage = '';
+
+    Array.from(files).forEach(file => {
+        // Check file size
+        if (file.size > maxSize) {
+            hasError = true;
+            errorMessage = `{{ __('File size must be less than :size MB', ['size' => $maxSize]) }}`;
+        }
+
+        // Check file type
+        if (allowedTypes.length > 0 && !allowedTypes.includes(file.type)) {
+            hasError = true;
+            errorMessage = `{{ __('File type not allowed') }}`;
+        }
+    });
+
+    // Remove existing error message
+    const existingError = input.parentNode.querySelector('.file-upload-error');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    // Add error message if validation failed
+    if (hasError) {
+        input.classList.add('is-invalid');
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback file-upload-error';
+        errorDiv.textContent = errorMessage;
+        input.parentNode.appendChild(errorDiv);
+    } else {
+        input.classList.remove('is-invalid');
+    }
+}
+
+function getFileIcon(type) {
+    if (!type) return 'fa-file';
+
+    if (type.startsWith('image/')) return 'fa-file-image';
+    if (type.startsWith('video/')) return 'fa-file-video';
+    if (type.startsWith('audio/')) return 'fa-file-audio';
+    if (type.includes('pdf')) return 'fa-file-pdf';
+    if (type.includes('word') || type.includes('document')) return 'fa-file-word';
+    if (type.includes('excel') || type.includes('spreadsheet')) return 'fa-file-excel';
+    if (type.includes('powerpoint') || type.includes('presentation')) return 'fa-file-powerpoint';
+    if (type.includes('zip') || type.includes('rar') || type.includes('7z')) return 'fa-file-archive';
+    if (type.includes('text')) return 'fa-file-alt';
+
+    return 'fa-file';
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 </script>
+@endif
 
-<style scoped>
+<style>
 .file-upload-component {
     width: 100%;
 }
 
-.v-list-item {
-    border-radius: 8px;
-    margin-bottom: 4px;
+.file-preview-area {
+    margin-top: 1rem;
 }
 
-.v-list-item:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+.file-item {
+    background-color: #f8f9fa;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.file-item:hover {
+    background-color: #e9ecef;
+}
+
+.file-list {
+    max-height: 300px;
+    overflow-y: auto;
 }
 </style>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\FundingController as ApiFundingController;
 use App\Http\Requests\Funding\StoreFundingRequest;
 use App\Http\Requests\Funding\UpdateFundingRequest;
-use App\Models\Funding;
+use App\Models\ProjectFunding;
 use App\Services\FundingService;
 use App\Services\ResearcherService;
 use App\Services\ProjectService;
@@ -47,7 +47,7 @@ class FundingController extends Controller
      */
     public function create(): View
     {
-        $this->authorize('create', Funding::class);
+        $this->authorize('create', ProjectFunding::class);
 
         $researchers = $this->researcherService->getResearchers([], 1000);
         $projects = $this->projectService->getProjects([], 1000);
@@ -60,7 +60,7 @@ class FundingController extends Controller
      */
     public function store(StoreFundingRequest $request): RedirectResponse
     {
-        $this->authorize('create', Funding::class);
+        $this->authorize('create', ProjectFunding::class);
 
         try {
             $funding = $this->fundingService->createFunding($request->validated());
@@ -78,12 +78,12 @@ class FundingController extends Controller
     /**
      * Display the specified funding
      */
-    public function show(Funding $funding): View
+    public function show(ProjectFunding $funding): View
     {
         $this->authorize('view', $funding);
 
-        $funding->load(['principalInvestigator', 'projects', 'budgetItems', 'reports']);
-        $statistics = $this->fundingService->getFundingStatistics($funding);
+        $funding->load(['project', 'fundingSource']);
+        $statistics = $this->fundingService->getProjectFundingSummary($funding->project);
 
         return view('funding.show', compact('funding', 'statistics'));
     }
@@ -91,7 +91,7 @@ class FundingController extends Controller
     /**
      * Show the form for editing the specified funding
      */
-    public function edit(Funding $funding): View
+    public function edit(ProjectFunding $funding): View
     {
         $this->authorize('update', $funding);
 
@@ -104,12 +104,12 @@ class FundingController extends Controller
     /**
      * Update the specified funding
      */
-    public function update(UpdateFundingRequest $request, Funding $funding): RedirectResponse
+    public function update(UpdateFundingRequest $request, ProjectFunding $funding): RedirectResponse
     {
         $this->authorize('update', $funding);
 
         try {
-            $updatedFunding = $this->fundingService->updateFunding($funding, $request->validated());
+            $updatedFunding = $this->fundingService->updateProjectFunding($funding, $request->validated());
 
             return redirect()
                 ->route('funding.show', $updatedFunding)
@@ -124,12 +124,12 @@ class FundingController extends Controller
     /**
      * Remove the specified funding
      */
-    public function destroy(Funding $funding): RedirectResponse
+    public function destroy(ProjectFunding $funding): RedirectResponse
     {
         $this->authorize('delete', $funding);
 
         try {
-            $this->fundingService->deleteFunding($funding);
+            $this->fundingService->deleteProjectFunding($funding);
 
             return redirect()
                 ->route('funding.index')
@@ -246,7 +246,7 @@ class FundingController extends Controller
      */
     public function analytics(Request $request): View
     {
-        $this->authorize('viewAnalytics', Funding::class);
+        $this->authorize('viewAnalytics', ProjectFunding::class);
 
         $filters = $request->only(['year', 'type', 'source']);
         $analytics = $this->fundingService->getFundingAnalytics($filters);

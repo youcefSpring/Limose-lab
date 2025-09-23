@@ -121,7 +121,16 @@
                             @{{ user.email }} • @{{ user.role }}
                         </v-list-item-subtitle>
                         <template v-slot:append>
-                            <x-status-chip :status="user.role" size="x-small" />
+                            <v-chip
+                                :color="getStatusColor(user.role)"
+                                size="x-small"
+                                variant="flat"
+                            >
+                                <template v-slot:prepend>
+                                    <v-icon size="small">@{{ getStatusIcon(user.role) }}</v-icon>
+                                </template>
+                                @{{ getStatusText(user.role) }}
+                            </v-chip>
                         </template>
                     </v-list-item>
                 </v-list>
@@ -158,7 +167,16 @@
                             {{ __('Leader') }}: @{{ project.leader?.full_name }}
                         </v-list-item-subtitle>
                         <template v-slot:append>
-                            <x-status-chip :status="project.status" size="x-small" />
+                            <v-chip
+                                :color="getStatusColor(project.status)"
+                                size="x-small"
+                                variant="flat"
+                            >
+                                <template v-slot:prepend>
+                                    <v-icon size="small">@{{ getStatusIcon(project.status) }}</v-icon>
+                                </template>
+                                @{{ getStatusText(project.status) }}
+                            </v-chip>
                         </template>
                     </v-list-item>
                 </v-list>

@@ -209,7 +209,16 @@
 
                         <template v-slot:append>
                             <div class="text-end">
-                                <x-status-chip :status="publication.type" size="x-small" />
+                                <v-chip
+                                    :color="getStatusColor(publication.type)"
+                                    size="x-small"
+                                    variant="flat"
+                                >
+                                    <template v-slot:prepend>
+                                        <v-icon size="small">@{{ getStatusIcon(publication.type) }}</v-icon>
+                                    </template>
+                                    @{{ getStatusText(publication.type) }}
+                                </v-chip>
                                 <div v-if="publication.doi" class="text-caption text-grey mt-1">
                                     DOI: @{{ publication.doi.substring(0, 20) }}...
                                 </div>
@@ -291,7 +300,17 @@
                                         <div class="text-caption text-grey">
                                             @{{ event.location }}
                                         </div>
-                                        <x-status-chip :status="event.type" size="x-small" class="mt-2" />
+                                        <v-chip
+                                            :color="getStatusColor(event.type)"
+                                            size="x-small"
+                                            variant="flat"
+                                            class="mt-2"
+                                        >
+                                            <template v-slot:prepend>
+                                                <v-icon size="small">@{{ getStatusIcon(event.type) }}</v-icon>
+                                            </template>
+                                            @{{ getStatusText(event.type) }}
+                                        </v-chip>
                                     </div>
                                 </div>
                             </v-card-text>

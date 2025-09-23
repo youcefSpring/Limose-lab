@@ -22,7 +22,7 @@ class PublicationController extends Controller
         private ProjectService $projectService,
         private ApiPublicationController $apiController
     ) {
-        $this->middleware('auth');
+       
     }
 
     /**

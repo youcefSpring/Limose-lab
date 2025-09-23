@@ -347,4 +347,38 @@ class ResearcherService
             return $researcher->delete();
         });
     }
+
+    /**
+     * Get researcher projects with pagination
+     */
+    public function getResearcherProjects(Researcher $researcher, int $perPage = 15)
+    {
+        return $researcher->leadProjects()
+            ->with(['members.researcher.user', 'funding'])
+            ->orderBy('start_date', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get researcher publications with pagination
+     */
+    public function getResearcherPublications(Researcher $researcher, int $perPage = 15)
+    {
+        return $researcher->publications()
+            ->with(['authors.researcher.user'])
+            ->orderBy('publication_year', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get researcher collaborations
+     */
+    public function getResearcherCollaborations(Researcher $researcher, int $perPage = 15)
+    {
+        return $researcher->coordinatedCollaborations()
+            ->with(['participants.researcher.user', 'events'])
+            ->orderBy('start_date', 'desc')
+            ->paginate($perPage);
+    }
 }
