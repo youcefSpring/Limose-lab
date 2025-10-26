@@ -1,4 +1,12 @@
-@extends('layouts.app', ['title' => __('Collaborations Management')])
+@extends('layouts.adminlte')
+
+@section('title', 'Collaborations')
+@section('page-title', 'International Collaborations')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item active">Collaborations</li>
+@endsection
 
 @section('content')
 <div class="container-fluid">

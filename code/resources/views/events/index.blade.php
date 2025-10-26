@@ -1,4 +1,12 @@
-@extends('layouts.app', ['title' => __('Events Management')])
+@extends('layouts.adminlte')
+
+@section('title', 'Events')
+@section('page-title', 'Events Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item active">Events</li>
+@endsection
 
 @section('content')
 <div class="container-fluid">
@@ -261,7 +269,7 @@
 <div class="modal fade" id="registrationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" action="{{ route('events.register') }}">
+            <form method="POST" action="#" id="registrationForm">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('Event Registration') }}</h5>
@@ -309,6 +317,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('eventId').value = eventId;
         document.getElementById('selectedEventTitle').textContent = eventTitle;
+
+        // Set the form action with the correct event ID
+        const form = document.getElementById('registrationForm');
+        form.action = `/events/${eventId}/register`;
     });
 });
 </script>

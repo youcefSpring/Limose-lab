@@ -1,306 +1,247 @@
-@extends('layouts.app', ['title' => __('Add New Researcher')])
+@extends('layouts.adminlte')
+
+@section('title', 'Add Researcher')
+@section('page-title', 'Add New Researcher')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('researchers.index') }}">Researchers</a></li>
+<li class="breadcrumb-item active">Add Researcher</li>
+@endsection
 
 @section('content')
-<div id="researchers-create-container">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="h3 fw-bold text-dark">{{ __('Add New Researcher') }}</h2>
-            <p class="text-muted mb-0">{{ __('Create a new researcher profile') }}</p>
-        </div>
-        <a href="{{ route('researchers.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i>{{ __('Back to Researchers') }}
-        </a>
-    </div>
-
-    <!-- Researcher Form -->
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form id="researcherForm" method="POST" action="{{ route('researchers.store') }}" enctype="multipart/form-data">
-                        @csrf
-
-                        <!-- Personal Information -->
-                        <div class="mb-4">
-                            <h5 class="card-title mb-3">{{ __('Personal Information') }}</h5>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="first_name" class="form-label">{{ __('First Name') }} <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('first_name') is-invalid @enderror"
-                                           id="first_name" name="first_name" value="{{ old('first_name') }}" required>
-                                    @error('first_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="last_name" class="form-label">{{ __('Last Name') }} <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('last_name') is-invalid @enderror"
-                                           id="last_name" name="last_name" value="{{ old('last_name') }}" required>
-                                    @error('last_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="email" class="form-label">{{ __('Email Address') }} <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                           id="email" name="email" value="{{ old('email') }}" required>
-                                    @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="phone" class="form-label">{{ __('Phone Number') }}</label>
-                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                           id="phone" name="phone" value="{{ old('phone') }}">
-                                    @error('phone')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-12 mb-3">
-                                    <label for="photo" class="form-label">{{ __('Profile Photo') }}</label>
-                                    <input type="file" class="form-control @error('photo') is-invalid @enderror"
-                                           id="photo" name="photo" accept="image/*">
-                                    <div class="form-text">{{ __('Upload a profile photo (max 2MB, JPG/PNG only)') }}</div>
-                                    @error('photo')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Professional Information -->
-                        <div class="mb-4">
-                            <h5 class="card-title mb-3">{{ __('Professional Information') }}</h5>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="position" class="form-label">{{ __('Position/Title') }}</label>
-                                    <input type="text" class="form-control @error('position') is-invalid @enderror"
-                                           id="position" name="position" value="{{ old('position') }}"
-                                           placeholder="{{ __('e.g., Senior Researcher, Professor') }}">
-                                    @error('position')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="department" class="form-label">{{ __('Department') }}</label>
-                                    <input type="text" class="form-control @error('department') is-invalid @enderror"
-                                           id="department" name="department" value="{{ old('department') }}">
-                                    @error('department')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-12 mb-3">
-                                    <label for="research_domain" class="form-label">{{ __('Research Domain') }} <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('research_domain') is-invalid @enderror"
-                                           id="research_domain" name="research_domain" value="{{ old('research_domain') }}" required
-                                           placeholder="{{ __('e.g., Artificial Intelligence, Biotechnology') }}">
-                                    @error('research_domain')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="orcid" class="form-label">{{ __('ORCID ID') }}</label>
-                                    <input type="text" class="form-control @error('orcid') is-invalid @enderror"
-                                           id="orcid" name="orcid" value="{{ old('orcid') }}"
-                                           placeholder="{{ __('e.g., 0000-0000-0000-0000') }}">
-                                    @error('orcid')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="google_scholar_url" class="form-label">{{ __('Google Scholar URL') }}</label>
-                                    <input type="url" class="form-control @error('google_scholar_url') is-invalid @enderror"
-                                           id="google_scholar_url" name="google_scholar_url" value="{{ old('google_scholar_url') }}"
-                                           placeholder="{{ __('https://scholar.google.com/citations?user=...') }}">
-                                    @error('google_scholar_url')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Biography -->
-                        <div class="mb-4">
-                            <h5 class="card-title mb-3">{{ __('Biography') }}</h5>
-
-                            <div class="mb-3">
-                                <ul class="nav nav-tabs" id="bioTabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="bio-en-tab" data-bs-toggle="tab" data-bs-target="#bio-en" type="button" role="tab">
-                                            <i class="fas fa-flag-usa me-1"></i>English
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="bio-fr-tab" data-bs-toggle="tab" data-bs-target="#bio-fr" type="button" role="tab">
-                                            <i class="fas fa-flag me-1"></i>Français
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="bio-ar-tab" data-bs-toggle="tab" data-bs-target="#bio-ar" type="button" role="tab">
-                                            <i class="fas fa-flag me-1"></i>العربية
-                                        </button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="bioTabContent">
-                                    <div class="tab-pane fade show active" id="bio-en" role="tabpanel">
-                                        <textarea class="form-control @error('bio_en') is-invalid @enderror"
-                                                  name="bio_en" rows="4"
-                                                  placeholder="{{ __('Enter biography in English...') }}">{{ old('bio_en') }}</textarea>
-                                        @error('bio_en')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="tab-pane fade" id="bio-fr" role="tabpanel">
-                                        <textarea class="form-control @error('bio_fr') is-invalid @enderror"
-                                                  name="bio_fr" rows="4"
-                                                  placeholder="{{ __('Enter biography in French...') }}">{{ old('bio_fr') }}</textarea>
-                                        @error('bio_fr')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="tab-pane fade" id="bio-ar" role="tabpanel">
-                                        <textarea class="form-control @error('bio_ar') is-invalid @enderror"
-                                                  name="bio_ar" rows="4" dir="rtl"
-                                                  placeholder="{{ __('Enter biography in Arabic...') }}">{{ old('bio_ar') }}</textarea>
-                                        @error('bio_ar')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- CV Upload -->
-                        <div class="mb-4">
-                            <h5 class="card-title mb-3">{{ __('CV Upload') }}</h5>
-
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <label for="cv_file" class="form-label">{{ __('CV File') }}</label>
-                                    <input type="file" class="form-control @error('cv_file') is-invalid @enderror"
-                                           id="cv_file" name="cv_file" accept=".pdf,.doc,.docx">
-                                    <div class="form-text">{{ __('Upload CV file (PDF, DOC, or DOCX - max 5MB)') }}</div>
-                                    @error('cv_file')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Social/Academic Links -->
-                        <div class="mb-4">
-                            <h5 class="card-title mb-3">{{ __('Social & Academic Links') }}</h5>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="linkedin_url" class="form-label">{{ __('LinkedIn URL') }}</label>
-                                    <input type="url" class="form-control @error('linkedin_url') is-invalid @enderror"
-                                           id="linkedin_url" name="linkedin_url" value="{{ old('linkedin_url') }}"
-                                           placeholder="{{ __('https://linkedin.com/in/...') }}">
-                                    @error('linkedin_url')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="researchgate_url" class="form-label">{{ __('ResearchGate URL') }}</label>
-                                    <input type="url" class="form-control @error('researchgate_url') is-invalid @enderror"
-                                           id="researchgate_url" name="researchgate_url" value="{{ old('researchgate_url') }}"
-                                           placeholder="{{ __('https://researchgate.net/profile/...') }}">
-                                    @error('researchgate_url')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="website_url" class="form-label">{{ __('Personal Website') }}</label>
-                                    <input type="url" class="form-control @error('website_url') is-invalid @enderror"
-                                           id="website_url" name="website_url" value="{{ old('website_url') }}"
-                                           placeholder="{{ __('https://yourwebsite.com') }}">
-                                    @error('website_url')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary" id="submitBtn">
-                                <i class="fas fa-save me-2"></i>{{ __('Create Researcher Profile') }}
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" onclick="window.history.back()">
-                                <i class="fas fa-times me-2"></i>{{ __('Cancel') }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Help Panel -->
-        <div class="col-lg-4">
-            <div class="card shadow-sm">
+        <div class="col-md-12">
+            <!-- Main Card -->
+            <div class="card card-primary">
                 <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="fas fa-info-circle me-2"></i>{{ __('Researcher Profile Guidelines') }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <h6 class="fw-bold">{{ __('Personal Information') }}</h6>
-                        <p class="small text-muted">{{ __('Provide accurate personal details. Email will be used for system notifications.') }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <h6 class="fw-bold">{{ __('Research Domain') }}</h6>
-                        <p class="small text-muted">{{ __('Specify your primary research areas and specializations for better categorization.') }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <h6 class="fw-bold">{{ __('ORCID ID') }}</h6>
-                        <p class="small text-muted">{{ __('Open Researcher and Contributor ID - a unique identifier for researchers.') }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <h6 class="fw-bold">{{ __('Biography') }}</h6>
-                        <p class="small text-muted">{{ __('Provide biography in multiple languages to reach a wider audience.') }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <h6 class="fw-bold">{{ __('File Uploads') }}</h6>
-                        <ul class="small text-muted">
-                            <li>{{ __('Profile Photo: JPG/PNG, max 2MB') }}</li>
-                            <li>{{ __('CV: PDF/DOC/DOCX, max 5MB') }}</li>
-                        </ul>
-                    </div>
-
-                    <div class="alert alert-info">
-                        <i class="fas fa-lightbulb me-2"></i>
-                        <strong>{{ __('Tip:') }}</strong>
-                        {{ __('Complete profiles get better visibility in the researcher directory.') }}
+                    <h3 class="card-title">
+                        <i class="fas fa-user-plus mr-1"></i>
+                        Create New Researcher Profile
+                    </h3>
+                    <div class="card-tools">
+                        <a href="{{ route('researchers.index') }}" class="btn btn-tool" title="Back to Researchers">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
                     </div>
                 </div>
+
+                <form method="POST" action="{{ route('researchers.store') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-8">
+                                <!-- Personal Information -->
+                                <div class="card card-outline card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Personal Information</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="first_name">First Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control @error('first_name') is-invalid @enderror"
+                                                           id="first_name" name="first_name" value="{{ old('first_name') }}" required>
+                                                    @error('first_name')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="last_name">Last Name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control @error('last_name') is-invalid @enderror"
+                                                           id="last_name" name="last_name" value="{{ old('last_name') }}" required>
+                                                    @error('last_name')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="email">Email Address <span class="text-danger">*</span></label>
+                                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                                           id="email" name="email" value="{{ old('email') }}" required>
+                                                    @error('email')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="phone">Phone Number</label>
+                                                    <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                                           id="phone" name="phone" value="{{ old('phone') }}">
+                                                    @error('phone')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Professional Information -->
+                                <div class="card card-outline card-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Professional Information</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="research_domain">Research Domain <span class="text-danger">*</span></label>
+                                                    <select class="form-control @error('research_domain') is-invalid @enderror"
+                                                            id="research_domain" name="research_domain" required>
+                                                        <option value="">Select Research Domain</option>
+                                                        <option value="computer_science" {{ old('research_domain') == 'computer_science' ? 'selected' : '' }}>Computer Science</option>
+                                                        <option value="biology" {{ old('research_domain') == 'biology' ? 'selected' : '' }}>Biology</option>
+                                                        <option value="chemistry" {{ old('research_domain') == 'chemistry' ? 'selected' : '' }}>Chemistry</option>
+                                                        <option value="physics" {{ old('research_domain') == 'physics' ? 'selected' : '' }}>Physics</option>
+                                                        <option value="engineering" {{ old('research_domain') == 'engineering' ? 'selected' : '' }}>Engineering</option>
+                                                        <option value="medicine" {{ old('research_domain') == 'medicine' ? 'selected' : '' }}>Medicine</option>
+                                                        <option value="mathematics" {{ old('research_domain') == 'mathematics' ? 'selected' : '' }}>Mathematics</option>
+                                                        <option value="other" {{ old('research_domain') == 'other' ? 'selected' : '' }}>Other</option>
+                                                    </select>
+                                                    @error('research_domain')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="position">Position/Title</label>
+                                                    <input type="text" class="form-control @error('position') is-invalid @enderror"
+                                                           id="position" name="position" value="{{ old('position') }}"
+                                                           placeholder="e.g., Research Scientist, PhD Student">
+                                                    @error('position')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="institution">Institution/University <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('institution') is-invalid @enderror"
+                                                   id="institution" name="institution" value="{{ old('institution') }}" required>
+                                            @error('institution')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bio">Biography/Research Interests</label>
+                                            <textarea class="form-control @error('bio') is-invalid @enderror"
+                                                      id="bio" name="bio" rows="4" placeholder="Brief description of research interests and background">{{ old('bio') }}</textarea>
+                                            @error('bio')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Additional Information -->
+                                <div class="card card-outline card-warning">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Additional Information</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="orcid">ORCID ID</label>
+                                                    <input type="text" class="form-control @error('orcid') is-invalid @enderror"
+                                                           id="orcid" name="orcid" value="{{ old('orcid') }}"
+                                                           placeholder="0000-0000-0000-0000">
+                                                    @error('orcid')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="website">Website/Profile URL</label>
+                                                    <input type="url" class="form-control @error('website') is-invalid @enderror"
+                                                           id="website" name="website" value="{{ old('website') }}">
+                                                    @error('website')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-4">
+                                <!-- Profile Picture -->
+                                <div class="card card-outline card-secondary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Profile Picture</h3>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <div class="form-group">
+                                            <img id="profile-preview" src="https://via.placeholder.com/150x150/667eea/ffffff?text=?"
+                                                 alt="Profile Preview" class="img-circle img-fluid mb-3" style="width: 150px; height: 150px;">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="profile_picture" name="profile_picture" accept="image/*">
+                                                <label class="custom-file-label" for="profile_picture">Choose file</label>
+                                            </div>
+                                            <small class="form-text text-muted">Max size: 2MB. Supported: JPG, PNG, GIF</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Status Settings -->
+                                <div class="card card-outline card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Settings</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="form-control" id="status" name="status">
+                                                <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>Active</option>
+                                                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="is_public" name="is_public" value="1" {{ old('is_public', true) ? 'checked' : '' }}>
+                                                <label class="custom-control-label" for="is_public">Public Profile</label>
+                                            </div>
+                                            <small class="form-text text-muted">Allow profile to be visible to visitors</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save mr-1"></i>Create Researcher
+                                </button>
+                                <a href="{{ route('researchers.index') }}" class="btn btn-secondary ml-2">
+                                    <i class="fas fa-times mr-1"></i>Cancel
+                                </a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <small class="text-muted">Fields marked with <span class="text-danger">*</span> are required</small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Loading Overlay -->
-<div id="loadingOverlay" class="d-none">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">{{ __('Loading...') }}</span>
     </div>
 </div>
 @endsection
@@ -308,117 +249,23 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Form submission handling
-    $('#researcherForm').on('submit', function(e) {
-        const submitBtn = $('#submitBtn');
-        const originalText = submitBtn.html();
-
-        // Show loading state
-        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>{{ __("Creating...") }}');
-
-        // Re-enable button after 5 seconds to prevent permanent disable on error
-        setTimeout(function() {
-            submitBtn.prop('disabled', false).html(originalText);
-        }, 5000);
-    });
-
-    // Photo upload validation
-    $('#photo').on('change', function() {
+    // Profile picture preview
+    $('#profile_picture').on('change', function() {
         const file = this.files[0];
         if (file) {
-            // Check file size (2MB = 2 * 1024 * 1024 bytes)
-            if (file.size > 2 * 1024 * 1024) {
-                showAlert('error', '{{ __("Photo size must be less than 2MB") }}');
-                $(this).val('');
-                return;
-            }
-
-            // Check file type
-            if (!file.type.startsWith('image/')) {
-                showAlert('error', '{{ __("Only image files are allowed") }}');
-                $(this).val('');
-                return;
-            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#profile-preview').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
         }
     });
 
-    // CV upload validation
-    $('#cv_file').on('change', function() {
-        const file = this.files[0];
-        if (file) {
-            // Check file size (5MB = 5 * 1024 * 1024 bytes)
-            if (file.size > 5 * 1024 * 1024) {
-                showAlert('error', '{{ __("CV file size must be less than 5MB") }}');
-                $(this).val('');
-                return;
-            }
-
-            // Check file type
-            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-            if (!allowedTypes.includes(file.type)) {
-                showAlert('error', '{{ __("Only PDF, DOC, or DOCX files are allowed") }}');
-                $(this).val('');
-                return;
-            }
-        }
+    // Update file input label
+    $('.custom-file-input').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
     });
-
-    // ORCID format validation
-    $('#orcid').on('blur', function() {
-        const orcid = $(this).val();
-        if (orcid && !orcid.match(/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/)) {
-            showAlert('warning', '{{ __("ORCID format should be like: 0000-0000-0000-0000") }}');
-        }
-    });
-
-    // Email validation
-    $('#email').on('blur', function() {
-        const email = $(this).val();
-        if (email) {
-            // Basic email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showAlert('warning', '{{ __("Please enter a valid email address") }}');
-            }
-        }
-    });
-
-    // URL validation for all URL fields
-    $('input[type="url"]').on('blur', function() {
-        const url = $(this).val();
-        const fieldName = $(this).attr('name');
-
-        if (url) {
-            try {
-                new URL(url);
-            } catch {
-                showAlert('warning', '{{ __("Please enter a valid URL starting with http:// or https://") }}');
-                $(this).focus();
-            }
-        }
-    });
-
-    function showAlert(type, message) {
-        const alertClass = type === 'success' ? 'alert-success' :
-                          type === 'warning' ? 'alert-warning' : 'alert-danger';
-        const alertHtml = `
-            <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
-
-        // Remove existing alerts
-        $('.alert').remove();
-
-        // Add new alert at the top of the container
-        $('#researchers-create-container').prepend(alertHtml);
-
-        // Auto-hide after 5 seconds
-        setTimeout(function() {
-            $('.alert').fadeOut();
-        }, 5000);
-    }
 });
 </script>
 @endpush

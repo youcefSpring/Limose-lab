@@ -1,224 +1,362 @@
-@extends('layouts.app', ['title' => __('Researchers Management')])
+@extends('layouts.adminlte')
+
+@section('title', 'Researchers')
+@section('page-title', 'Researchers Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item active">Researchers</li>
+@endsection
 
 @section('content')
 <div class="container-fluid">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="h3 fw-bold text-dark">{{ __('Researchers') }}</h2>
-            <p class="text-muted mb-0">{{ __('Manage and browse research team members') }}</p>
+    <!-- Stats Cards Row -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ $researchers->total() ?? 0 }}</h3>
+                    <p>Total Researchers</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
         </div>
-        @auth
-            @if(auth()->user()->isAdmin() || auth()->user()->isLabManager())
-                <a href="{{ route('researchers.create') }}" class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>{{ __('Add Researcher') }}
-                </a>
-            @endif
-        @endauth
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ $researchers->where('status', 'active')->count() ?? 0 }}</h3>
+                    <p>Active Researchers</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ $researchers->where('research_domain', '!=', null)->unique('research_domain')->count() ?? 0 }}</h3>
+                    <p>Research Domains</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ $researchers->where('created_at', '>=', now()->subMonth())->count() ?? 0 }}</h3>
+                    <p>New This Month</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Filters Card -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="GET" action="{{ route('researchers.index') }}" class="row g-3">
-                <div class="col-md-4">
-                    <label for="search" class="form-label">{{ __('Search') }}</label>
+    <!-- Main Content Card -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-users mr-1"></i>
+                Researchers Directory
+            </h3>
+            <div class="card-tools">
+                @auth
+                    @if(auth()->user()->isAdmin() || auth()->user()->isLabManager())
+                        <a href="{{ route('researchers.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus mr-1"></i>Add Researcher
+                        </a>
+                    @endif
+                @endauth
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="card-body filter-container">
+            <form method="GET" action="{{ route('researchers.index') }}" class="filter-form">
+                <div class="form-group search-field">
+                    <label for="search" class="form-label">Search Researchers</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="search" name="search"
-                               value="{{ request('search') }}" placeholder="{{ __('Search researchers...') }}">
-                        <button class="btn btn-outline-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        @if(request('search'))
-                        <a href="{{ route('researchers.index') }}" class="btn btn-outline-secondary">
+                               value="{{ request('search') }}" placeholder="Name, email, institution...">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group select-field">
+                    <label for="domain" class="form-label">Research Domain</label>
+                    <select class="form-control" id="domain" name="domain">
+                        <option value="">All Domains</option>
+                        <option value="computer_science" {{ request('domain') == 'computer_science' ? 'selected' : '' }}>Computer Science</option>
+                        <option value="biology" {{ request('domain') == 'biology' ? 'selected' : '' }}>Biology</option>
+                        <option value="chemistry" {{ request('domain') == 'chemistry' ? 'selected' : '' }}>Chemistry</option>
+                        <option value="physics" {{ request('domain') == 'physics' ? 'selected' : '' }}>Physics</option>
+                        <option value="engineering" {{ request('domain') == 'engineering' ? 'selected' : '' }}>Engineering</option>
+                        <option value="medicine" {{ request('domain') == 'medicine' ? 'selected' : '' }}>Medicine</option>
+                        <option value="mathematics" {{ request('domain') == 'mathematics' ? 'selected' : '' }}>Mathematics</option>
+                        <option value="other" {{ request('domain') == 'other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                </div>
+                <div class="form-group select-field">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="">All Statuses</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+                <div class="form-group btn-field">
+                    <button type="submit" class="btn btn-filter-primary">
+                        <i class="fas fa-filter me-1"></i>Filter
+                    </button>
+                    @if(request()->hasAny(['search', 'domain', 'status']))
+                        <a href="{{ route('researchers.index') }}" class="btn btn-outline-secondary ms-2">
                             <i class="fas fa-times"></i>
                         </a>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label for="domain" class="form-label">{{ __('Research Domain') }}</label>
-                    <select class="form-select" id="domain" name="domain">
-                        <option value="">{{ __('All Domains') }}</option>
-                        @foreach($domains ?? [] as $domain)
-                            <option value="{{ $domain }}" {{ request('domain') == $domain ? 'selected' : '' }}>
-                                {{ $domain }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="status" class="form-label">{{ __('Status') }}</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="">{{ __('All Statuses') }}</option>
-                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>{{ __('Active') }}</option>
-                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('Pending') }}</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search me-1"></i>{{ __('Filter') }}
-                        </button>
-                        <a href="{{ route('researchers.index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-times me-1"></i>{{ __('Clear') }}
-                        </a>
-                        <a href="{{ route('researchers.index', array_merge(request()->all(), ['export' => 'excel'])) }}"
-                           class="btn btn-outline-success" title="{{ __('Export') }}">
-                            <i class="fas fa-download"></i>
-                        </a>
-                    </div>
+                    @endif
                 </div>
             </form>
         </div>
-    </div>
 
-    <!-- Results Info -->
-    @if(isset($researchers) && $researchers->total() > 0)
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="text-muted">
-                {{ __('Showing :from to :to of :total researchers', [
-                    'from' => $researchers->firstItem(),
-                    'to' => $researchers->lastItem(),
-                    'total' => $researchers->total()
-                ]) }}
-            </div>
-            <div class="d-flex align-items-center">
-                <label class="form-label mb-0 me-2">{{ __('Per page:') }}</label>
-                <form method="GET" action="{{ route('researchers.index') }}" class="d-inline">
-                    @foreach(request()->except('per_page') as $key => $value)
-                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                    @endforeach
-                    <select name="per_page" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
-                        <option value="12" {{ request('per_page', 12) == 12 ? 'selected' : '' }}>12</option>
-                        <option value="24" {{ request('per_page') == 24 ? 'selected' : '' }}>24</option>
-                        <option value="48" {{ request('per_page') == 48 ? 'selected' : '' }}>48</option>
-                    </select>
-                </form>
-            </div>
-        </div>
-    @endif
-
-    <!-- Researchers Grid -->
-    <div class="row g-4">
-        @forelse($researchers ?? [] as $researcher)
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 researcher-card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="{{ $researcher->photo_url ?? '/images/default-avatar.png' }}"
-                                 alt="{{ $researcher->first_name }} {{ $researcher->last_name }}"
-                                 class="rounded-circle me-3"
-                                 style="width: 60px; height: 60px; object-fit: cover;">
-                            <div>
-                                <h5 class="card-title mb-1">
-                                    {{ $researcher->first_name }} {{ $researcher->last_name }}
-                                </h5>
-                                <p class="text-muted small mb-0">{{ $researcher->position ?? __('Researcher') }}</p>
-                            </div>
-                        </div>
-
-                        @if($researcher->research_interests)
-                            <div class="mb-3">
-                                <h6 class="small fw-bold text-muted mb-2">{{ __('Research Interests') }}</h6>
-                                <div class="d-flex flex-wrap gap-1">
-                                    @foreach(explode(',', $researcher->research_interests) as $interest)
-                                        <span class="badge bg-light text-dark">{{ trim($interest) }}</span>
-                                    @endforeach
+        <!-- Researchers Grid -->
+        <div class="card-body">
+            @if(isset($researchers) && $researchers->count() > 0)
+                <div class="row">
+                    @foreach($researchers as $researcher)
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card card-widget widget-user">
+                                <div class="widget-user-header bg-gradient-primary">
+                                    <h3 class="widget-user-username">{{ $researcher->full_name ?? 'N/A' }}</h3>
+                                    <h5 class="widget-user-desc">{{ $researcher->research_domain ?? 'Research Domain' }}</h5>
+                                </div>
+                                <div class="widget-user-image">
+                                    <img class="img-circle elevation-2" src="{{ $researcher->avatar ?? 'https://via.placeholder.com/90x90/007bff/ffffff?text=' . substr($researcher->full_name ?? 'R', 0, 1) }}" alt="User Avatar">
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">{{ $researcher->projects_count ?? 0 }}</h5>
+                                                <span class="description-text">PROJECTS</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 border-right">
+                                            <div class="description-block">
+                                                <h5 class="description-header">{{ $researcher->publications_count ?? 0 }}</h5>
+                                                <span class="description-text">PUBLICATIONS</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="description-block">
+                                                <h5 class="description-header">{{ $researcher->collaborations_count ?? 0 }}</h5>
+                                                <span class="description-text">COLLABORATIONS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="text-muted">
+                                                <p class="text-sm mb-1">
+                                                    <i class="fas fa-university mr-1"></i>
+                                                    {{ $researcher->institution ?? 'Institution not specified' }}
+                                                </p>
+                                                <p class="text-sm mb-1">
+                                                    <i class="fas fa-envelope mr-1"></i>
+                                                    {{ $researcher->email ?? 'Email not available' }}
+                                                </p>
+                                                @if($researcher->phone)
+                                                <p class="text-sm mb-1">
+                                                    <i class="fas fa-phone mr-1"></i>
+                                                    {{ $researcher->phone }}
+                                                </p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="btn-group w-100">
+                                                <a href="{{ route('researchers.show', $researcher) }}" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-eye"></i> View
+                                                </a>
+                                                @auth
+                                                    @if(auth()->user()->isAdmin() || auth()->user()->isLabManager())
+                                                        <a href="{{ route('researchers.edit', $researcher) }}" class="btn btn-sm btn-warning">
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </a>
+                                                        @if(auth()->user()->isAdmin())
+                                                            <button class="btn btn-sm btn-danger" onclick="confirmDelete({{ $researcher->id }})">
+                                                                <i class="fas fa-trash"></i> Delete
+                                                            </button>
+                                                        @endif
+                                                    @endif
+                                                @endauth
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        @endif
+                        </div>
+                    @endforeach
+                </div>
 
-                        @if($researcher->email || $researcher->phone)
-                            <div class="mb-3">
-                                @if($researcher->email)
-                                    <div class="small text-muted">
-                                        <i class="fas fa-envelope me-1"></i>{{ $researcher->email }}
-                                    </div>
-                                @endif
-                                @if($researcher->phone)
-                                    <div class="small text-muted">
-                                        <i class="fas fa-phone me-1"></i>{{ $researcher->phone }}
-                                    </div>
-                                @endif
-                            </div>
-                        @endif
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-{{ $researcher->status == 'active' ? 'success' : ($researcher->status == 'inactive' ? 'secondary' : 'warning') }}">
-                                {{ ucfirst($researcher->status ?? 'active') }}
-                            </span>
-                            <div class="btn-group btn-group-sm">
-                                <a href="{{ route('researchers.show', $researcher) }}" class="btn btn-outline-primary" title="{{ __('View') }}">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                @auth
-                                    @if(auth()->user()->isAdmin() || auth()->user()->isLabManager())
-                                        <a href="{{ route('researchers.edit', $researcher) }}" class="btn btn-outline-warning" title="{{ __('Edit') }}">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    @endif
-                                @endauth
+                <!-- Pagination -->
+                @if($researchers->hasPages())
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card-tools float-right">
+                                {{ $researchers->appends(request()->query())->links() }}
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        @empty
-            <div class="col-12">
+                @endif
+            @else
+                <!-- Empty State -->
                 <div class="text-center py-5">
-                    <i class="fas fa-user-friends text-muted" style="font-size: 4rem;"></i>
-                    <h4 class="text-muted mt-3">{{ __('No researchers found') }}</h4>
-                    <p class="text-muted">
+                    <div class="empty-state">
+                        <i class="fas fa-users fa-5x text-muted mb-4"></i>
+                        <h4 class="text-muted">No Researchers Found</h4>
                         @if(request()->hasAny(['search', 'domain', 'status']))
-                            {{ __('Try adjusting your search criteria or clear filters') }}
-                        @else
-                            {{ __('No researchers have been added yet') }}
-                        @endif
-                    </p>
-                    @auth
-                        @if(auth()->user()->isAdmin() || auth()->user()->isLabManager())
-                            <a href="{{ route('researchers.create') }}" class="btn btn-primary mt-3">
-                                <i class="fas fa-plus me-2"></i>{{ __('Add First Researcher') }}
+                            <p class="text-muted">No researchers match your search criteria.</p>
+                            <a href="{{ route('researchers.index') }}" class="btn btn-primary">
+                                <i class="fas fa-times mr-1"></i>Clear Filters
                             </a>
+                        @else
+                            <p class="text-muted">No researchers have been added yet.</p>
+                            @auth
+                                @if(auth()->user()->isAdmin() || auth()->user()->isLabManager())
+                                    <a href="{{ route('researchers.create') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus mr-1"></i>Add First Researcher
+                                    </a>
+                                @endif
+                            @endauth
                         @endif
-                    @endauth
+                    </div>
                 </div>
-            </div>
-        @endforelse
-    </div>
-
-    <!-- Pagination -->
-    @if(isset($researchers) && $researchers->hasPages())
-        <div class="d-flex justify-content-center mt-4">
-            {{ $researchers->appends(request()->query())->links() }}
+            @endif
         </div>
-    @endif
+    </div>
 </div>
 @endsection
 
-
 @push('styles')
 <style>
-.researcher-card {
-    transition: transform 0.2s ease-in-out;
+.filter-container {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
 }
 
-.researcher-card:hover {
-    transform: translateY(-4px);
+.filter-form {
+    display: flex;
+    align-items: end;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-.researcher-card .card-title {
-    word-break: break-word;
+.filter-form .form-group {
+    margin-bottom: 0;
+    min-width: 0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    .researcher-card {
-        margin-bottom: 16px;
+.filter-form .search-field {
+    flex: 1;
+    min-width: 300px;
+}
+
+.filter-form .select-field {
+    min-width: 180px;
+}
+
+.filter-form .btn-field {
+    flex-shrink: 0;
+}
+
+.filter-form .form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.filter-form .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.filter-form .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.filter-form .input-group .btn {
+    border-radius: 0 0.375rem 0.375rem 0;
+    border-left: none;
+}
+
+.btn-filter-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+}
+
+.btn-filter-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-form .search-field,
+    .filter-form .select-field {
+        min-width: 100%;
     }
 }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+function confirmDelete(researcherId) {
+    if (confirm('Are you sure you want to delete this researcher? This action cannot be undone.')) {
+        // Create and submit delete form
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/researchers/${researcherId}`;
+
+        const methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'DELETE';
+
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = '_token';
+        tokenInput.value = '{{ csrf_token() }}';
+
+        form.appendChild(methodInput);
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
 @endpush

@@ -1,443 +1,248 @@
-@extends('layouts.app', ['title' => $researcher->full_name])
+@extends('layouts.adminlte')
+
+@section('title', $researcher->full_name ?? 'Researcher Profile')
+@section('page-title', 'Researcher Profile')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('researchers.index') }}">Researchers</a></li>
+<li class="breadcrumb-item active">{{ $researcher->full_name ?? 'Profile' }}</li>
+@endsection
 
 @section('content')
-<div id="researchers-show-container">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="h3 fw-bold text-dark">{{ $researcher->full_name }}</h2>
-            <p class="text-muted mb-0">{{ __('Researcher Profile') }}</p>
-        </div>
-        <div class="d-flex gap-2">
-            @if(auth()->user()->isAdmin() || auth()->user()->isLabManager() || (auth()->user()->researcher && auth()->user()->researcher->id === $researcher->id))
-                <a href="{{ route('researchers.edit', $researcher) }}" class="btn btn-primary">
-                    <i class="fas fa-edit me-2"></i>{{ __('Edit Profile') }}
-                </a>
-            @endif
-            <a href="{{ route('researchers.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>{{ __('Back to Researchers') }}
-            </a>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Main Profile Card -->
+        <div class="col-md-12">
+            <div class="card card-widget widget-user">
+                <div class="widget-user-header bg-info">
+                    <h3 class="widget-user-username">{{ $researcher->full_name ?? 'Researcher' }}</h3>
+                    <h5 class="widget-user-desc">{{ $researcher->research_domain ?? 'Research Domain' }}</h5>
+                    <!-- Action Buttons -->
+                    <div class="widget-user-actions">
+                        @auth
+                            @if(auth()->user()->canManageResearchers())
+                                <a href="{{ route('researchers.edit', $researcher) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit mr-1"></i>Edit Profile
+                                </a>
+                            @endif
+                        @endauth
+                        <a href="{{ route('researchers.index') }}" class="btn btn-secondary btn-sm ml-2">
+                            <i class="fas fa-arrow-left mr-1"></i>Back to List
+                        </a>
+                    </div>
+                </div>
+                <div class="widget-user-image">
+                    @if($researcher->avatar)
+                        <img class="img-circle elevation-2" src="{{ $researcher->avatar }}" alt="User Avatar">
+                    @else
+                        <img class="img-circle elevation-2" src="https://via.placeholder.com/90x90/007bff/ffffff?text={{ substr($researcher->full_name ?? 'R', 0, 1) }}" alt="User Avatar">
+                    @endif
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-3 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header">{{ $researcher->projects_count ?? 0 }}</h5>
+                                <span class="description-text">PROJECTS</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header">{{ $researcher->publications_count ?? 0 }}</h5>
+                                <span class="description-text">PUBLICATIONS</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 border-right">
+                            <div class="description-block">
+                                <h5 class="description-header">{{ $researcher->collaborations_count ?? 0 }}</h5>
+                                <span class="description-text">COLLABORATIONS</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="description-block">
+                                <h5 class="description-header">{{ $researcher->equipment_uses ?? 0 }}</h5>
+                                <span class="description-text">EQUIPMENT USES</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row">
-        <!-- Main Content -->
-        <div class="col-lg-8">
-            <!-- Profile Overview Card -->
-            <div class="card shadow-sm mb-4">
+        <!-- Left Column -->
+        <div class="col-md-8">
+            <!-- Personal Information -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user mr-1"></i>
+                        Personal Information
+                    </h3>
+                </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3 text-center">
-                            @if($researcher->photo_path)
-                                <img src="{{ asset('storage/' . $researcher->photo_path) }}"
-                                     alt="{{ $researcher->full_name }}"
-                                     class="img-fluid rounded-circle mb-3"
-                                     style="width: 150px; height: 150px; object-fit: cover;">
-                            @else
-                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mb-3 mx-auto"
-                                     style="width: 150px; height: 150px;">
-                                    <i class="fas fa-user fa-4x text-white"></i>
-                                </div>
-                            @endif
-
-                            <!-- Social Links -->
-                            <div class="d-flex justify-content-center gap-2">
-                                @if($researcher->google_scholar_url)
-                                    <a href="{{ $researcher->google_scholar_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </a>
-                                @endif
-                                @if($researcher->user->linkedin_url ?? null)
-                                    <a href="{{ $researcher->user->linkedin_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                        <i class="fab fa-linkedin"></i>
-                                    </a>
-                                @endif
-                                @if($researcher->user->researchgate_url ?? null)
-                                    <a href="{{ $researcher->user->researchgate_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                        <i class="fab fa-researchgate"></i>
-                                    </a>
-                                @endif
-                                @if($researcher->user->website_url ?? null)
-                                    <a href="{{ $researcher->user->website_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-globe"></i>
-                                    </a>
-                                @endif
-                            </div>
+                        <div class="col-sm-6">
+                            <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
+                            <p class="text-muted">{{ $researcher->email ?? 'Not provided' }}</p>
+                            <hr>
+                            <strong><i class="fas fa-phone mr-1"></i> Phone</strong>
+                            <p class="text-muted">{{ $researcher->phone ?? 'Not provided' }}</p>
+                            <hr>
+                            <strong><i class="fas fa-map-marker-alt mr-1"></i> Institution</strong>
+                            <p class="text-muted">{{ $researcher->institution ?? 'Not provided' }}</p>
                         </div>
-
-                        <div class="col-md-9">
-                            <h4 class="fw-bold">{{ $researcher->full_name }}</h4>
-                            @if($researcher->user->position ?? null)
-                                <p class="text-muted mb-1">{{ $researcher->user->position }}</p>
-                            @endif
-                            @if($researcher->user->department ?? null)
-                                <p class="text-muted mb-2">{{ $researcher->user->department }}</p>
-                            @endif
-
-                            <div class="row mb-3">
-                                <div class="col-sm-6">
-                                    <strong>{{ __('Research Domain:') }}</strong><br>
-                                    <span class="badge bg-primary">{{ $researcher->research_domain }}</span>
-                                </div>
-                                @if($researcher->user->orcid)
-                                    <div class="col-sm-6">
-                                        <strong>{{ __('ORCID ID:') }}</strong><br>
-                                        <a href="https://orcid.org/{{ $researcher->user->orcid }}" target="_blank" class="text-decoration-none">
-                                            {{ $researcher->user->orcid }}
-                                        </a>
-                                    </div>
+                        <div class="col-sm-6">
+                            <strong><i class="fas fa-briefcase mr-1"></i> Position</strong>
+                            <p class="text-muted">{{ $researcher->position ?? 'Not provided' }}</p>
+                            <hr>
+                            <strong><i class="fas fa-id-badge mr-1"></i> ORCID ID</strong>
+                            <p class="text-muted">
+                                @if($researcher->orcid)
+                                    <a href="https://orcid.org/{{ $researcher->orcid }}" target="_blank">{{ $researcher->orcid }}</a>
+                                @else
+                                    Not provided
                                 @endif
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-sm-6">
-                                    <strong>{{ __('Email:') }}</strong><br>
-                                    <a href="mailto:{{ $researcher->user->email }}" class="text-decoration-none">
-                                        {{ $researcher->user->email }}
-                                    </a>
-                                </div>
-                                @if($researcher->user->phone)
-                                    <div class="col-sm-6">
-                                        <strong>{{ __('Phone:') }}</strong><br>
-                                        <a href="tel:{{ $researcher->user->phone }}" class="text-decoration-none">
-                                            {{ $researcher->user->phone }}
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-
-                            @if($researcher->cv_path)
-                                <div class="mb-3">
-                                    <a href="{{ asset('storage/' . $researcher->cv_path) }}" target="_blank" class="btn btn-outline-success">
-                                        <i class="fas fa-file-pdf me-2"></i>{{ __('Download CV') }}
-                                    </a>
-                                </div>
-                            @endif
+                            </p>
+                            <hr>
+                            <strong><i class="fas fa-calendar-alt mr-1"></i> Member Since</strong>
+                            <p class="text-muted">{{ $researcher->created_at ? $researcher->created_at->format('F d, Y') : 'Unknown' }}</p>
                         </div>
+                    </div>
+
+                    @if($researcher->bio)
+                        <hr>
+                        <strong><i class="fas fa-file-alt mr-1"></i> Biography</strong>
+                        <p class="text-muted">{{ $researcher->bio }}</p>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Research Information -->
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-microscope mr-1"></i>
+                        Research Information
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <strong><i class="fas fa-flask mr-1"></i> Research Domain</strong>
+                            <p class="text-muted">
+                                <span class="badge badge-primary">{{ ucfirst(str_replace('_', ' ', $researcher->research_domain ?? 'Not specified')) }}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    @if($researcher->website)
+                        <hr>
+                        <strong><i class="fas fa-globe mr-1"></i> Website</strong>
+                        <p class="text-muted">
+                            <a href="{{ $researcher->website }}" target="_blank">{{ $researcher->website }}</a>
+                        </p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-4">
+            <!-- Status Card -->
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Status
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        @php
+                            $statusColor = $researcher->status === 'active' ? 'success' : 'secondary';
+                            $statusText = ucfirst($researcher->status ?? 'unknown');
+                            $publicText = $researcher->is_public ? 'Public Profile' : 'Private Profile';
+                            $publicColor = $researcher->is_public ? 'primary' : 'warning';
+                        @endphp
+                        <h4>
+                            <span class="badge badge-{{ $statusColor }}">{{ $statusText }}</span>
+                        </h4>
+                        <p>
+                            <span class="badge badge-{{ $publicColor }}">{{ $publicText }}</span>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Biography Card -->
-            @if($researcher->getBio())
-                <div class="card shadow-sm mb-4">
+            <!-- Quick Actions -->
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-cogs mr-1"></i>
+                        Quick Actions
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="btn-group-vertical w-100">
+                        @auth
+                            @if(auth()->user()->canManageResearchers())
+                                <a href="{{ route('researchers.edit', $researcher) }}" class="btn btn-primary mb-2">
+                                    <i class="fas fa-edit mr-1"></i>Edit Profile
+                                </a>
+                            @endif
+                        @endauth
+
+                        @if($researcher->email)
+                            <a href="mailto:{{ $researcher->email }}" class="btn btn-info mb-2">
+                                <i class="fas fa-envelope mr-1"></i>Send Email
+                            </a>
+                        @endif
+
+                        @if($researcher->phone)
+                            <a href="tel:{{ $researcher->phone }}" class="btn btn-success mb-2">
+                                <i class="fas fa-phone mr-1"></i>Call
+                            </a>
+                        @endif
+
+                        @if($researcher->website)
+                            <a href="{{ $researcher->website }}" target="_blank" class="btn btn-secondary mb-2">
+                                <i class="fas fa-globe mr-1"></i>Visit Website
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            @if($researcher->orcid || $researcher->website)
+                <div class="card card-secondary">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-user-graduate me-2"></i>{{ __('Biography') }}
-                        </h5>
+                        <h3 class="card-title">
+                            <i class="fas fa-share-alt mr-1"></i>
+                            Social Links
+                        </h3>
                     </div>
                     <div class="card-body">
-                        <!-- Language Tabs -->
-                        <ul class="nav nav-tabs" id="bioTabs" role="tablist">
-                            @if($researcher->getBio('en'))
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="bio-en-tab" data-bs-toggle="tab" data-bs-target="#bio-en" type="button" role="tab">
-                                        <i class="fas fa-flag-usa me-1"></i>English
-                                    </button>
-                                </li>
+                        <div class="text-center">
+                            @if($researcher->orcid)
+                                <a href="https://orcid.org/{{ $researcher->orcid }}" target="_blank" class="btn btn-outline-success btn-sm mr-2 mb-2">
+                                    <i class="fas fa-id-badge"></i> ORCID
+                                </a>
                             @endif
-                            @if($researcher->getBio('fr'))
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link {{ !$researcher->getBio('en') ? 'active' : '' }}" id="bio-fr-tab" data-bs-toggle="tab" data-bs-target="#bio-fr" type="button" role="tab">
-                                        <i class="fas fa-flag me-1"></i>Français
-                                    </button>
-                                </li>
-                            @endif
-                            @if($researcher->getBio('ar'))
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link {{ !$researcher->getBio('en') && !$researcher->getBio('fr') ? 'active' : '' }}" id="bio-ar-tab" data-bs-toggle="tab" data-bs-target="#bio-ar" type="button" role="tab">
-                                        <i class="fas fa-flag me-1"></i>العربية
-                                    </button>
-                                </li>
-                            @endif
-                        </ul>
 
-                        <div class="tab-content mt-3" id="bioTabContent">
-                            @if($researcher->getBio('en'))
-                                <div class="tab-pane fade show active" id="bio-en" role="tabpanel">
-                                    <p class="text-muted">{{ $researcher->getBio('en') }}</p>
-                                </div>
-                            @endif
-                            @if($researcher->getBio('fr'))
-                                <div class="tab-pane fade {{ !$researcher->getBio('en') ? 'show active' : '' }}" id="bio-fr" role="tabpanel">
-                                    <p class="text-muted">{{ $researcher->getBio('fr') }}</p>
-                                </div>
-                            @endif
-                            @if($researcher->getBio('ar'))
-                                <div class="tab-pane fade {{ !$researcher->getBio('en') && !$researcher->getBio('fr') ? 'show active' : '' }}" id="bio-ar" role="tabpanel">
-                                    <p class="text-muted" dir="rtl">{{ $researcher->getBio('ar') }}</p>
-                                </div>
+                            @if($researcher->website)
+                                <a href="{{ $researcher->website }}" target="_blank" class="btn btn-outline-primary btn-sm mr-2 mb-2">
+                                    <i class="fas fa-globe"></i> Website
+                                </a>
                             @endif
                         </div>
                     </div>
                 </div>
             @endif
-
-            <!-- Projects Section -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-folder me-2"></i>{{ __('Projects') }}
-                    </h5>
-                    <span class="badge bg-secondary">{{ $researcher->leadProjects()->count() + $researcher->projects()->count() }}</span>
-                </div>
-                <div class="card-body">
-                    @if($researcher->leadProjects()->count() > 0 || $researcher->projects()->count() > 0)
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('Project Title') }}</th>
-                                        <th>{{ __('Role') }}</th>
-                                        <th>{{ __('Status') }}</th>
-                                        <th>{{ __('Duration') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($researcher->leadProjects as $project)
-                                        <tr>
-                                            <td>
-                                                <a href="{{ route('projects.show', $project) }}" class="text-decoration-none">
-                                                    {{ $project->getTitle() }}
-                                                </a>
-                                            </td>
-                                            <td><span class="badge bg-success">{{ __('Leader') }}</span></td>
-                                            <td>
-                                                @php
-                                                    $statusClass = match($project->status) {
-                                                        'active' => 'bg-success',
-                                                        'completed' => 'bg-info',
-                                                        'pending' => 'bg-warning',
-                                                        'cancelled' => 'bg-danger',
-                                                        default => 'bg-secondary'
-                                                    };
-                                                @endphp
-                                                <span class="badge {{ $statusClass }}">{{ ucfirst($project->status) }}</span>
-                                            </td>
-                                            <td class="text-muted">
-                                                {{ $project->start_date?->format('Y-m-d') }} -
-                                                {{ $project->end_date?->format('Y-m-d') }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    @foreach($researcher->projects as $project)
-                                        <tr>
-                                            <td>
-                                                <a href="{{ route('projects.show', $project) }}" class="text-decoration-none">
-                                                    {{ $project->getTitle() }}
-                                                </a>
-                                            </td>
-                                            <td><span class="badge bg-primary">{{ ucfirst($project->pivot->role ?? 'Member') }}</span></td>
-                                            <td>
-                                                @php
-                                                    $statusClass = match($project->status) {
-                                                        'active' => 'bg-success',
-                                                        'completed' => 'bg-info',
-                                                        'pending' => 'bg-warning',
-                                                        'cancelled' => 'bg-danger',
-                                                        default => 'bg-secondary'
-                                                    };
-                                                @endphp
-                                                <span class="badge {{ $statusClass }}">{{ ucfirst($project->status) }}</span>
-                                            </td>
-                                            <td class="text-muted">
-                                                {{ $project->start_date?->format('Y-m-d') }} -
-                                                {{ $project->end_date?->format('Y-m-d') }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <p class="text-muted text-center py-4">{{ __('No projects found') }}</p>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Publications Section -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-book me-2"></i>{{ __('Publications') }}
-                    </h5>
-                    <span class="badge bg-secondary">{{ $researcher->publications()->count() }}</span>
-                </div>
-                <div class="card-body">
-                    @if($researcher->publications()->count() > 0)
-                        <div class="list-group list-group-flush">
-                            @foreach($researcher->publications as $publication)
-                                <div class="list-group-item border-0 px-0">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1">
-                                                <a href="{{ route('publications.show', $publication) }}" class="text-decoration-none">
-                                                    {{ $publication->title }}
-                                                </a>
-                                            </h6>
-                                            <p class="mb-1 text-muted">{{ $publication->authors }}</p>
-                                            <small class="text-muted">
-                                                @if($publication->journal)
-                                                    {{ $publication->journal }},
-                                                @endif
-                                                {{ $publication->publication_year }}
-                                                @if($publication->doi)
-                                                    | DOI: <a href="https://doi.org/{{ $publication->doi }}" target="_blank" class="text-decoration-none">{{ $publication->doi }}</a>
-                                                @endif
-                                            </small>
-                                        </div>
-                                        <div class="text-end">
-                                            <span class="badge bg-info">{{ ucfirst($publication->type) }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-muted text-center py-4">{{ __('No publications found') }}</p>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <!-- Statistics Card -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="fas fa-chart-bar me-2"></i>{{ __('Research Statistics') }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-6 mb-3">
-                            <div class="h4 fw-bold text-primary">{{ $researcher->leadProjects()->count() + $researcher->projects()->count() }}</div>
-                            <div class="small text-muted">{{ __('Projects') }}</div>
-                        </div>
-                        <div class="col-6 mb-3">
-                            <div class="h4 fw-bold text-success">{{ $researcher->publications()->count() }}</div>
-                            <div class="small text-muted">{{ __('Publications') }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="h4 fw-bold text-info">{{ $researcher->coordinatedCollaborations()->count() }}</div>
-                            <div class="small text-muted">{{ __('Collaborations') }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="h4 fw-bold text-warning">{{ $researcher->equipmentReservations()->count() }}</div>
-                            <div class="small text-muted">{{ __('Equipment Uses') }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact Information Card -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="fas fa-address-card me-2"></i>{{ __('Contact Information') }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <i class="fas fa-envelope text-muted me-2"></i>
-                        <a href="mailto:{{ $researcher->user->email }}" class="text-decoration-none">
-                            {{ $researcher->user->email }}
-                        </a>
-                    </div>
-
-                    @if($researcher->user->phone)
-                        <div class="mb-3">
-                            <i class="fas fa-phone text-muted me-2"></i>
-                            <a href="tel:{{ $researcher->user->phone }}" class="text-decoration-none">
-                                {{ $researcher->user->phone }}
-                            </a>
-                        </div>
-                    @endif
-
-                    @if($researcher->user->position)
-                        <div class="mb-3">
-                            <i class="fas fa-briefcase text-muted me-2"></i>
-                            {{ $researcher->user->position }}
-                        </div>
-                    @endif
-
-                    @if($researcher->user->department)
-                        <div class="mb-3">
-                            <i class="fas fa-building text-muted me-2"></i>
-                            {{ $researcher->user->department }}
-                        </div>
-                    @endif
-
-                    <div class="mb-3">
-                        <i class="fas fa-calendar text-muted me-2"></i>
-                        {{ __('Member since') }} {{ $researcher->created_at->format('F Y') }}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Activity Card -->
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="fas fa-clock me-2"></i>{{ __('Recent Activity') }}
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="timeline">
-                        @if($researcher->createdPublications()->latest()->limit(3)->count() > 0)
-                            @foreach($researcher->createdPublications()->latest()->limit(3)->get() as $publication)
-                                <div class="timeline-item mb-3">
-                                    <div class="timeline-marker bg-success"></div>
-                                    <div class="timeline-content">
-                                        <small class="text-muted">{{ $publication->created_at->diffForHumans() }}</small>
-                                        <p class="mb-0">{{ __('Published') }}: {{ Str::limit($publication->title, 50) }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-
-                        @if($researcher->equipmentReservations()->latest()->limit(2)->count() > 0)
-                            @foreach($researcher->equipmentReservations()->latest()->limit(2)->get() as $reservation)
-                                <div class="timeline-item mb-3">
-                                    <div class="timeline-marker bg-warning"></div>
-                                    <div class="timeline-content">
-                                        <small class="text-muted">{{ $reservation->created_at->diffForHumans() }}</small>
-                                        <p class="mb-0">{{ __('Used equipment') }}: {{ $reservation->equipment->getName() }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-
-                        @if($researcher->createdPublications()->count() === 0 && $researcher->equipmentReservations()->count() === 0)
-                            <p class="text-muted text-center">{{ __('No recent activity') }}</p>
-                        @endif
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-.timeline-item {
-    position: relative;
-    padding-left: 30px;
-}
-
-.timeline-marker {
-    position: absolute;
-    left: 0;
-    top: 5px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-
-.timeline-content {
-    padding-left: 10px;
-}
-</style>
-@endpush

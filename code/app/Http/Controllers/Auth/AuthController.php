@@ -41,15 +41,17 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            // Redirect based on user role
+            // Redirect based on user role to AdminLTE dashboard
             $user = Auth::user();
             switch ($user->role) {
                 case 'admin':
-                    return redirect()->intended(route('admin.dashboard'));
+                    return redirect()->intended(route('dashboard.admin-lte'));
                 case 'lab_manager':
-                    return redirect()->intended(route('lab-manager.dashboard'));
+                    return redirect()->intended(route('dashboard.admin-lte'));
+                case 'researcher':
+                    return redirect()->intended(route('dashboard.admin-lte'));
                 default:
-                    return redirect()->intended(route('dashboard.index'));
+                    return redirect()->intended(route('dashboard.admin-lte'));
             }
         }
 
@@ -104,8 +106,8 @@ class AuthController extends Controller
             // Log the user in
             Auth::login($user);
 
-            return redirect()->route('dashboard.index')
-                ->with('success', 'Welcome to SGLR! Your account has been created successfully.');
+            return redirect()->route('dashboard.admin-lte')
+                ->with('success', 'Welcome to LIMOSE Lab! Your account has been created successfully.');
 
         } catch (\Exception $e) {
             return back()

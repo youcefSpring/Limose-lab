@@ -1,50 +1,251 @@
-@extends('layouts.app')
+@extends('layouts.adminlte')
+
+@section('title', 'User Management')
+@section('page-title', 'User Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li>
+<li class="breadcrumb-item active">Users</li>
+@endsection
 
 @section('content')
 <div class="container-fluid">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 fw-bold text-dark">{{ __('User Management') }}</h1>
-            <p class="text-muted mb-0">{{ __('Manage system users and their permissions') }}</p>
-        </div>
-
-        <div class="d-flex gap-2">
-            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>{{ __('Add User') }}
-            </a>
-            <a href="{{ route('admin.users.index', array_merge(request()->all(), ['export' => 'excel'])) }}"
-               class="btn btn-outline-secondary">
-                <i class="fas fa-download me-2"></i>{{ __('Export') }}
-            </a>
-        </div>
-    </div>
-
     <!-- Statistics Cards -->
     <div class="row mb-4">
-        <div class="col-lg-3 col-md-6 mb-3">
-            <div class="card border-primary">
-                <div class="card-body text-center">
-                    <i class="fas fa-users fa-3x text-primary mb-2"></i>
-                    <h3 class="mb-1">{{ $stats['total_users'] ?? '0' }}</h3>
-                    <p class="text-muted mb-0">{{ __('Total Users') }}</p>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ isset($users) ? $users->total() : 0 }}</h3>
+                    <p>Total Users</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
                 </div>
             </div>
         </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ isset($users) ? $users->where('status', 'active')->count() : 0 }}</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ isset($users) ? $users->where('role', 'researcher')->count() : 0 }}</h3>
+                    <p>Researchers</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ isset($users) ? $users->where('status', 'pending')->count() : 0 }}</h3>
+                    <p>Pending Users</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <v-col cols="12" sm="6" md="3">
-            <v-card color="success" variant="flat">
-                <v-card-text class="text-white">
-                    <div class="d-flex align-center">
-                        <div class="flex-grow-1">
-                            <div class="text-h4 font-weight-bold">@{{ stats.active_users }}</div>
-                            <div class="text-subtitle-1">{{ __('Active Users') }}</div>
+    <!-- Main Content Card -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-users mr-1"></i>
+                User Management
+            </h3>
+            <div class="card-tools">
+                <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus mr-1"></i>Add User
+                </a>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="card-body border-bottom">
+            <form method="GET" action="{{ route('admin.users') }}" class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="search">Search Users</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="search" name="search"
+                                   value="{{ request('search') }}" placeholder="Name, email...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
                         </div>
-                        <v-icon size="48" class="opacity-75">mdi-check-circle</v-icon>
                     </div>
-                </v-card-text>
-            </v-card>
-        </v-col>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select class="form-control" id="role" name="role">
+                            <option value="">All Roles</option>
+                            <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="lab_manager" {{ request('role') == 'lab_manager' ? 'selected' : '' }}>Lab Manager</option>
+                            <option value="researcher" {{ request('role') == 'researcher' ? 'selected' : '' }}>Researcher</option>
+                            <option value="visitor" {{ request('role') == 'visitor' ? 'selected' : '' }}>Visitor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">All Statuses</option>
+                            <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div class="btn-group w-100">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+                            <a href="{{ route('admin.users') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Users Table -->
+        <div class="card-body">
+            @if(isset($users) && $users->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Last Login</th>
+                                <th>Registered</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($users as $user)
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="mr-3">
+                                                <img class="img-circle elevation-2"
+                                                     src="{{ $user->avatar ?? 'https://via.placeholder.com/40x40/007bff/ffffff?text=' . substr($user->name, 0, 1) }}"
+                                                     alt="User Avatar" style="width: 40px; height: 40px;">
+                                            </div>
+                                            <div>
+                                                <div class="font-weight-bold">{{ $user->name }}</div>
+                                                <small class="text-muted">{{ $user->email }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $roleColors = [
+                                                'admin' => 'danger',
+                                                'lab_manager' => 'success',
+                                                'researcher' => 'primary',
+                                                'visitor' => 'secondary'
+                                            ];
+                                            $roleColor = $roleColors[$user->role] ?? 'secondary';
+                                        @endphp
+                                        <span class="badge badge-{{ $roleColor }}">{{ ucfirst(str_replace('_', ' ', $user->role)) }}</span>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $statusColors = [
+                                                'active' => 'success',
+                                                'inactive' => 'secondary',
+                                                'pending' => 'warning'
+                                            ];
+                                            $statusColor = $statusColors[$user->status] ?? 'secondary';
+                                        @endphp
+                                        <span class="badge badge-{{ $statusColor }}">{{ ucfirst($user->status) }}</span>
+                                    </td>
+                                    <td>
+                                        @if($user->last_login_at)
+                                            <div>{{ $user->last_login_at->format('M d, Y') }}</div>
+                                            <small class="text-muted">{{ $user->last_login_at->format('H:i') }}</small>
+                                        @else
+                                            <span class="text-muted">Never</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $user->created_at->format('M d, Y') }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-outline-info" title="View">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            @if($user->id !== auth()->id())
+                                                <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete({{ $user->id }})" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if($users->hasPages())
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card-tools float-right">
+                                {{ $users->appends(request()->query())->links() }}
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @else
+                <!-- Empty State -->
+                <div class="text-center py-5">
+                    <div class="empty-state">
+                        <i class="fas fa-users fa-5x text-muted mb-4"></i>
+                        <h4 class="text-muted">No Users Found</h4>
+                        @if(request()->hasAny(['search', 'role', 'status']))
+                            <p class="text-muted">No users match your search criteria.</p>
+                            <a href="{{ route('admin.users') }}" class="btn btn-primary">
+                                <i class="fas fa-times mr-1"></i>Clear Filters
+                            </a>
+                        @else
+                            <p class="text-muted">No users have been created yet.</p>
+                            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus mr-1"></i>Add First User
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
 
         <v-col cols="12" sm="6" md="3">
             <v-card color="info" variant="flat">

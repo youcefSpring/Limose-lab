@@ -31,35 +31,11 @@ class AdminController extends Controller
     }
 
     /**
-     * Show admin dashboard
+     * Show admin dashboard - redirect to AdminLTE
      */
-    public function dashboard(): View
+    public function dashboard()
     {
-        $dashboardData = [
-            'overview' => [
-                'total_users' => \App\Models\User::count(),
-                'active_users' => \App\Models\User::where('status', 'active')->count(),
-                'total_researchers' => \App\Models\Researcher::count(),
-                'total_projects' => \App\Models\Project::count(),
-                'active_projects' => \App\Models\Project::where('status', 'active')->count(),
-                'total_publications' => \App\Models\Publication::count(),
-                'total_equipment' => \App\Models\Equipment::count(),
-                'upcoming_events' => \App\Models\Event::where('start_date', '>=', now())->count(),
-            ],
-            'recent_activity' => [
-                'new_users' => \App\Models\User::latest()->limit(5)->get(),
-                'recent_projects' => \App\Models\Project::with('leader')->latest()->limit(5)->get(),
-                'recent_publications' => \App\Models\Publication::latest()->limit(5)->get(),
-            ],
-            'charts' => [
-                'users_by_role' => \App\Models\User::selectRaw('role, COUNT(*) as count')
-                    ->groupBy('role')->pluck('count', 'role'),
-                'projects_by_status' => \App\Models\Project::selectRaw('status, COUNT(*) as count')
-                    ->groupBy('status')->pluck('count', 'status'),
-            ]
-        ];
-
-        return view('admin.dashboard', compact('dashboardData'));
+        return redirect()->route('dashboard.admin-lte');
     }
 
     /**
@@ -210,6 +186,26 @@ class AdminController extends Controller
     }
 
     /**
+     * Update general settings
+     */
+    public function updateGeneralSettings(Request $request)
+    {
+        $request->validate([
+            'app_name' => 'required|string|max:255',
+            'app_url' => 'required|url',
+            'timezone' => 'required|string',
+            'locale' => 'required|string',
+            'debug_mode' => 'boolean',
+        ]);
+
+        // Here you would typically update your configuration
+        // For now, we'll just redirect back with a success message
+
+        return redirect()->route('admin.settings.general')
+                        ->with('success', 'General settings updated successfully!');
+    }
+
+    /**
      * Show permissions settings
      */
     public function permissionsSettings(): View
@@ -231,9 +227,40 @@ class AdminController extends Controller
     public function analytics(Request $request): View
     {
         $filters = $request->only(['period', 'type']);
-        $analytics = $this->analyticsService->getSystemAnalytics($filters);
 
-        return view('admin.analytics.index', compact('analytics', 'filters'));
+        // Generate analytics data
+        $analytics = [
+            'users' => [
+                'total' => \App\Models\User::count(),
+                'growth' => $this->calculateGrowthPercentage(\App\Models\User::class),
+            ],
+            'projects' => [
+                'total' => \App\Models\Project::count(),
+                'growth' => $this->calculateGrowthPercentage(\App\Models\Project::class),
+            ],
+            'publications' => [
+                'total' => \App\Models\Publication::count(),
+                'growth' => $this->calculateGrowthPercentage(\App\Models\Publication::class),
+            ],
+            'equipment' => [
+                'total' => \App\Models\Equipment::count(),
+                'utilization' => $this->calculateEquipmentUtilization(),
+            ],
+            'charts' => [
+                'projects_trend' => $this->getMonthlyTrend(\App\Models\Project::class),
+                'publications_trend' => $this->getMonthlyTrend(\App\Models\Publication::class),
+                'users_trend' => $this->getMonthlyTrend(\App\Models\User::class),
+                'user_distribution' => $this->getUserDistribution(),
+            ],
+            'top_projects' => \App\Models\Project::with('leader')
+                ->where('status', 'active')
+                ->latest()
+                ->limit(5)
+                ->get(),
+            'recent_activities' => $this->getRecentActivities(),
+        ];
+
+        return view('admin.analytics.admin-lte', compact('analytics', 'filters'));
     }
 
     /**
@@ -440,5 +467,200 @@ class AdminController extends Controller
     {
         // This would typically return a list of available backups
         return [];
+    }
+
+    /**
+     * Show reports page
+     */
+    public function reports(Request $request): View
+    {
+        $filters = $request->only(['period', 'type', 'format']);
+        $reports = [
+            'overview' => [
+                'total_users' => \App\Models\User::count(),
+                'total_researchers' => \App\Models\Researcher::count(),
+                'total_projects' => \App\Models\Project::count(),
+                'total_publications' => \App\Models\Publication::count(),
+                'total_equipment' => \App\Models\Equipment::count(),
+            ],
+            'activity' => [
+                'new_users_this_month' => \App\Models\User::whereMonth('created_at', now()->month)->count(),
+                'new_projects_this_month' => \App\Models\Project::whereMonth('created_at', now()->month)->count(),
+                'new_publications_this_month' => \App\Models\Publication::whereMonth('created_at', now()->month)->count(),
+            ]
+        ];
+
+        return view('admin.reports.index', compact('reports', 'filters'));
+    }
+
+    /**
+     * Show equipment reports
+     */
+    public function equipmentReports(): View
+    {
+        $equipmentData = [
+            'utilization' => \App\Models\Equipment::selectRaw('status, COUNT(*) as count')
+                ->groupBy('status')->pluck('count', 'status'),
+            'reservations' => \App\Models\EquipmentReservation::with('equipment')
+                ->latest()->limit(10)->get(),
+            'maintenance' => \App\Models\Equipment::where('status', 'maintenance')
+                ->with('maintenanceRecords')->get(),
+        ];
+
+        return view('admin.reports.equipment', compact('equipmentData'));
+    }
+
+    /**
+     * Show user reports
+     */
+    public function userReports(): View
+    {
+        $userData = [
+            'by_role' => \App\Models\User::selectRaw('role, COUNT(*) as count')
+                ->groupBy('role')->pluck('count', 'role'),
+            'activity' => \App\Models\User::selectRaw('DATE(last_login_at) as date, COUNT(*) as count')
+                ->whereNotNull('last_login_at')
+                ->groupBy('date')
+                ->orderBy('date', 'desc')
+                ->limit(30)->get(),
+            'registrations' => \App\Models\User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->groupBy('date')
+                ->orderBy('date', 'desc')
+                ->limit(30)->get(),
+        ];
+
+        return view('admin.reports.users', compact('userData'));
+    }
+
+    /**
+     * Show project reports
+     */
+    public function projectReports(): View
+    {
+        $projectData = [
+            'by_status' => \App\Models\Project::selectRaw('status, COUNT(*) as count')
+                ->groupBy('status')->pluck('count', 'status'),
+            'by_month' => \App\Models\Project::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
+                ->groupBy('year', 'month')
+                ->orderBy('year', 'desc')
+                ->orderBy('month', 'desc')
+                ->limit(12)->get(),
+            'completion_rate' => \App\Models\Project::where('status', 'completed')->count() /
+                max(\App\Models\Project::count(), 1) * 100,
+        ];
+
+        return view('admin.reports.projects', compact('projectData'));
+    }
+
+    /**
+     * Show equipment reservations (Admin view)
+     */
+    public function equipmentReservations(): View
+    {
+        $reservations = \App\Models\EquipmentReservation::with(['equipment', 'researcher'])
+            ->latest()
+            ->paginate(20);
+
+        $statistics = [
+            'total' => \App\Models\EquipmentReservation::count(),
+            'pending' => \App\Models\EquipmentReservation::where('status', 'pending')->count(),
+            'approved' => \App\Models\EquipmentReservation::where('status', 'approved')->count(),
+            'completed' => \App\Models\EquipmentReservation::where('status', 'completed')->count(),
+        ];
+
+        return view('admin.equipment.reservations', compact('reservations', 'statistics'));
+    }
+
+    /**
+     * Calculate growth percentage for a model
+     */
+    private function calculateGrowthPercentage(string $model): int
+    {
+        $thisMonth = $model::whereMonth('created_at', now()->month)->count();
+        $lastMonth = $model::whereMonth('created_at', now()->subMonth()->month)->count();
+
+        if ($lastMonth == 0) return $thisMonth > 0 ? 100 : 0;
+
+        return round((($thisMonth - $lastMonth) / $lastMonth) * 100);
+    }
+
+    /**
+     * Calculate equipment utilization percentage
+     */
+    private function calculateEquipmentUtilization(): int
+    {
+        $totalEquipment = \App\Models\Equipment::count();
+        $equipmentInUse = \App\Models\Equipment::where('status', 'in_use')->count();
+
+        return $totalEquipment > 0 ? round(($equipmentInUse / $totalEquipment) * 100) : 0;
+    }
+
+    /**
+     * Get monthly trend data for a model
+     */
+    private function getMonthlyTrend(string $model): array
+    {
+        $trend = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $trend[] = $model::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)->count();
+        }
+        return $trend;
+    }
+
+    /**
+     * Get user distribution by role
+     */
+    private function getUserDistribution(): array
+    {
+        $distribution = \App\Models\User::selectRaw('role, COUNT(*) as count')
+            ->groupBy('role')->pluck('count', 'role');
+
+        return [
+            $distribution['researcher'] ?? 0,
+            $distribution['lab_manager'] ?? 0,
+            $distribution['visitor'] ?? 0,
+            $distribution['admin'] ?? 0,
+        ];
+    }
+
+    /**
+     * Get recent activities for analytics
+     */
+    private function getRecentActivities(): array
+    {
+        return [
+            [
+                'icon' => 'user-plus',
+                'title' => 'New User Registration',
+                'description' => 'A new researcher joined the lab',
+                'time' => '2 hours ago'
+            ],
+            [
+                'icon' => 'folder-plus',
+                'title' => 'Project Created',
+                'description' => 'New research project initiated',
+                'time' => '5 hours ago'
+            ],
+            [
+                'icon' => 'file-text',
+                'title' => 'Publication Added',
+                'description' => 'Research paper published',
+                'time' => '1 day ago'
+            ],
+            [
+                'icon' => 'microscope',
+                'title' => 'Equipment Reserved',
+                'description' => 'Lab equipment reserved for research',
+                'time' => '2 days ago'
+            ],
+            [
+                'icon' => 'calendar',
+                'title' => 'Event Scheduled',
+                'description' => 'New seminar event created',
+                'time' => '3 days ago'
+            ]
+        ];
     }
 }

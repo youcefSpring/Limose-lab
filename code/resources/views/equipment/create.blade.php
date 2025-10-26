@@ -1,30 +1,44 @@
-@extends('layouts.app', ['title' => __('Add Equipment')])
+@extends('layouts.adminlte')
+
+@section('title', 'Add Equipment')
+@section('page-title', 'Add New Equipment')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('equipment.index') }}">Equipment</a></li>
+<li class="breadcrumb-item active">Add Equipment</li>
+@endsection
 
 @section('content')
 <div class="container-fluid">
-    <!-- Header -->
-    <div class="d-flex align-items-center mb-4">
-        <a href="{{ route('equipment.index') }}" class="btn btn-outline-secondary me-3">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-        <div>
-            <h2 class="h3 fw-bold text-dark">{{ __('Add Equipment') }}</h2>
-            <p class="text-muted mb-0">{{ __('Register new laboratory equipment') }}</p>
-        </div>
-    </div>
-
-    <form method="POST" action="{{ route('equipment.store') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="row">
-            <!-- Main Form -->
-            <div class="col-lg-8">
-                <!-- Basic Information -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-info-circle me-2"></i>{{ __('Basic Information') }}
-                        </h5>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Main Card -->
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-cogs mr-1"></i>
+                        Add New Equipment
+                    </h3>
+                    <div class="card-tools">
+                        <a href="{{ route('equipment.index') }}" class="btn btn-tool" title="Back to Equipment">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
                     </div>
+                </div>
+
+                <form method="POST" action="{{ route('equipment.store') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-8">
+                                <!-- Basic Information -->
+                                <div class="card card-outline card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Basic Information</h3>
+                                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -270,8 +284,28 @@
                     </div>
                 </div>
             </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-info">
+                                    <i class="fas fa-save mr-1"></i>Save Equipment
+                                </button>
+                                <a href="{{ route('equipment.index') }}" class="btn btn-secondary ml-2">
+                                    <i class="fas fa-times mr-1"></i>Cancel
+                                </a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <small class="text-muted">Fields marked with <span class="text-danger">*</span> are required</small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
 @endsection
 

@@ -1,4 +1,12 @@
-@extends('layouts.app', ['title' => __('Funding Management')])
+@extends('layouts.adminlte')
+
+@section('title', 'Funding')
+@section('page-title', 'Funding Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('dashboard.admin-lte') }}">Home</a></li>
+<li class="breadcrumb-item active">Funding</li>
+@endsection
 
 @section('content')
 <div class="container-fluid">

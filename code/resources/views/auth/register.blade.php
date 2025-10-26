@@ -26,87 +26,100 @@
                 </div>
             @endif
 
-            <div id="register-error" class="alert alert-danger alert-dismissible fade" role="alert" style="display: none;">
-                <span id="error-message"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-            <div id="register-success" class="alert alert-success alert-dismissible fade" role="alert" style="display: none;">
-                <span id="success-message"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-            <form id="registerForm" method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                <!-- Name Field -->
-                <div class="mb-3">
-                    <label for="name" class="form-label">{{ __('Full Name') }}</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        <input type="text"
-                               class="form-control @error('name') is-invalid @enderror"
-                               id="name"
-                               name="name"
-                               value="{{ old('name') }}"
-                               required
-                               autocomplete="name"
-                               autofocus>
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="row">
+                    <!-- Name Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">{{ __('Full Name') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text"
+                                   class="form-control @error('name') is-invalid @enderror"
+                                   id="name"
+                                   name="name"
+                                   value="{{ old('name') }}"
+                                   required
+                                   autocomplete="name"
+                                   autofocus
+                                   placeholder="{{ __('Enter your full name') }}">
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">{{ __('Email Address') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email"
+                                   class="form-control @error('email') is-invalid @enderror"
+                                   id="email"
+                                   name="email"
+                                   value="{{ old('email') }}"
+                                   required
+                                   autocomplete="email"
+                                   placeholder="{{ __('example@univ-boumerdes.dz') }}">
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
-                <!-- Email Field -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">{{ __('Email Address') }}</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        <input type="email"
-                               class="form-control @error('email') is-invalid @enderror"
-                               id="email"
-                               name="email"
-                               value="{{ old('email') }}"
-                               required
-                               autocomplete="email">
-                        @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="row">
+                    <!-- Phone Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">{{ __('Phone Number') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            <input type="tel"
+                                   class="form-control @error('phone') is-invalid @enderror"
+                                   id="phone"
+                                   name="phone"
+                                   value="{{ old('phone') }}"
+                                   autocomplete="tel"
+                                   placeholder="{{ __('+213-XX-XX-XX-XX') }}">
+                            @error('phone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <!-- Phone Field -->
-                <div class="mb-3">
-                    <label for="phone" class="form-label">{{ __('Phone Number') }}</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                        <input type="tel"
-                               class="form-control @error('phone') is-invalid @enderror"
-                               id="phone"
-                               name="phone"
-                               value="{{ old('phone') }}"
-                               autocomplete="tel">
-                        @error('phone')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- Department Field -->
-                <div class="mb-3">
-                    <label for="department" class="form-label">{{ __('Department') }}</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-building"></i></span>
-                        <input type="text"
-                               class="form-control @error('department') is-invalid @enderror"
-                               id="department"
-                               name="department"
-                               value="{{ old('department') }}"
-                               autocomplete="organization">
-                        @error('department')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <!-- Department Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="department" class="form-label">{{ __('Department') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                            <select class="form-select @error('department') is-invalid @enderror"
+                                    id="department"
+                                    name="department"
+                                    required>
+                                <option value="">{{ __('Select Department') }}</option>
+                                <optgroup label="{{ __('UMBB - University of Boumerdes') }}">
+                                    <option value="Laboratoire LIMOSE" {{ old('department') == 'Laboratoire LIMOSE' ? 'selected' : '' }}>{{ __('Laboratoire LIMOSE') }}</option>
+                                    <option value="Faculté des Sciences" {{ old('department') == 'Faculté des Sciences' ? 'selected' : '' }}>{{ __('Faculty of Sciences') }}</option>
+                                    <option value="Faculté de Technologie" {{ old('department') == 'Faculté de Technologie' ? 'selected' : '' }}>{{ __('Faculty of Technology') }}</option>
+                                    <option value="Institut d'Informatique" {{ old('department') == "Institut d'Informatique" ? 'selected' : '' }}>{{ __('Computer Science Institute') }}</option>
+                                    <option value="Département Mathématiques" {{ old('department') == 'Département Mathématiques' ? 'selected' : '' }}>{{ __('Mathematics Department') }}</option>
+                                    <option value="Département Physique" {{ old('department') == 'Département Physique' ? 'selected' : '' }}>{{ __('Physics Department') }}</option>
+                                    <option value="Département Chimie" {{ old('department') == 'Département Chimie' ? 'selected' : '' }}>{{ __('Chemistry Department') }}</option>
+                                </optgroup>
+                                <optgroup label="{{ __('External Institutions') }}">
+                                    <option value="Université d'Alger" {{ old('department') == "Université d'Alger" ? 'selected' : '' }}>{{ __('University of Algiers') }}</option>
+                                    <option value="USTHB" {{ old('department') == 'USTHB' ? 'selected' : '' }}>{{ __('USTHB') }}</option>
+                                    <option value="École Nationale Polytechnique" {{ old('department') == 'École Nationale Polytechnique' ? 'selected' : '' }}>{{ __('National Polytechnic School') }}</option>
+                                    <option value="Université de Constantine" {{ old('department') == 'Université de Constantine' ? 'selected' : '' }}>{{ __('University of Constantine') }}</option>
+                                    <option value="International Institution" {{ old('department') == 'International Institution' ? 'selected' : '' }}>{{ __('International Institution') }}</option>
+                                </optgroup>
+                            </select>
+                            @error('department')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 
@@ -115,55 +128,78 @@
                     <label for="position" class="form-label">{{ __('Position') }}</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
-                        <input type="text"
-                               class="form-control @error('position') is-invalid @enderror"
-                               id="position"
-                               name="position"
-                               value="{{ old('position') }}"
-                               autocomplete="organization-title">
+                        <select class="form-select @error('position') is-invalid @enderror"
+                                id="position"
+                                name="position"
+                                required>
+                            <option value="">{{ __('Select Position') }}</option>
+                            <optgroup label="{{ __('Teaching Staff') }}">
+                                <option value="Professeur" {{ old('position') == 'Professeur' ? 'selected' : '' }}>{{ __('Professor') }}</option>
+                                <option value="Maître de Conférences" {{ old('position') == 'Maître de Conférences' ? 'selected' : '' }}>{{ __('Associate Professor') }}</option>
+                                <option value="Maître Assistant" {{ old('position') == 'Maître Assistant' ? 'selected' : '' }}>{{ __('Assistant Professor') }}</option>
+                                <option value="Chargé de Cours" {{ old('position') == 'Chargé de Cours' ? 'selected' : '' }}>{{ __('Lecturer') }}</option>
+                                <option value="Enseignant Contractuel" {{ old('position') == 'Enseignant Contractuel' ? 'selected' : '' }}>{{ __('Contract Teacher') }}</option>
+                            </optgroup>
+                            <optgroup label="{{ __('Research Staff') }}">
+                                <option value="Directeur de Recherche" {{ old('position') == 'Directeur de Recherche' ? 'selected' : '' }}>{{ __('Research Director') }}</option>
+                                <option value="Maître de Recherche" {{ old('position') == 'Maître de Recherche' ? 'selected' : '' }}>{{ __('Senior Researcher') }}</option>
+                                <option value="Chargé de Recherche" {{ old('position') == 'Chargé de Recherche' ? 'selected' : '' }}>{{ __('Research Associate') }}</option>
+                                <option value="Attaché de Recherche" {{ old('position') == 'Attaché de Recherche' ? 'selected' : '' }}>{{ __('Research Assistant') }}</option>
+                            </optgroup>
+                            <optgroup label="{{ __('Students') }}">
+                                <option value="Doctorant" {{ old('position') == 'Doctorant' ? 'selected' : '' }}>{{ __('PhD Student') }}</option>
+                                <option value="Étudiant Master" {{ old('position') == 'Étudiant Master' ? 'selected' : '' }}>{{ __('Master Student') }}</option>
+                                <option value="Étudiant Licence" {{ old('position') == 'Étudiant Licence' ? 'selected' : '' }}>{{ __('Bachelor Student') }}</option>
+                            </optgroup>
+                            <optgroup label="{{ __('Administrative Staff') }}">
+                                <option value="Directeur de Laboratoire" {{ old('position') == 'Directeur de Laboratoire' ? 'selected' : '' }}>{{ __('Laboratory Director') }}</option>
+                                <option value="Responsable Technique" {{ old('position') == 'Responsable Technique' ? 'selected' : '' }}>{{ __('Technical Manager') }}</option>
+                                <option value="Ingénieur de Laboratoire" {{ old('position') == 'Ingénieur de Laboratoire' ? 'selected' : '' }}>{{ __('Laboratory Engineer') }}</option>
+                                <option value="Technicien" {{ old('position') == 'Technicien' ? 'selected' : '' }}>{{ __('Technician') }}</option>
+                                <option value="Personnel Administratif" {{ old('position') == 'Personnel Administratif' ? 'selected' : '' }}>{{ __('Administrative Staff') }}</option>
+                            </optgroup>
+                        </select>
                         @error('position')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Password Field -->
-                <div class="mb-3">
-                    <label for="password" class="form-label">{{ __('Password') }}</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password"
-                               class="form-control @error('password') is-invalid @enderror"
-                               id="password"
-                               name="password"
-                               required
-                               autocomplete="new-password">
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                            <i class="fas fa-eye" id="toggleIcon"></i>
-                        </button>
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="row">
+                    <!-- Password Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">{{ __('Password') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   id="password"
+                                   name="password"
+                                   required
+                                   autocomplete="new-password"
+                                   placeholder="{{ __('Min 8 characters') }}">
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-text">
+                            {{ __('Password must be at least 8 characters long') }}
+                        </div>
                     </div>
-                    <div class="form-text">
-                        {{ __('Password must be at least 8 characters long') }}
-                    </div>
-                </div>
 
-                <!-- Confirm Password Field -->
-                <div class="mb-3">
-                    <label for="password_confirmation" class="form-label">{{ __('Confirm Password') }}</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-lock-open"></i></span>
-                        <input type="password"
-                               class="form-control"
-                               id="password_confirmation"
-                               name="password_confirmation"
-                               required
-                               autocomplete="new-password">
-                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
-                            <i class="fas fa-eye" id="toggleConfirmIcon"></i>
-                        </button>
+                    <!-- Confirm Password Field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="password_confirmation" class="form-label">{{ __('Confirm Password') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock-open"></i></span>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password_confirmation"
+                                   name="password_confirmation"
+                                   required
+                                   autocomplete="new-password"
+                                   placeholder="{{ __('Confirm your password') }}">
+                        </div>
                     </div>
                 </div>
 
@@ -189,239 +225,23 @@
                 </div>
 
                 <!-- Register Button -->
-                <button type="submit" class="btn btn-primary w-100 mb-4" id="registerBtn">
-                    <span class="spinner-border spinner-border-sm me-2" id="registerSpinner" style="display: none;"></span>
-                    {{ __('Create Account') }}
+                <button type="submit" class="btn btn-primary w-100 mb-4">
+                    <i class="fas fa-user-plus me-2"></i>{{ __('Create Account') }}
                 </button>
             </form>
 
+            <!-- Divider -->
+            <div class="position-relative my-3">
+                <hr class="border-0 bg-secondary" style="height: 1px;">
+                <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted">{{ __('or') }}</span>
+            </div>
+
             <!-- Login Link -->
-            <div class="text-center mt-4">
+            <div class="text-center">
                 <span class="text-muted">{{ __('Already have an account?') }}</span>
                 <a href="{{ route('login') }}" class="btn btn-link text-decoration-none fw-bold">
-                    {{ __('Sign In') }}
+                    <i class="fas fa-sign-in-alt me-1"></i>{{ __('Sign In') }}
                 </a>
             </div>
 @endsection
 
-@push('scripts')
-<script>
-$(document).ready(function() {
-    // Toggle password visibility
-    $('#togglePassword').on('click', function() {
-        const passwordField = $('#password');
-        const toggleIcon = $('#toggleIcon');
-
-        if (passwordField.attr('type') === 'password') {
-            passwordField.attr('type', 'text');
-            toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
-
-    // Toggle confirm password visibility
-    $('#toggleConfirmPassword').on('click', function() {
-        const passwordField = $('#password_confirmation');
-        const toggleIcon = $('#toggleConfirmIcon');
-
-        if (passwordField.attr('type') === 'password') {
-            passwordField.attr('type', 'text');
-            toggleIcon.removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            toggleIcon.removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
-
-    // Handle form submission
-    $('#registerForm').on('submit', function(e) {
-        e.preventDefault();
-
-        const form = $(this);
-        const submitBtn = $('#registerBtn');
-        const spinner = $('#registerSpinner');
-        const errorAlert = $('#register-error');
-        const successAlert = $('#register-success');
-
-        // Validate form before submission
-        if (!validateForm()) {
-            return;
-        }
-
-        // Show loading state
-        submitBtn.prop('disabled', true);
-        spinner.show();
-        errorAlert.removeClass('show').hide();
-        successAlert.removeClass('show').hide();
-
-        // Clear previous validation errors
-        $('.is-invalid').removeClass('is-invalid');
-        $('.invalid-feedback').remove();
-
-        // Submit form via AJAX for better error handling
-        $.ajax({
-            url: form.attr('action'),
-            method: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                // Show success message
-                $('#success-message').text('{{ __("Account created successfully! Redirecting to login...") }}');
-                successAlert.addClass('show').fadeIn();
-
-                // Reset form
-                form[0].reset();
-
-                // Redirect to login after 2 seconds
-                setTimeout(function() {
-                    window.location.href = '{{ route("login") }}';
-                }, 2000);
-            },
-            error: function(xhr) {
-                submitBtn.prop('disabled', false);
-                spinner.hide();
-
-                if (xhr.status === 422) {
-                    // Validation errors
-                    const errors = xhr.responseJSON?.errors || {};
-
-                    Object.keys(errors).forEach(function(field) {
-                        const input = $(`[name="${field}"]`);
-                        input.addClass('is-invalid');
-
-                        const errorMessages = errors[field];
-                        if (errorMessages && errorMessages.length > 0) {
-                            input.after(`<div class="invalid-feedback">${errorMessages[0]}</div>`);
-                        }
-                    });
-
-                    $('#error-message').text('{{ __("Please correct the errors below") }}');
-                    errorAlert.addClass('show').fadeIn();
-                } else {
-                    // General error
-                    let errorMessage = '{{ __("An error occurred. Please try again.") }}';
-
-                    if (xhr.responseJSON?.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-
-                    $('#error-message').text(errorMessage);
-                    errorAlert.addClass('show').fadeIn();
-                }
-            }
-        });
-    });
-
-    // Form validation function
-    function validateForm() {
-        let isValid = true;
-
-        // Clear previous errors
-        $('.is-invalid').removeClass('is-invalid');
-        $('.invalid-feedback').remove();
-
-        // Name validation
-        const name = $('#name').val().trim();
-        if (!name) {
-            showFieldError('#name', '{{ __("Name is required") }}');
-            isValid = false;
-        } else if (name.length < 2) {
-            showFieldError('#name', '{{ __("Name must be at least 2 characters") }}');
-            isValid = false;
-        }
-
-        // Email validation
-        const email = $('#email').val().trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email) {
-            showFieldError('#email', '{{ __("Email is required") }}');
-            isValid = false;
-        } else if (!emailRegex.test(email)) {
-            showFieldError('#email', '{{ __("Email must be valid") }}');
-            isValid = false;
-        }
-
-        // Password validation
-        const password = $('#password').val();
-        if (!password) {
-            showFieldError('#password', '{{ __("Password is required") }}');
-            isValid = false;
-        } else if (password.length < 8) {
-            showFieldError('#password', '{{ __("Password must be at least 8 characters") }}');
-            isValid = false;
-        }
-
-        // Password confirmation validation
-        const passwordConfirmation = $('#password_confirmation').val();
-        if (!passwordConfirmation) {
-            showFieldError('#password_confirmation', '{{ __("Password confirmation is required") }}');
-            isValid = false;
-        } else if (password !== passwordConfirmation) {
-            showFieldError('#password_confirmation', '{{ __("Passwords do not match") }}');
-            isValid = false;
-        }
-
-        // Terms validation
-        if (!$('#terms').is(':checked')) {
-            showFieldError('#terms', '{{ __("You must accept the terms and conditions") }}');
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    // Helper function to show field errors
-    function showFieldError(selector, message) {
-        const field = $(selector);
-        field.addClass('is-invalid');
-        field.after(`<div class="invalid-feedback">${message}</div>`);
-    }
-
-    // Real-time validation
-    $('#name').on('blur', function() {
-        const name = $(this).val().trim();
-        if (name && name.length < 2) {
-            showFieldError('#name', '{{ __("Name must be at least 2 characters") }}');
-        } else {
-            $(this).removeClass('is-invalid').siblings('.invalid-feedback').remove();
-        }
-    });
-
-    $('#email').on('blur', function() {
-        const email = $(this).val().trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (email && !emailRegex.test(email)) {
-            showFieldError('#email', '{{ __("Please enter a valid email address") }}');
-        } else {
-            $(this).removeClass('is-invalid').siblings('.invalid-feedback').remove();
-        }
-    });
-
-    $('#password').on('blur', function() {
-        const password = $(this).val();
-        if (password && password.length < 8) {
-            showFieldError('#password', '{{ __("Password must be at least 8 characters") }}');
-        } else {
-            $(this).removeClass('is-invalid').siblings('.invalid-feedback').remove();
-        }
-    });
-
-    $('#password_confirmation').on('blur', function() {
-        const password = $('#password').val();
-        const passwordConfirmation = $(this).val();
-        if (passwordConfirmation && password !== passwordConfirmation) {
-            showFieldError('#password_confirmation', '{{ __("Passwords do not match") }}');
-        } else {
-            $(this).removeClass('is-invalid').siblings('.invalid-feedback').remove();
-        }
-    });
-
-    // Clear validation errors on input
-    $('input').on('input', function() {
-        $(this).removeClass('is-invalid');
-        $(this).siblings('.invalid-feedback').remove();
-    });
-});
-</script>
-@endpush

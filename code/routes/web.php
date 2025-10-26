@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\EventController;
 use App\Http\Controllers\Web\CollaborationController;
 use App\Http\Controllers\Web\FundingController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ContentBlockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ use App\Http\Controllers\Auth\AuthController;
 // Public Routes
 Route::get('/', function () {
     if (auth()->check()) {
-        return redirect()->route('dashboard.index');
+        return redirect()->route('dashboard.admin-lte');
     }
     return view('landing');
 })->name('home');
@@ -69,6 +70,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Routes
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+        Route::get('/flexy', [DashboardController::class, 'flexy'])->name('flexy');
+        Route::get('/modern', [DashboardController::class, 'modern'])->name('modern');
+        Route::get('/admin', [DashboardController::class, 'admin'])->name('admin');
+        Route::get('/admin-lte', [DashboardController::class, 'adminLte'])->name('admin-lte');
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
         Route::get('/notifications', [DashboardController::class, 'notifications'])->name('notifications');
         Route::get('/settings', [DashboardController::class, 'settings'])->name('settings');
@@ -129,6 +134,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [EquipmentController::class, 'store'])->name('store');
         Route::get('/search', [EquipmentController::class, 'search'])->name('search');
         Route::get('/reservations', [EquipmentController::class, 'reservations'])->name('reservations');
+        Route::post('/reservations', [EquipmentController::class, 'storeReservation'])->name('reservations.store');
         Route::get('/calendar', [EquipmentController::class, 'calendar'])->name('calendar');
         Route::get('/{equipment}', [EquipmentController::class, 'show'])->name('show');
         Route::get('/{equipment}/edit', [EquipmentController::class, 'edit'])->name('edit');
@@ -223,9 +229,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
 
+    // Content Management
+    Route::resource('content-blocks', ContentBlockController::class);
+
     // System Settings
     Route::get('/settings', [AdminController::class, 'systemSettings'])->name('settings');
     Route::get('/settings/general', [AdminController::class, 'generalSettings'])->name('settings.general');
+    Route::put('/settings/general', [AdminController::class, 'updateGeneralSettings'])->name('settings.general.update');
     Route::get('/settings/permissions', [AdminController::class, 'permissionsSettings'])->name('settings.permissions');
     Route::get('/settings/notifications', [AdminController::class, 'notificationsSettings'])->name('settings.notifications');
 
@@ -235,6 +245,15 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/analytics/projects', [AdminController::class, 'projectAnalytics'])->name('analytics.projects');
     Route::get('/analytics/publications', [AdminController::class, 'publicationAnalytics'])->name('analytics.publications');
     Route::get('/analytics/equipment', [AdminController::class, 'equipmentAnalytics'])->name('analytics.equipment');
+
+    // Reports
+    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    Route::get('/reports/equipment', [AdminController::class, 'equipmentReports'])->name('reports.equipment');
+    Route::get('/reports/users', [AdminController::class, 'userReports'])->name('reports.users');
+    Route::get('/reports/projects', [AdminController::class, 'projectReports'])->name('reports.projects');
+
+    // Equipment Management (Admin)
+    Route::get('/equipment/reservations', [AdminController::class, 'equipmentReservations'])->name('equipment.reservations');
 
     // System Logs
     Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
@@ -261,6 +280,9 @@ Route::middleware(['auth', 'verified', 'role:lab_manager'])->prefix('lab-manager
     Route::get('/', function () {
         return view('lab-manager.dashboard');
     })->name('dashboard');
+
+    // Content Management (Lab Managers can also manage content)
+    Route::resource('content-blocks', ContentBlockController::class)->except(['destroy']);
 
     // Equipment Management
     Route::get('/equipment', function () {

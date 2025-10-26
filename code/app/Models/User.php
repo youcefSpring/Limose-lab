@@ -100,6 +100,81 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user can manage researchers
+     */
+    public function canManageResearchers(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user can manage projects
+     */
+    public function canManageProjects(): bool
+    {
+        return in_array($this->role, ['admin', 'lab_manager']);
+    }
+
+    /**
+     * Check if user can manage equipment
+     */
+    public function canManageEquipment(): bool
+    {
+        return in_array($this->role, ['admin', 'lab_manager']);
+    }
+
+    /**
+     * Check if user can manage publications
+     */
+    public function canManagePublications(): bool
+    {
+        return in_array($this->role, ['admin', 'lab_manager', 'researcher']);
+    }
+
+    /**
+     * Check if user can access admin panel
+     */
+    public function canAccessAdminPanel(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user can manage all system settings
+     */
+    public function canManageSystem(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user can delete resources
+     */
+    public function canDelete(string $resource = null): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if user can create resources
+     */
+    public function canCreate(string $resource = null): bool
+    {
+        switch ($resource) {
+            case 'researcher':
+                return $this->role === 'admin';
+            case 'project':
+                return in_array($this->role, ['admin', 'lab_manager', 'researcher']);
+            case 'equipment':
+                return in_array($this->role, ['admin', 'lab_manager']);
+            case 'publication':
+                return in_array($this->role, ['admin', 'lab_manager', 'researcher']);
+            default:
+                return $this->role === 'admin';
+        }
+    }
+
+    /**
      * Check if the user is a researcher.
      */
     public function isResearcher(): bool

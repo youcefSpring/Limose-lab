@@ -20,8 +20,9 @@ class DatabaseSeeder extends Seeder
 
         // Run seeders in order
         $this->call([
-            // SystemSettingsSeeder::class, // Model doesn't exist yet
+            SystemSettingsSeeder::class,
             UserSeeder::class,
+            ContentBlockSeeder::class,
             // ResearcherSeeder::class, // Missing first_name field
             // ProjectSeeder::class, // Depends on researchers
             // PublicationSeeder::class, // Might have issues

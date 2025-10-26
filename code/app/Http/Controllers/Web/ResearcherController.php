@@ -11,6 +11,7 @@ use App\Services\ResearcherService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class ResearcherController extends Controller
 {
@@ -37,9 +38,18 @@ class ResearcherController extends Controller
     /**
      * Show the form for creating a new researcher
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
-        $this->authorize('create', Researcher::class);
+        try {
+            $this->authorize('create', Researcher::class);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            if (!auth()->check()) {
+                return redirect()->route('login')->with('error', 'Please login to access this page.');
+            }
+
+            return redirect()->route('dashboard.index')
+                           ->with('error', 'You do not have permission to create researchers. Contact an administrator.');
+        }
 
         return view('researchers.create');
     }

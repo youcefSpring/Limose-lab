@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => __('Publication Details')])
+@extends('layouts.adminlte')])
 
 @section('content')
 <div id="publications-show-container">

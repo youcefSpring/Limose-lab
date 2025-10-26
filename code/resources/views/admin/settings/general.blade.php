@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte')
 
 @section('content')
 <div class="container-fluid">
@@ -15,6 +15,15 @@
         </div>
     </div>
 
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-1"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <!-- Settings Form -->
     <div class="row">
         <div class="col-lg-8">
@@ -25,7 +34,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.settings.general') }}">
+                    <form method="POST" action="{{ route('admin.settings.general.update') }}">
                         @csrf
                         @method('PUT')
 
