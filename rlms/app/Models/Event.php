@@ -83,6 +83,14 @@ class Event extends Model
     }
 
     /**
+     * Get the comments for the event.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(EventComment::class);
+    }
+
+    /**
      * Scope a query to only include upcoming events.
      */
     public function scopeUpcoming($query)

@@ -12,6 +12,7 @@ use App\Http\Controllers\MaintenanceLogController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\PublicationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Reservations Routes
     Route::resource('reservations', ReservationController::class);
+    Route::post('reservations/check-availability', [ReservationController::class, 'checkAvailability'])->name('reservations.check-availability');
     Route::get('reservations-calendar', [ReservationController::class, 'calendar'])->name('reservations.calendar');
     Route::post('reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('reservations/{reservation}/reject', [ReservationController::class, 'reject'])->name('reservations.reject');
@@ -72,6 +74,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Settings Routes (Admin only)
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Publications Routes
+    Route::resource('publications', PublicationController::class);
+    Route::post('publications/{publication}/approve', [PublicationController::class, 'approve'])->name('publications.approve');
+    Route::post('publications/{publication}/reject', [PublicationController::class, 'reject'])->name('publications.reject');
 });
+
+// Public routes
+Route::get('/research/publications', [PublicationController::class, 'publicIndex'])->name('frontend.publications');
 
 require __DIR__.'/auth.php';

@@ -29,7 +29,6 @@
             <span class="font-medium">{{ __('Dashboard') }}</span>
         </a>
 
-        @can('view-any', App\Models\Material::class)
         {{-- Materials --}}
         <a href="{{ route('materials.index') }}" class="nav-item {{ request()->routeIs('materials.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('materials.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('materials.*') ? 'text-accent-violet' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,9 +36,7 @@
             </svg>
             <span>{{ __('Materials') }}</span>
         </a>
-        @endcan
 
-        @can('view-any', App\Models\Reservation::class)
         {{-- Reservations --}}
         <a href="{{ route('reservations.index') }}" class="nav-item {{ request()->routeIs('reservations.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('reservations.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('reservations.*') ? 'text-accent-cyan' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,9 +44,7 @@
             </svg>
             <span>{{ __('Reservations') }}</span>
         </a>
-        @endcan
 
-        @can('view-any', App\Models\Project::class)
         {{-- Projects --}}
         <a href="{{ route('projects.index') }}" class="nav-item {{ request()->routeIs('projects.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('projects.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('projects.*') ? 'text-accent-rose' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,9 +52,7 @@
             </svg>
             <span>{{ __('Projects') }}</span>
         </a>
-        @endcan
 
-        @can('view-any', App\Models\Experiment::class)
         {{-- Experiments --}}
         <a href="{{ route('experiments.index') }}" class="nav-item {{ request()->routeIs('experiments.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('experiments.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('experiments.*') ? 'text-accent-emerald' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,9 +60,7 @@
             </svg>
             <span>{{ __('Experiments') }}</span>
         </a>
-        @endcan
 
-        @can('view-any', App\Models\Event::class)
         {{-- Events --}}
         <a href="{{ route('events.index') }}" class="nav-item {{ request()->routeIs('events.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('events.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('events.*') ? 'text-accent-amber' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,9 +68,7 @@
             </svg>
             <span>{{ __('Events') }}</span>
         </a>
-        @endcan
 
-        @can('view-any', App\Models\MaintenanceLog::class)
         {{-- Maintenance --}}
         <a href="{{ route('maintenance.index') }}" class="nav-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('maintenance.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('maintenance.*') ? 'text-accent-coral' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +77,16 @@
             </svg>
             <span>{{ __('Maintenance') }}</span>
         </a>
-        @endcan
+
+        @canany(['publications.index'])
+        {{-- Publications --}}
+        <a href="{{ route('publications.index') }}" class="nav-item {{ request()->routeIs('publications.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('publications.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
+            <svg class="w-5 h-5 {{ request()->routeIs('publications.*') ? 'text-accent-indigo' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            <span>{{ __('Publications') }}</span>
+        </a>
+        @endcanany
 
         @can('manage-users')
         {{-- Users --}}
@@ -99,6 +97,26 @@
             <span>{{ __('Users') }}</span>
         </a>
         @endcan
+
+        @canany(['categories.manage'])
+        {{-- Material Categories --}}
+        <a href="{{ route('material-categories.index') }}" class="nav-item {{ request()->routeIs('material-categories.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('material-categories.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
+            <svg class="w-5 h-5 {{ request()->routeIs('material-categories.*') ? 'text-accent-cyan' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+            <span>{{ __('Categories') }}</span>
+        </a>
+        @endcanany
+
+        @if(auth()->user()->hasRole('admin'))
+        {{-- Settings (Admin only) --}}
+        <a href="{{ route('settings.index') }}" class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('settings.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
+            <svg class="w-5 h-5 {{ request()->routeIs('settings.*') ? 'text-accent-rose' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+            </svg>
+            <span>{{ __('System Settings') }}</span>
+        </a>
+        @endif
 
         {{-- Divider --}}
         <div class="pt-4 mt-4 border-t border-black/5 dark:border-white/5">

@@ -15,7 +15,7 @@ class MaterialController extends Controller
         $query = Material::query();
 
         // Search functionality
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -25,12 +25,12 @@ class MaterialController extends Controller
         }
 
         // Filter by status
-        if ($request->has('status') && $request->status !== '') {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
         // Filter by category
-        if ($request->has('category') && $request->category !== '') {
+        if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
 

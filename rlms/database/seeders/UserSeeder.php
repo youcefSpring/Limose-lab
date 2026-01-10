@@ -52,6 +52,10 @@ class UserSeeder extends Seeder
             'phone' => '+1234567890',
         ]);
         $researcher->assignRole('researcher');
+        \DB::table('model_has_roles')
+            ->where('model_id', $researcher->id)
+            ->where('role_id', \Spatie\Permission\Models\Role::where('name', 'researcher')->first()->id)
+            ->update(['employment_type' => 'fulltime']);
 
         // PhD Student
         $phdStudent = User::create([
@@ -80,7 +84,43 @@ class UserSeeder extends Seeder
         ]);
         $partialResearcher->assignRole('partial_researcher');
 
-        // Technician
+        // Fulltime Researcher
+        $fulltimeResearcher = User::create([
+            'name' => 'Dr. John Researcher',
+            'email' => 'fulltime@rlms.test',
+            'password' => Hash::make('password'),
+            'status' => 'active',
+            'locale' => 'en',
+            'email_verified_at' => now(),
+            'research_group' => 'Advanced Physics',
+            'bio' => 'Full-time senior researcher with 10+ years experience in quantum physics.',
+            'phone' => '+1234567893',
+        ]);
+        $fulltimeResearcher->assignRole('researcher');
+        \DB::table('model_has_roles')
+            ->where('model_id', $fulltimeResearcher->id)
+            ->where('role_id', \Spatie\Permission\Models\Role::where('name', 'researcher')->first()->id)
+            ->update(['employment_type' => 'fulltime']);
+
+        // Part-time Researcher
+        $parttimeResearcher = User::create([
+            'name' => 'Dr. Jane Williams',
+            'email' => 'parttime@rlms.test',
+            'password' => Hash::make('password'),
+            'status' => 'active',
+            'locale' => 'en',
+            'email_verified_at' => now(),
+            'research_group' => 'Environmental Science',
+            'bio' => 'Part-time researcher focusing on climate studies.',
+            'phone' => '+1234567894',
+        ]);
+        $parttimeResearcher->assignRole('partial_researcher');
+        \DB::table('model_has_roles')
+            ->where('model_id', $parttimeResearcher->id)
+            ->where('role_id', \Spatie\Permission\Models\Role::where('name', 'partial_researcher')->first()->id)
+            ->update(['employment_type' => 'parttime']);
+
+        // Technician / Maintenance Worker
         $technician = User::create([
             'name' => 'John Smith',
             'email' => 'technician@rlms.test',
@@ -93,6 +133,28 @@ class UserSeeder extends Seeder
             'phone' => '+1234567892',
         ]);
         $technician->assignRole('technician');
+        \DB::table('model_has_roles')
+            ->where('model_id', $technician->id)
+            ->where('role_id', \Spatie\Permission\Models\Role::where('name', 'technician')->first()->id)
+            ->update(['employment_type' => 'fulltime']);
+
+        // Maintenance Worker (additional)
+        $maintenanceWorker = User::create([
+            'name' => 'Mike Maintenance',
+            'email' => 'maintenance@rlms.test',
+            'password' => Hash::make('password'),
+            'status' => 'active',
+            'locale' => 'en',
+            'email_verified_at' => now(),
+            'research_group' => 'Maintenance Department',
+            'bio' => 'Specialized equipment maintenance and repair specialist.',
+            'phone' => '+1234567895',
+        ]);
+        $maintenanceWorker->assignRole('technician');
+        \DB::table('model_has_roles')
+            ->where('model_id', $maintenanceWorker->id)
+            ->where('role_id', \Spatie\Permission\Models\Role::where('name', 'technician')->first()->id)
+            ->update(['employment_type' => 'fulltime', 'additional_info' => 'Certified in HVAC and laboratory equipment maintenance']);
 
         // Guest User
         $guest = User::create([

@@ -82,6 +82,19 @@ class RoleAndPermissionSeeder extends Seeder
             // Report management
             'reports.view',
             'reports.export',
+
+            // Settings management
+            'settings.index',
+            'settings.update',
+
+            // Publications management
+            'publications.index',
+            'publications.show',
+            'publications.create',
+            'publications.update',
+            'publications.delete',
+            'publications.approve',
+            'publications.reject',
         ];
 
         foreach ($permissions as $permission) {
@@ -114,6 +127,7 @@ class RoleAndPermissionSeeder extends Seeder
             'projects.index', 'projects.show', 'projects.create', 'projects.update', 'projects.manage-members',
             'experiments.index', 'experiments.show', 'experiments.create', 'experiments.update', 'experiments.comment',
             'events.index', 'events.show', 'events.rsvp',
+            'publications.index', 'publications.show', 'publications.create', 'publications.update', 'publications.delete',
             'reports.view',
         ]);
 
@@ -126,6 +140,7 @@ class RoleAndPermissionSeeder extends Seeder
             'projects.index', 'projects.show',
             'experiments.index', 'experiments.show', 'experiments.create', 'experiments.comment',
             'events.index', 'events.show', 'events.rsvp',
+            'publications.index', 'publications.show', 'publications.create', 'publications.update', 'publications.delete',
         ]);
 
         // Partial Researcher - Read-only research access
@@ -136,6 +151,7 @@ class RoleAndPermissionSeeder extends Seeder
             'projects.index', 'projects.show',
             'experiments.index', 'experiments.show', 'experiments.comment',
             'events.index', 'events.show', 'events.rsvp',
+            'publications.index', 'publications.show', 'publications.create', 'publications.update', 'publications.delete',
         ]);
 
         // Technician - Equipment and maintenance focus

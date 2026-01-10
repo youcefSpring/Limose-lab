@@ -198,4 +198,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Event::class, 'organizer_id');
     }
+
+    /**
+     * Get the publications created by the user.
+     */
+    public function publications(): HasMany
+    {
+        return $this->hasMany(Publication::class);
+    }
 }

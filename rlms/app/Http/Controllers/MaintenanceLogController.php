@@ -48,9 +48,9 @@ class MaintenanceLogController extends Controller
             $query->where('technician_id', $request->technician);
         }
 
-        $maintenanceLogs = $query->latest('scheduled_date')->paginate(12);
+        $logs = $query->latest('scheduled_date')->paginate(12);
 
-        return view('maintenance-logs.index', compact('maintenanceLogs'));
+        return view('maintenance.index', compact('logs'));
     }
 
     /**
@@ -61,7 +61,7 @@ class MaintenanceLogController extends Controller
         $materials = Material::orderBy('name')->get();
         $technicians = User::role('technician')->orderBy('name')->get();
 
-        return view('maintenance-logs.create', compact('materials', 'technicians'));
+        return view('maintenance.create', compact('materials', 'technicians'));
     }
 
     /**
@@ -89,33 +89,34 @@ class MaintenanceLogController extends Controller
             $material->update(['status' => 'maintenance']);
         }
 
-        return redirect()->route('maintenance-logs.index')->with('success', __('Maintenance log created successfully.'));
+        return redirect()->route('maintenance.index')->with('success', __('Maintenance log created successfully.'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(MaintenanceLog $maintenanceLog)
+    public function show(MaintenanceLog $maintenance)
     {
-        $maintenanceLog->load(['material', 'technician']);
-        return view('maintenance-logs.show', compact('maintenanceLog'));
+        $log = $maintenance->load(['material', 'technician']);
+        return view('maintenance.show', compact('log'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MaintenanceLog $maintenanceLog)
+    public function edit(MaintenanceLog $maintenance)
     {
+        $log = $maintenance;
         $materials = Material::orderBy('name')->get();
         $technicians = User::role('technician')->orderBy('name')->get();
 
-        return view('maintenance-logs.edit', compact('maintenanceLog', 'materials', 'technicians'));
+        return view('maintenance.edit', compact('log', 'materials', 'technicians'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MaintenanceLog $maintenanceLog)
+    public function update(Request $request, MaintenanceLog $maintenance)
     {
         $validated = $request->validate([
             'material_id' => 'required|exists:materials,id',
@@ -129,14 +130,14 @@ class MaintenanceLogController extends Controller
             'status' => 'required|in:scheduled,in_progress,completed,cancelled',
         ]);
 
-        $maintenanceLog->update($validated);
+        $maintenance->update($validated);
 
         // Update material status based on maintenance status
         $material = Material::find($validated['material_id']);
         if ($validated['status'] === 'completed' || $validated['status'] === 'cancelled') {
             // Check if there are other ongoing maintenances for this material
             $hasOtherMaintenance = MaintenanceLog::where('material_id', $material->id)
-                ->where('id', '!=', $maintenanceLog->id)
+                ->where('id', '!=', $maintenance->id)
                 ->whereIn('status', ['scheduled', 'in_progress'])
                 ->exists();
 
@@ -147,16 +148,16 @@ class MaintenanceLogController extends Controller
             $material->update(['status' => 'maintenance']);
         }
 
-        return redirect()->route('maintenance-logs.show', $maintenanceLog)->with('success', __('Maintenance log updated successfully.'));
+        return redirect()->route('maintenance.show', $maintenance)->with('success', __('Maintenance log updated successfully.'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MaintenanceLog $maintenanceLog)
+    public function destroy(MaintenanceLog $maintenance)
     {
-        $materialId = $maintenanceLog->material_id;
-        $maintenanceLog->delete();
+        $materialId = $maintenance->material_id;
+        $maintenance->delete();
 
         // Update material status if no other maintenances exist
         $hasOtherMaintenance = MaintenanceLog::where('material_id', $materialId)
@@ -167,22 +168,22 @@ class MaintenanceLogController extends Controller
             Material::find($materialId)->update(['status' => 'available']);
         }
 
-        return redirect()->route('maintenance-logs.index')->with('success', __('Maintenance log deleted successfully.'));
+        return redirect()->route('maintenance.index')->with('success', __('Maintenance log deleted successfully.'));
     }
 
     /**
      * Start maintenance.
      */
-    public function start(MaintenanceLog $maintenanceLog)
+    public function start(MaintenanceLog $maintenance)
     {
-        if ($maintenanceLog->status !== 'scheduled') {
+        if ($maintenance->status !== 'scheduled') {
             return redirect()->back()->with('error', __('Only scheduled maintenance can be started.'));
         }
 
-        $maintenanceLog->update(['status' => 'in_progress']);
+        $maintenance->update(['status' => 'in_progress']);
 
         // Update material status
-        $maintenanceLog->material->update(['status' => 'maintenance']);
+        $maintenance->material->update(['status' => 'maintenance']);
 
         return redirect()->back()->with('success', __('Maintenance started successfully.'));
     }
@@ -190,9 +191,9 @@ class MaintenanceLogController extends Controller
     /**
      * Complete maintenance.
      */
-    public function complete(Request $request, MaintenanceLog $maintenanceLog)
+    public function complete(Request $request, MaintenanceLog $maintenance)
     {
-        if ($maintenanceLog->status === 'completed') {
+        if ($maintenance->status === 'completed') {
             return redirect()->back()->with('error', __('This maintenance is already completed.'));
         }
 
@@ -202,21 +203,21 @@ class MaintenanceLogController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $maintenanceLog->update([
+        $maintenance->update([
             'status' => 'completed',
             'completed_date' => $validated['completed_date'],
-            'cost' => $validated['cost'] ?? $maintenanceLog->cost,
-            'notes' => $validated['notes'] ?? $maintenanceLog->notes,
+            'cost' => $validated['cost'] ?? $maintenance->cost,
+            'notes' => $validated['notes'] ?? $maintenance->notes,
         ]);
 
         // Update material status if no other ongoing maintenances
-        $hasOtherMaintenance = MaintenanceLog::where('material_id', $maintenanceLog->material_id)
-            ->where('id', '!=', $maintenanceLog->id)
+        $hasOtherMaintenance = MaintenanceLog::where('material_id', $maintenance->material_id)
+            ->where('id', '!=', $maintenance->id)
             ->whereIn('status', ['scheduled', 'in_progress'])
             ->exists();
 
         if (!$hasOtherMaintenance) {
-            $maintenanceLog->material->update(['status' => 'available']);
+            $maintenance->material->update(['status' => 'available']);
         }
 
         return redirect()->back()->with('success', __('Maintenance completed successfully.'));
@@ -225,9 +226,9 @@ class MaintenanceLogController extends Controller
     /**
      * Cancel maintenance.
      */
-    public function cancel(Request $request, MaintenanceLog $maintenanceLog)
+    public function cancel(Request $request, MaintenanceLog $maintenance)
     {
-        if ($maintenanceLog->status === 'completed') {
+        if ($maintenance->status === 'completed') {
             return redirect()->back()->with('error', __('Completed maintenance cannot be cancelled.'));
         }
 
@@ -235,19 +236,19 @@ class MaintenanceLogController extends Controller
             'notes' => 'required|string|max:500',
         ]);
 
-        $maintenanceLog->update([
+        $maintenance->update([
             'status' => 'cancelled',
-            'notes' => ($maintenanceLog->notes ? $maintenanceLog->notes . "\n\n" : '') . 'Cancellation reason: ' . $validated['notes'],
+            'notes' => ($maintenance->notes ? $maintenance->notes . "\n\n" : '') . 'Cancellation reason: ' . $validated['notes'],
         ]);
 
         // Update material status if no other ongoing maintenances
-        $hasOtherMaintenance = MaintenanceLog::where('material_id', $maintenanceLog->material_id)
-            ->where('id', '!=', $maintenanceLog->id)
+        $hasOtherMaintenance = MaintenanceLog::where('material_id', $maintenance->material_id)
+            ->where('id', '!=', $maintenance->id)
             ->whereIn('status', ['scheduled', 'in_progress'])
             ->exists();
 
         if (!$hasOtherMaintenance) {
-            $maintenanceLog->material->update(['status' => 'available']);
+            $maintenance->material->update(['status' => 'available']);
         }
 
         return redirect()->back()->with('success', __('Maintenance cancelled successfully.'));
@@ -262,6 +263,6 @@ class MaintenanceLogController extends Controller
             ->whereIn('status', ['scheduled', 'in_progress'])
             ->get();
 
-        return view('maintenance-logs.calendar', compact('maintenances'));
+        return view('maintenance.calendar', compact('maintenances'));
     }
 }

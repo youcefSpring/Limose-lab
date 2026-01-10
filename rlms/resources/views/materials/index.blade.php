@@ -19,7 +19,7 @@
 
     <!-- Search and Filters -->
     <div class="glass-card rounded-2xl p-5 lg:p-6 mb-6">
-        <form method="GET" action="{{ route('materials.index') }}" class="space-y-4">
+        <form method="GET" action="{{ route('materials.index') }}" id="filter-form" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Search Input -->
                 <div>
@@ -47,6 +47,7 @@
                     <select
                         name="category"
                         id="category"
+                        onchange="document.getElementById('filter-form').submit()"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
                     >
                         <option value="">{{ __('All Categories') }}</option>
@@ -64,6 +65,7 @@
                     <select
                         name="status"
                         id="status"
+                        onchange="document.getElementById('filter-form').submit()"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
                     >
                         <option value="">{{ __('All Status') }}</option>
@@ -89,6 +91,17 @@
             </div>
         </form>
     </div>
+
+    <script>
+        // Auto-submit search on Enter key or after typing pause
+        let searchTimeout;
+        document.getElementById('search').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function() {
+                document.getElementById('filter-form').submit();
+            }, 500);
+        });
+    </script>
 
     <!-- Materials Grid -->
     @if(isset($materials) && $materials->count() > 0)
@@ -169,7 +182,7 @@
 
         <!-- Pagination -->
         <div class="flex justify-center">
-            {{ $materials->links() }}
+            {{ $materials->appends(request()->query())->links() }}
         </div>
     @else
         <!-- Empty State -->

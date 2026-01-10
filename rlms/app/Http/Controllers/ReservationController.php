@@ -282,6 +282,56 @@ class ReservationController extends Controller
     }
 
     /**
+     * Check material availability for given dates and quantity.
+     */
+    public function checkAvailability(Request $request)
+    {
+        $validated = $request->validate([
+            'material_id' => 'required|exists:materials,id',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $material = Material::findOrFail($validated['material_id']);
+
+        // Check if material has enough total quantity
+        if ($material->quantity < $validated['quantity']) {
+            return response()->json([
+                'available' => false,
+                'message' => __('The requested quantity is not available. Available: :count', ['count' => $material->quantity])
+            ]);
+        }
+
+        // Check for conflicting reservations
+        $reservedQuantity = Reservation::where('material_id', $validated['material_id'])
+            ->whereIn('status', ['pending', 'approved'])
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('start_date', [$validated['start_date'], $validated['end_date']])
+                    ->orWhereBetween('end_date', [$validated['start_date'], $validated['end_date']])
+                    ->orWhere(function ($q) use ($validated) {
+                        $q->where('start_date', '<=', $validated['start_date'])
+                          ->where('end_date', '>=', $validated['end_date']);
+                    });
+            })
+            ->sum('quantity');
+
+        $availableQuantity = $material->quantity - $reservedQuantity;
+
+        if ($validated['quantity'] <= $availableQuantity) {
+            return response()->json([
+                'available' => true,
+                'message' => __(':count units available for the selected dates.', ['count' => $availableQuantity])
+            ]);
+        }
+
+        return response()->json([
+            'available' => false,
+            'message' => __('Only :count units available for the selected dates.', ['count' => $availableQuantity])
+        ]);
+    }
+
+    /**
      * Show calendar view of reservations.
      */
     public function calendar()
