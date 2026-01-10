@@ -1,0 +1,11 @@
+## Step 9: Build Blade Views
+
+- **Goal:** Create Blade view templates for the web interface with greate ux ui.
+- **Reference File:** 10-Endpoints.md
+- **Tasks:**
+  1. Review the web endpoints and UI specifications in 10-Endpoints.md.
+  2. Implement the required Blade views according to the design and logic described and excellent ux ui responsive.
+  3. Place all view files in the `resources/views` directory.
+
+- **Command/Location:** 
+  - Store view files in `resources/views`.

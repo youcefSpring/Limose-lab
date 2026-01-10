@@ -1,0 +1,10 @@
+## Step 8: Define Routes (api.php, web.php)
+
+- **Goal:** Define all required API and web routes for the application.
+- **Reference Files:** 08-Endpoints.md, 10-Endpoints.md
+- **Tasks:**
+  1. Review all endpoint specifications in 08-Endpoints.md and 10-Endpoints.md.
+  2. Implement routes in `routes/api.php` and `routes/web.php` according to the documentation.
+
+- **Command/Location:** 
+  - Add routes to the `routes/` directory.

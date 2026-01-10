@@ -1,0 +1,12 @@
+## Step 6: Validation Requests
+
+- **Goal:** Implement form request validation classes for data validation.
+- **Reference File:** 03-ValidationAndStates.md
+- **Tasks:**
+  1. Review validation rules and state definitions in 03-ValidationAndStates.md.
+  2. Use `php artisan make:request` to generate Laravel Form Request classes.
+  3. Place all request validation files in the `app/Http/Requests` directory.
+
+- **Command/Location:** 
+  - Use `make:request` command.
+  - Save in `app/Http/Requests`.

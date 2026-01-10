@@ -1,0 +1,11 @@
+## Step 5: Services/Helpers/DTO for Business Logic
+
+- **Goal:** Implement service and helper classes for core business logic.
+- **Reference Files:** 01-BusinessRules, 02-Workflows
+- **Tasks:**
+  1. Review the business rules in 01-BusinessRules and workflows in 02-Workflows.
+  2. Create service and helper classes to encapsulate and implement this logic.
+  3. Place all service/helper files in the `app/Services` directory.
+
+- **Command/Location:** 
+  - Store files in `app/Services`.

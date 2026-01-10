@@ -1,0 +1,10 @@
+## Step 2: Setup Project & Structure
+
+- **Goal:** Setup the initial project structure.
+- **Inputs/References:** FileStructure files
+- **Tasks:**
+  1. Create the main project.
+  2. Create all required folders and subfolders as described in the FileStructure files.
+
+- **Prompt:**
+  "Based on the provided FileStructure files, create the project and all specified folders. Ensure the structure matches the documentation exactly."

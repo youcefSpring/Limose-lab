@@ -1,0 +1,1 @@
+- always do plan to verify everything is correct and coherent in all layers and should follow clean code + arhitecture

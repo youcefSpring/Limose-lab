@@ -1,0 +1,12 @@
+## Step 4: Build Models
+
+- **Goal:** Generate Eloquent models for each database entity.
+- **Reference File:** 04-DatabaseSchema.sql
+- **Tasks:**
+  1. Review the entities and relationships defined in 04-DatabaseSchema.sql.
+  2. Use `php artisan make:model` to create the corresponding model classes.
+  3. Place all generated model files in the `app/Models` directory.
+
+- **Command/Location:** 
+  - Use `make:model` command.
+  - Save in `app/Models`.
