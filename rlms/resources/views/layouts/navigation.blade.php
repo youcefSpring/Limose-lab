@@ -78,6 +78,14 @@
             <span>{{ __('Maintenance') }}</span>
         </a>
 
+        {{-- Rooms --}}
+        <a href="{{ route('rooms.index') }}" class="nav-item {{ request()->routeIs('rooms.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('rooms.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
+            <svg class="w-5 h-5 {{ request()->routeIs('rooms.*') ? 'text-accent-teal' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+            <span>{{ __('Rooms') }}</span>
+        </a>
+
         @canany(['publications.index'])
         {{-- Publications --}}
         <a href="{{ route('publications.index') }}" class="nav-item {{ request()->routeIs('publications.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('publications.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
@@ -88,7 +96,7 @@
         </a>
         @endcanany
 
-        @can('manage-users')
+        @canany(['users.index'])
         {{-- Users --}}
         <a href="{{ route('users.index') }}" class="nav-item {{ request()->routeIs('users.*') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('users.*') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('users.*') ? 'text-accent-violet' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +104,7 @@
             </svg>
             <span>{{ __('Users') }}</span>
         </a>
-        @endcan
+        @endcanany
 
         @canany(['categories.manage'])
         {{-- Material Categories --}}

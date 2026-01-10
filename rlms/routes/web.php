@@ -13,6 +13,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Materials Routes
     Route::resource('materials', MaterialController::class);
     Route::resource('material-categories', MaterialCategoryController::class);
+
+    // Rooms Routes
+    Route::resource('rooms', RoomController::class);
 
     // Reservations Routes
     Route::resource('reservations', ReservationController::class);
