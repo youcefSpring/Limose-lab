@@ -1,22 +1,15 @@
 {{-- Nexus Sidebar Navigation --}}
-<aside id="sidebar" class="sidebar fixed {{ app()->getLocale() === 'ar' ? 'right-0' : 'left-0' }} top-0 h-screen w-64 glass border-{{ app()->getLocale() === 'ar' ? 'l' : 'r' }} border-black/5 dark:border-white/5 flex flex-col z-50 -translate-x-full lg:translate-x-0">
-    {{-- Logo & Close Button --}}
+<aside id="sidebar" class="sidebar fixed {{ app()->getLocale() === 'ar' ? 'right-0' : 'left-0' }} top-0 h-screen w-64 glass border-{{ app()->getLocale() === 'ar' ? 'l' : 'r' }} border-black/5 dark:border-white/5 flex flex-col z-50 -translate-x-full {{ app()->getLocale() === 'ar' ? 'translate-x-full' : '' }}">
+    {{-- Logo --}}
     <div class="p-6 border-b border-black/5 dark:border-white/5">
-        <div class="flex items-center justify-between">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-amber to-accent-coral flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-                    </svg>
-                </div>
-                <span class="text-xl font-semibold tracking-tight">{{ config('app.name', 'RLMS') }}</span>
-            </a>
-            <button class="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 lg:hidden" onclick="toggleSidebar()">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-amber to-accent-coral flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                 </svg>
-            </button>
-        </div>
+            </div>
+            <span class="text-xl font-semibold tracking-tight">{{ config('app.name', 'RLMS') }}</span>
+        </a>
     </div>
 
     {{-- Navigation Links --}}
@@ -183,31 +176,3 @@
     </div>
 </aside>
 
-{{-- Top Header Bar --}}
-<div class="lg:hidden fixed top-0 left-0 right-0 z-30 glass border-b border-black/5 dark:border-white/5">
-    <div class="flex items-center justify-between p-4">
-        <button id="hamburger" class="hamburger p-2 rounded-xl bg-white dark:bg-surface-700/50 border border-black/5 dark:border-white/5 hover:bg-zinc-100 dark:hover:bg-surface-600/50 transition-colors" onclick="toggleSidebar()">
-            <div class="w-5 h-5 flex flex-col justify-center gap-1.5">
-                <span class="hamburger-line block w-full h-0.5 bg-zinc-600 dark:bg-zinc-400 rounded-full"></span>
-                <span class="hamburger-line block w-full h-0.5 bg-zinc-600 dark:bg-zinc-400 rounded-full"></span>
-                <span class="hamburger-line block w-full h-0.5 bg-zinc-600 dark:bg-zinc-400 rounded-full"></span>
-            </div>
-        </button>
-
-        <span class="text-lg font-semibold">{{ config('app.name', 'RLMS') }}</span>
-
-        <button onclick="toggleTheme()" class="relative p-2.5 rounded-xl bg-white dark:bg-surface-700/50 border border-black/5 dark:border-white/5 hover:bg-zinc-100 dark:hover:bg-surface-600/50 transition-all">
-            <div class="relative w-5 h-5">
-                <svg class="w-5 h-5 text-accent-amber absolute inset-0 transition-all duration-500 dark:opacity-0 dark:rotate-90 dark:scale-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                </svg>
-                <svg class="w-5 h-5 text-accent-violet absolute inset-0 transition-all duration-500 opacity-0 -rotate-90 scale-0 dark:opacity-100 dark:rotate-0 dark:scale-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                </svg>
-            </div>
-        </button>
-    </div>
-</div>
-
-{{-- Spacer for mobile header --}}
-<div class="h-16 lg:hidden"></div>
