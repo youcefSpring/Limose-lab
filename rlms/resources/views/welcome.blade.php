@@ -484,9 +484,146 @@
             color: #999;
         }
 
+        /* Events Section */
+        .events {
+            background: white;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            background: var(--sandstone);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, var(--cardinal-red), var(--cardinal-dark));
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .event-date {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            line-height: 1;
+        }
+
+        .event-month {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        .event-content {
+            padding: 2rem;
+        }
+
+        .event-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--cool-gray);
+            font-size: 0.95rem;
+        }
+
+        .event-info-icon {
+            font-size: 1.2rem;
+        }
+
+        .event-description {
+            line-height: 1.6;
+            color: var(--cool-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .event-attendees {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .attendees-avatars {
+            display: flex;
+            margin-left: -0.5rem;
+        }
+
+        .attendee-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cardinal-red), var(--cardinal-dark));
+            border: 2px solid white;
+            margin-left: -0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .attendees-count {
+            font-size: 0.9rem;
+            color: var(--cool-gray);
+        }
+
+        .btn-rsvp {
+            width: 100%;
+            background: var(--cardinal-red);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn-rsvp:hover {
+            background: var(--cardinal-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(140, 21, 21, 0.3);
+        }
+
         /* Contact Section */
         .contact {
-            background: white;
+            background: var(--sandstone);
         }
 
         .contact-container {
@@ -689,6 +826,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#team">Team</a></li>
             <li><a href="#research">Research</a></li>
+            <li><a href="#events">Events</a></li>
             <li><a href="#contact" class="btn-contact">Contact</a></li>
             @auth
                 <li><a href="{{ url('/dashboard') }}" class="btn-primary">Dashboard</a></li>
@@ -872,6 +1010,130 @@
         </div>
     </section>
 
+    <!-- Events Section -->
+    <section class="events" id="events">
+        <h2 class="section-title">Upcoming Events</h2>
+        <p class="section-subtitle">Join us for seminars, workshops, and research presentations</p>
+
+        <div class="events-grid">
+            <!-- Event 1 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-date">15</div>
+                    <div class="event-month">January 2026</div>
+                </div>
+                <div class="event-content">
+                    <h3>Advanced Microscopy Workshop</h3>
+                    <div class="event-info">
+                        <div class="event-info-item">
+                            <span class="event-info-icon">🕐</span>
+                            <span>09:00 AM - 05:00 PM</span>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="event-info-icon">📍</span>
+                            <span>Lab Building, Room 301</span>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="event-info-icon">👤</span>
+                            <span>Dr. Sarah Johnson</span>
+                        </div>
+                    </div>
+                    <p class="event-description">
+                        Learn advanced techniques in electron microscopy and confocal imaging.
+                        Hands-on session with state-of-the-art equipment.
+                    </p>
+                    <div class="event-attendees">
+                        <div class="attendees-avatars">
+                            <div class="attendee-avatar">JD</div>
+                            <div class="attendee-avatar">SM</div>
+                            <div class="attendee-avatar">AL</div>
+                            <div class="attendee-avatar">+12</div>
+                        </div>
+                        <span class="attendees-count">15 attending</span>
+                    </div>
+                    <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
+                </div>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-date">22</div>
+                    <div class="event-month">January 2026</div>
+                </div>
+                <div class="event-content">
+                    <h3>Research Seminar Series</h3>
+                    <div class="event-info">
+                        <div class="event-info-item">
+                            <span class="event-info-icon">🕐</span>
+                            <span>02:00 PM - 04:00 PM</span>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="event-info-icon">📍</span>
+                            <span>Conference Hall A</span>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="event-info-icon">👤</span>
+                            <span>Prof. Michael Chen</span>
+                        </div>
+                    </div>
+                    <p class="event-description">
+                        Presentation on breakthrough findings in molecular biology.
+                        Q&A session and networking opportunity with leading researchers.
+                    </p>
+                    <div class="event-attendees">
+                        <div class="attendees-avatars">
+                            <div class="attendee-avatar">MC</div>
+                            <div class="attendee-avatar">RK</div>
+                            <div class="attendee-avatar">TP</div>
+                            <div class="attendee-avatar">+25</div>
+                        </div>
+                        <span class="attendees-count">28 attending</span>
+                    </div>
+                    <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
+                </div>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-date">05</div>
+                    <div class="event-month">February 2026</div>
+                </div>
+                <div class="event-content">
+                    <h3>Lab Safety Training</h3>
+                    <div class="event-info">
+                        <div class="event-info-item">
+                            <span class="event-info-icon">🕐</span>
+                            <span>10:00 AM - 12:00 PM</span>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="event-info-icon">📍</span>
+                            <span>Training Center</span>
+                        </div>
+                        <div class="event-info-item">
+                            <span class="event-info-icon">👤</span>
+                            <span>Safety Officer</span>
+                        </div>
+                    </div>
+                    <p class="event-description">
+                        Mandatory safety training for all new lab members.
+                        Covers chemical handling, equipment safety, and emergency procedures.
+                    </p>
+                    <div class="event-attendees">
+                        <div class="attendees-avatars">
+                            <div class="attendee-avatar">NK</div>
+                            <div class="attendee-avatar">LM</div>
+                            <div class="attendee-avatar">+8</div>
+                        </div>
+                        <span class="attendees-count">10 attending</span>
+                    </div>
+                    <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section class="contact" id="contact">
         <h2 class="section-title">Get In Touch</h2>
@@ -936,6 +1198,7 @@
             <a href="#about">About</a>
             <a href="#team">Team</a>
             <a href="#research">Research</a>
+            <a href="#events">Events</a>
             <a href="#contact">Contact</a>
             @auth
                 <a href="{{ url('/dashboard') }}">Dashboard</a>

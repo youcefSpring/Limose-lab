@@ -11,6 +11,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MaintenanceLogController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -67,6 +68,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Users Routes (Admin only)
     Route::resource('users', UserController::class)->middleware('can:viewAny,App\Models\User');
+
+    // Settings Routes (Admin only)
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';
