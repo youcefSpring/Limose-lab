@@ -13,7 +13,8 @@ class MaterialCategoryPolicy
      */
     public function manage(User $user): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -21,7 +22,8 @@ class MaterialCategoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -29,7 +31,8 @@ class MaterialCategoryPolicy
      */
     public function view(User $user, MaterialCategory $materialCategory): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -37,7 +40,8 @@ class MaterialCategoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -45,7 +49,8 @@ class MaterialCategoryPolicy
      */
     public function update(User $user, MaterialCategory $materialCategory): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -53,7 +58,8 @@ class MaterialCategoryPolicy
      */
     public function delete(User $user, MaterialCategory $materialCategory): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -61,7 +67,8 @@ class MaterialCategoryPolicy
      */
     public function restore(User $user, MaterialCategory $materialCategory): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 
     /**
@@ -69,6 +76,7 @@ class MaterialCategoryPolicy
      */
     public function forceDelete(User $user, MaterialCategory $materialCategory): bool
     {
-        return $user->hasPermissionTo('categories.manage');
+        // Admin always has permission, or users with specific permission
+        return $user->hasRole('admin') || $user->hasPermissionTo('categories.manage');
     }
 }

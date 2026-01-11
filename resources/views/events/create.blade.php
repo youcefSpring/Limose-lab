@@ -1,186 +1,201 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center space-x-4 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-            <a href="{{ route('events.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('events.index') }}" class="p-2 rounded-xl glass hover:glass-card transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ app()->getLocale() === 'ar' ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7' }}"/>
                 </svg>
             </a>
-            <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Create New Event') }}
-            </h2>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Create New Event') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Organize seminars, workshops, and laboratory events') }}</p>
+            </div>
         </div>
-    </x-slot>
+    </header>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <x-card>
-            <form method="POST" action="{{ route('events.store') }}" enctype="multipart/form-data" class="space-y-6">
-                @csrf
+    <div class="w-full">
+        <form method="POST" action="{{ route('events.store') }}" enctype="multipart/form-data">
+            @csrf
 
-                <!-- Title -->
-                <div>
-                    <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Event Title') }} <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="title" id="title" required value="{{ old('title') }}"
-                        placeholder="{{ __('Enter event title...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('title') border-red-500 @enderror">
-                    @error('title')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
+            <!-- Event Information -->
+            <div class="glass-card rounded-2xl p-6">
+                <div class="mb-6">
+                    <h2 class="text-lg font-semibold mb-1">{{ __('Event Information') }}</h2>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Basic details about your event') }}</p>
                 </div>
 
-                <!-- Description -->
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Description') }} <span class="text-red-500">*</span>
-                    </label>
-                    <textarea name="description" id="description" rows="4" required
-                        placeholder="{{ __('Provide a detailed description of the event...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Type -->
-                <div>
-                    <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Event Type') }} <span class="text-red-500">*</span>
-                    </label>
-                    <select name="type" id="type" required
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('type') border-red-500 @enderror">
-                        <option value="seminar" {{ old('type', 'seminar') == 'seminar' ? 'selected' : '' }}>{{ __('Seminar') }}</option>
-                        <option value="workshop" {{ old('type') == 'workshop' ? 'selected' : '' }}>{{ __('Workshop') }}</option>
-                        <option value="conference" {{ old('type') == 'conference' ? 'selected' : '' }}>{{ __('Conference') }}</option>
-                        <option value="meeting" {{ old('type') == 'meeting' ? 'selected' : '' }}>{{ __('Meeting') }}</option>
-                        <option value="training" {{ old('type') == 'training' ? 'selected' : '' }}>{{ __('Training') }}</option>
-                        <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>{{ __('Other') }}</option>
-                    </select>
-                    @error('type')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Date and Time -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('Date') }} <span class="text-red-500">*</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Event Title (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <label for="title" class="block text-sm font-medium mb-2">
+                            {{ __('Event Title') }} <span class="text-accent-rose">*</span>
                         </label>
-                        <input type="date" name="date" id="date" required
-                            min="{{ date('Y-m-d') }}"
-                            value="{{ old('date') }}"
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('date') border-red-500 @enderror">
+                        <input type="text" name="title" id="title" value="{{ old('title') }}" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('title') border-accent-rose @enderror"
+                            placeholder="{{ __('e.g., Machine Learning Workshop 2024') }}">
+                        @error('title')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Event Type -->
+                    <div>
+                        <label for="type" class="block text-sm font-medium mb-2">
+                            {{ __('Event Type') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <select name="type" id="type" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('type') border-accent-rose @enderror">
+                            <option value="seminar" {{ old('type', 'seminar') == 'seminar' ? 'selected' : '' }}>{{ __('Seminar') }}</option>
+                            <option value="workshop" {{ old('type') == 'workshop' ? 'selected' : '' }}>{{ __('Workshop') }}</option>
+                            <option value="conference" {{ old('type') == 'conference' ? 'selected' : '' }}>{{ __('Conference') }}</option>
+                            <option value="meeting" {{ old('type') == 'meeting' ? 'selected' : '' }}>{{ __('Meeting') }}</option>
+                            <option value="training" {{ old('type') == 'training' ? 'selected' : '' }}>{{ __('Training') }}</option>
+                            <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>{{ __('Other') }}</option>
+                        </select>
+                        @error('type')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Date -->
+                    <div>
+                        <label for="date" class="block text-sm font-medium mb-2">
+                            {{ __('Date') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <input type="date" name="date" id="date" required min="{{ date('Y-m-d') }}" value="{{ old('date') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('date') border-accent-rose @enderror">
                         @error('date')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
+                    <!-- Time -->
                     <div>
-                        <label for="time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('Time') }} <span class="text-red-500">*</span>
+                        <label for="time" class="block text-sm font-medium mb-2">
+                            {{ __('Time') }} <span class="text-accent-rose">*</span>
                         </label>
-                        <input type="time" name="time" id="time" required
-                            value="{{ old('time') }}"
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('time') border-red-500 @enderror">
+                        <input type="time" name="time" id="time" required value="{{ old('time') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('time') border-accent-rose @enderror">
                         @error('time')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
-                </div>
 
-                <!-- Location -->
-                <div>
-                    <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Location') }} <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="location" id="location" required value="{{ old('location') }}"
-                        placeholder="{{ __('e.g., Lab Room 301 or Online via Zoom') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('location') border-red-500 @enderror">
-                    @error('location')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Agenda -->
-                <div>
-                    <label for="agenda" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Agenda') }}
-                    </label>
-                    <textarea name="agenda" id="agenda" rows="5"
-                        placeholder="{{ __('Outline the event agenda and schedule...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('agenda') border-red-500 @enderror">{{ old('agenda') }}</textarea>
-                    @error('agenda')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {{ __('Optional: Provide a detailed schedule or agenda for the event') }}
-                    </p>
-                </div>
-
-                <!-- Max Attendees -->
-                <div>
-                    <label for="max_attendees" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Maximum Attendees') }}
-                    </label>
-                    <input type="number" name="max_attendees" id="max_attendees" min="1"
-                        value="{{ old('max_attendees') }}"
-                        placeholder="{{ __('Leave blank for unlimited') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('max_attendees') border-red-500 @enderror">
-                    @error('max_attendees')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {{ __('Limit the number of people who can attend this event') }}
-                    </p>
-                </div>
-
-                <!-- Event Image -->
-                <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Event Image') }}
-                    </label>
-                    <div class="mt-1 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
-                        <input id="image" name="image" type="file" class="sr-only" accept="image/jpeg,image/png,image/jpg">
-                        <label for="image" class="cursor-pointer">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                                {{ __('Click to upload or drag and drop') }}
-                            </p>
-                            <p class="text-xs text-gray-500 dark:text-gray-500">
-                                {{ __('PNG, JPG up to 2MB') }}
-                            </p>
+                    <!-- Location -->
+                    <div class="lg:col-span-2">
+                        <label for="location" class="block text-sm font-medium mb-2">
+                            {{ __('Location') }} <span class="text-accent-rose">*</span>
                         </label>
+                        <input type="text" name="location" id="location" required value="{{ old('location') }}"
+                            placeholder="{{ __('e.g., Lab Room 301 or Online via Zoom') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('location') border-accent-rose @enderror">
+                        @error('location')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
                     </div>
-                    @error('image')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                <!-- Important Information -->
-                <x-alert type="info" :dismissible="false">
-                    <strong>{{ __('Event Guidelines') }}:</strong>
-                    <ul class="list-disc {{ app()->getLocale() === 'ar' ? 'mr-4' : 'ml-4' }} mt-2 text-sm space-y-1">
-                        <li>{{ __('Ensure all event information is accurate and complete') }}</li>
-                        <li>{{ __('Attendees will be notified via email once they RSVP') }}</li>
-                        <li>{{ __('You can edit event details anytime before the event date') }}</li>
-                        <li>{{ __('Consider setting a maximum capacity for physical events') }}</li>
-                    </ul>
-                </x-alert>
+                    <!-- Max Attendees -->
+                    <div>
+                        <label for="max_attendees" class="block text-sm font-medium mb-2">
+                            {{ __('Maximum Attendees') }}
+                        </label>
+                        <input type="number" name="max_attendees" id="max_attendees" min="1" value="{{ old('max_attendees') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('max_attendees') border-accent-rose @enderror"
+                            placeholder="{{ __('Unlimited') }}">
+                        @error('max_attendees')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                <!-- Form Actions -->
-                <div class="flex items-center justify-end space-x-4 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }} pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <a href="{{ route('events.index') }}">
-                        <x-button variant="outline" type="button">{{ __('Cancel') }}</x-button>
-                    </a>
-                    <x-button variant="primary" type="submit">
-                        {{ __('Create Event') }}
-                    </x-button>
+                    <!-- Description (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <label for="description" class="block text-sm font-medium mb-2">
+                            {{ __('Description') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <textarea name="description" id="description" rows="3" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('description') border-accent-rose @enderror"
+                            placeholder="{{ __('Provide a detailed description of the event...') }}">{{ old('description') }}</textarea>
+                        @error('description')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Agenda (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <label for="agenda" class="block text-sm font-medium mb-2">
+                            {{ __('Agenda') }}
+                        </label>
+                        <textarea name="agenda" id="agenda" rows="3"
+                            placeholder="{{ __('Outline the event agenda and schedule...') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('agenda') border-accent-rose @enderror">{{ old('agenda') }}</textarea>
+                        @error('agenda')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                        <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                            {{ __('Optional: Provide a detailed schedule or agenda for the event') }}
+                        </p>
+                    </div>
+
+                    <!-- Image Upload (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <x-file-upload
+                            name="image"
+                            label="{{ __('Event Image') }}"
+                            accept="image/*,.pdf"
+                            maxSize="10MB"
+                            :currentFile="null"
+                        />
+                    </div>
+
+                    <!-- Info Box (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <div class="glass rounded-xl p-4 border border-accent-cyan/20">
+                            <div class="flex gap-3">
+                                <div class="flex-shrink-0">
+                                    <svg class="w-5 h-5 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 text-sm">
+                                    <p class="font-medium mb-2">{{ __('Event Guidelines') }}:</p>
+                                    <ul class="space-y-1 text-zinc-600 dark:text-zinc-400 text-xs">
+                                        <li class="flex gap-2">
+                                            <span class="text-accent-cyan">•</span>
+                                            <span>{{ __('Ensure all event information is accurate and complete') }}</span>
+                                        </li>
+                                        <li class="flex gap-2">
+                                            <span class="text-accent-cyan">•</span>
+                                            <span>{{ __('Attendees will be notified via email once they RSVP') }}</span>
+                                        </li>
+                                        <li class="flex gap-2">
+                                            <span class="text-accent-cyan">•</span>
+                                            <span>{{ __('You can edit event details anytime before the event date') }}</span>
+                                        </li>
+                                        <li class="flex gap-2">
+                                            <span class="text-accent-cyan">•</span>
+                                            <span>{{ __('Consider setting a maximum capacity for physical events') }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </form>
-        </x-card>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex items-center justify-between gap-3 mt-6">
+                <a href="{{ route('events.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
+                    {{ __('Cancel') }}
+                </a>
+                <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-accent-emerald to-accent-cyan px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {{ __('Create Event') }}
+                </button>
+            </div>
+        </form>
     </div>
 </x-app-layout>

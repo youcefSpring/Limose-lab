@@ -40,7 +40,7 @@ class ExperimentController extends Controller
             $query->where('user_id', auth()->id());
         }
 
-        $experiments = $query->latest('experiment_date')->paginate(12);
+        $experiments = $query->latest('experiment_date')->paginate(20);
 
         return view('experiments.index', compact('experiments'));
     }
@@ -152,7 +152,7 @@ class ExperimentController extends Controller
     public function uploadFile(Request $request, Experiment $experiment)
     {
         $validated = $request->validate([
-            'file' => 'required|file|max:10240',
+            'file' => 'required|file|mimes:jpeg,jpg,png,gif,svg,webp,pdf,doc,docx,odt,txt|max:10240',
             'file_name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);

@@ -1,5 +1,5 @@
 {{-- Nexus Sidebar Navigation --}}
-<aside id="sidebar" class="sidebar fixed {{ app()->getLocale() === 'ar' ? 'right-0' : 'left-0' }} top-0 h-screen w-64 glass border-{{ app()->getLocale() === 'ar' ? 'l' : 'r' }} border-black/5 dark:border-white/5 flex flex-col z-50 -translate-x-full {{ app()->getLocale() === 'ar' ? 'translate-x-full' : '' }}">
+<aside id="sidebar" data-turbo-permanent class="sidebar fixed {{ app()->getLocale() === 'ar' ? 'right-0' : 'left-0' }} top-0 h-screen w-64 glass border-{{ app()->getLocale() === 'ar' ? 'l' : 'r' }} border-black/5 dark:border-white/5 flex flex-col z-50 lg:translate-x-0 -translate-x-full {{ app()->getLocale() === 'ar' ? 'lg:translate-x-0 translate-x-full' : '' }}">
     {{-- Logo --}}
     <div class="p-6 border-b border-black/5 dark:border-white/5">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3">

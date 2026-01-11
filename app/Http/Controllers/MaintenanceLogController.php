@@ -48,7 +48,7 @@ class MaintenanceLogController extends Controller
             $query->where('technician_id', $request->technician);
         }
 
-        $logs = $query->latest('scheduled_date')->paginate(12);
+        $logs = $query->latest('scheduled_date')->paginate(20);
 
         return view('maintenance.index', compact('logs'));
     }

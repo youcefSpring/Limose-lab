@@ -43,7 +43,7 @@ class ReservationController extends Controller
             });
         }
 
-        $reservations = $query->latest()->paginate(10);
+        $reservations = $query->latest()->paginate(20);
 
         return view('reservations.index', compact('reservations'));
     }

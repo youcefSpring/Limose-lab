@@ -14,8 +14,7 @@
         </div>
     </header>
 
-    <div class="max-w-4xl">
-        <form method="POST" action="{{ route('publications.update', $publication) }}" enctype="multipart/form-data" class="space-y-6">
+    <form method="POST" action="{{ route('publications.update', $publication) }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -125,7 +124,7 @@
                     <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{{ __('Separate multiple authors with commas') }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Type -->
                     <div>
                         <label for="type" class="block text-sm font-medium mb-2">
@@ -177,7 +176,7 @@
                     </div>
 
                     <!-- Publication Date -->
-                    <div>
+                    <div class="md:col-span-2 lg:col-span-3">
                         <label for="publication_date" class="block text-sm font-medium mb-2">
                             {{ __('Publication Date') }}
                         </label>
@@ -194,33 +193,7 @@
             <div class="glass-card rounded-2xl p-5 lg:p-6">
                 <h2 class="text-lg font-semibold mb-5">{{ __('Publication Details') }}</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- Journal -->
-                    <div>
-                        <label for="journal" class="block text-sm font-medium mb-2">
-                            {{ __('Journal') }}
-                        </label>
-                        <input type="text" name="journal" id="journal" value="{{ old('journal', $publication->journal) }}"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all @error('journal') border-accent-rose @enderror"
-                            placeholder="{{ __('e.g., Nature, Science') }}">
-                        @error('journal')
-                            <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Conference -->
-                    <div>
-                        <label for="conference" class="block text-sm font-medium mb-2">
-                            {{ __('Conference') }}
-                        </label>
-                        <input type="text" name="conference" id="conference" value="{{ old('conference', $publication->conference) }}"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all @error('conference') border-accent-rose @enderror"
-                            placeholder="{{ __('e.g., IEEE Conference 2024') }}">
-                        @error('conference')
-                            <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                        @enderror
-                    </div>
-
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Publisher -->
                     <div>
                         <label for="publisher" class="block text-sm font-medium mb-2">
@@ -272,6 +245,32 @@
                             <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <!-- Journal -->
+                    <div class="md:col-span-2 lg:col-span-2">
+                        <label for="journal" class="block text-sm font-medium mb-2">
+                            {{ __('Journal') }}
+                        </label>
+                        <input type="text" name="journal" id="journal" value="{{ old('journal', $publication->journal) }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all @error('journal') border-accent-rose @enderror"
+                            placeholder="{{ __('e.g., Nature, Science') }}">
+                        @error('journal')
+                            <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Conference -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="conference" class="block text-sm font-medium mb-2">
+                            {{ __('Conference') }}
+                        </label>
+                        <input type="text" name="conference" id="conference" value="{{ old('conference', $publication->conference) }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all @error('conference') border-accent-rose @enderror"
+                            placeholder="{{ __('e.g., IEEE Conference 2024') }}">
+                        @error('conference')
+                            <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
@@ -279,7 +278,7 @@
             <div class="glass-card rounded-2xl p-5 lg:p-6">
                 <h2 class="text-lg font-semibold mb-5">{{ __('Identifiers & Links') }}</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- DOI -->
                     <div>
                         <label for="doi" class="block text-sm font-medium mb-2">
@@ -307,7 +306,7 @@
                     </div>
 
                     <!-- URL -->
-                    <div class="md:col-span-2">
+                    <div class="md:col-span-2 lg:col-span-1">
                         <label for="url" class="block text-sm font-medium mb-2">
                             {{ __('URL') }}
                         </label>
@@ -399,43 +398,13 @@
             <div class="glass-card rounded-2xl p-5 lg:p-6">
                 <h2 class="text-lg font-semibold mb-5">{{ __('Publication File') }}</h2>
 
-                @if($publication->pdf_file)
-                    <div class="mb-5 p-4 bg-accent-emerald/10 border border-accent-emerald/20 rounded-xl">
-                        <div class="flex items-center gap-3">
-                            <svg class="w-5 h-5 text-accent-emerald" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                            </svg>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-zinc-800 dark:text-white">{{ __('Current PDF file') }}</p>
-                                <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ basename($publication->pdf_file) }}</p>
-                            </div>
-                            <a href="{{ Storage::url($publication->pdf_file) }}" target="_blank" class="text-sm text-accent-indigo hover:text-accent-violet transition-colors">
-                                {{ __('View') }}
-                            </a>
-                        </div>
-                    </div>
-                @endif
-
-                <div class="flex justify-center px-6 pt-8 pb-8 border-2 border-dashed border-black/10 dark:border-white/10 rounded-xl hover:border-accent-indigo/50 dark:hover:border-accent-indigo/50 transition-colors bg-white dark:bg-surface-700/30">
-                    <div class="space-y-3 text-center">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent-indigo/10 mb-2">
-                            <svg class="w-8 h-8 text-accent-indigo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <div class="flex text-sm justify-center">
-                            <label for="pdf_file" class="relative cursor-pointer rounded-md font-medium text-accent-indigo hover:text-accent-violet transition-colors px-2">
-                                <span>{{ __('Upload new PDF file') }}</span>
-                                <input id="pdf_file" name="pdf_file" type="file" class="sr-only" accept="application/pdf">
-                            </label>
-                            <p class="text-zinc-500 dark:text-zinc-400">{{ __('or drag and drop') }}</p>
-                        </div>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('PDF up to 10MB') }}</p>
-                    </div>
-                </div>
-                @error('pdf_file')
-                    <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                @enderror
+                <x-file-upload
+                    name="pdf_file"
+                    label="{{ __('PDF File') }}"
+                    accept=".pdf,.doc,.docx,.odt"
+                    maxSize="10MB"
+                    :currentFile="isset($publication) && $publication->pdf_file ? asset('storage/' . $publication->pdf_file) : null"
+                />
             </div>
 
             <!-- Form Actions -->
@@ -451,5 +420,4 @@
                 </button>
             </div>
         </form>
-    </div>
 </x-app-layout>

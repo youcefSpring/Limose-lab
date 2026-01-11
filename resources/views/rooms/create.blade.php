@@ -14,7 +14,7 @@
         </div>
     </header>
 
-    <div class="max-w-3xl">
+    <div class="w-full">
         <form method="POST" action="{{ route('rooms.store') }}" class="space-y-6">
             @csrf
 

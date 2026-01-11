@@ -14,7 +14,7 @@
         </div>
     </header>
 
-    <div class="max-w-4xl">
+    <div>
         <form method="POST" action="{{ route('users.update', $user) }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
@@ -23,7 +23,7 @@
             <div class="glass-card rounded-2xl p-5 lg:p-6">
                 <h2 class="text-lg font-semibold mb-5">{{ __('Basic Information') }}</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Name -->
                     <div>
                         <label for="name" class="block text-sm font-medium mb-2">
@@ -38,7 +38,7 @@
                     </div>
 
                     <!-- Email -->
-                    <div>
+                    <div class="md:col-span-2 lg:col-span-2">
                         <label for="email" class="block text-sm font-medium mb-2">
                             {{ __('Email Address') }} <span class="text-accent-rose">*</span>
                         </label>
@@ -94,35 +94,28 @@
                     </div>
 
                     <!-- Avatar -->
-                    <div>
-                        <label for="avatar" class="block text-sm font-medium mb-2">
-                            {{ __('Profile Picture') }}
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <x-file-upload
+                            name="avatar"
+                            label="{{ __('Profile Picture') }}"
+                            accept="image/*"
+                            maxSize="2MB"
+                            :currentFile="isset($user) && $user->avatar ? asset('storage/' . $user->avatar) : null"
+                        />
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="bio" class="block text-sm font-medium mb-2">
+                            {{ __('Bio') }}
                         </label>
-                        @if($user->avatar)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-16 h-16 rounded-full object-cover">
-                            </div>
-                        @endif
-                        <input type="file" name="avatar" id="avatar" accept="image/*"
-                            class="block w-full py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-violet/50 focus:border-accent-violet transition-all @error('avatar') border-accent-rose @enderror">
-                        <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ __('Max size: 2MB') }}</p>
-                        @error('avatar')
+                        <textarea name="bio" id="bio" rows="3"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-violet/50 focus:border-accent-violet transition-all resize-none @error('bio') border-accent-rose @enderror"
+                            placeholder="{{ __('Brief description about the user...') }}">{{ old('bio', $user->bio) }}</textarea>
+                        @error('bio')
                             <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
-                </div>
-
-                <!-- Bio -->
-                <div class="mt-5">
-                    <label for="bio" class="block text-sm font-medium mb-2">
-                        {{ __('Bio') }}
-                    </label>
-                    <textarea name="bio" id="bio" rows="3"
-                        class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-violet/50 focus:border-accent-violet transition-all resize-none @error('bio') border-accent-rose @enderror"
-                        placeholder="{{ __('Brief description about the user...') }}">{{ old('bio', $user->bio) }}</textarea>
-                    @error('bio')
-                        <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                    @enderror
                 </div>
             </div>
 
@@ -131,7 +124,7 @@
                 <h2 class="text-lg font-semibold mb-2">{{ __('Change Password') }}</h2>
                 <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-5">{{ __('Leave blank to keep current password') }}</p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm font-medium mb-2">

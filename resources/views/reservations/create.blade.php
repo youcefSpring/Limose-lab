@@ -14,56 +14,70 @@
         </div>
     </header>
 
-    <div class="max-w-4xl">
-        <form method="POST" action="{{ route('reservations.store') }}" class="space-y-6" x-data="reservationForm()">
+    <form method="POST" action="{{ route('reservations.store') }}" x-data="reservationForm()">
             @csrf
 
-            <!-- Material Selection Section -->
-            <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Select Equipment') }}</h2>
+            <!-- Equipment & Quantity Section -->
+            <div class="glass-card rounded-2xl p-6 mb-5">
+                <h2 class="text-lg font-semibold mb-5">{{ __('Equipment Selection') }}</h2>
 
-                <div>
-                    <label for="material_id" class="block text-sm font-medium mb-2">
-                        {{ __('Material / Equipment') }} <span class="text-accent-rose">*</span>
-                    </label>
-                    <select name="material_id" id="material_id" required x-model="materialId" @change="checkAvailability()"
-                        class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('material_id') border-accent-rose @enderror">
-                        <option value="">{{ __('Select a material') }}</option>
-                        @foreach($materials ?? [] as $material)
-                            <option value="{{ $material->id }}"
-                                data-quantity="{{ $material->quantity }}"
-                                data-name="{{ $material->name }}"
-                                {{ old('material_id', request('material')) == $material->id ? 'selected' : '' }}>
-                                {{ $material->name }} ({{ __('Available') }}: {{ $material->quantity }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('material_id')
-                        <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                    @enderror
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Material Selection -->
+                    <div class="lg:col-span-2">
+                        <label for="material_id" class="block text-sm font-medium mb-2">
+                            {{ __('Material / Equipment') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <select name="material_id" id="material_id" required x-model="materialId" @change="checkAvailability()"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('material_id') border-accent-rose @enderror">
+                            <option value="">{{ __('Select a material') }}</option>
+                            @foreach($materials ?? [] as $material)
+                                <option value="{{ $material->id }}"
+                                    data-quantity="{{ $material->quantity }}"
+                                    data-name="{{ $material->name }}"
+                                    {{ old('material_id', request('material')) == $material->id ? 'selected' : '' }}>
+                                    {{ $material->name }} ({{ __('Available') }}: {{ $material->quantity }})
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('material_id')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Quantity -->
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium mb-2">
+                            {{ __('Quantity') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <input type="number" name="quantity" id="quantity" required
+                            min="1" :max="maxQuantity"
+                            value="{{ old('quantity', 1) }}"
+                            x-model="quantity" @change="checkAvailability()"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('quantity') border-accent-rose @enderror">
+                        @error('quantity')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Selected Material Info -->
                 <div x-show="materialId" x-cloak class="mt-4">
-                    <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-violet">
-                        <div class="flex items-center gap-3">
-                            <svg class="h-5 w-5 text-accent-violet flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="glass rounded-xl p-3 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-violet text-sm">
+                        <div class="flex items-center gap-2">
+                            <svg class="h-4 w-4 text-accent-violet flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                             </svg>
-                            <div class="text-sm">
-                                <strong x-text="materialName" class="font-semibold"></strong><br>
-                                {{ __('Available quantity') }}: <strong x-text="maxQuantity" class="font-semibold font-mono"></strong>
-                            </div>
+                            <span><strong x-text="materialName"></strong> - {{ __('Available quantity') }}: <strong x-text="maxQuantity" class="font-mono"></strong></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Reservation Period Section -->
-            <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Reservation Period') }}</h2>
+            <!-- Reservation Details Section -->
+            <div class="glass-card rounded-2xl p-6 mb-5">
+                <h2 class="text-lg font-semibold mb-5">{{ __('Reservation Details') }}</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Start Date -->
                     <div>
                         <label for="start_date" class="block text-sm font-medium mb-2">
@@ -73,9 +87,9 @@
                             min="{{ date('Y-m-d') }}"
                             value="{{ old('start_date') }}"
                             x-model="startDate" @change="checkAvailability()"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('start_date') border-accent-rose @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('start_date') border-accent-rose @enderror">
                         @error('start_date')
-                            <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
@@ -88,134 +102,86 @@
                             min="{{ date('Y-m-d') }}"
                             value="{{ old('end_date') }}"
                             x-model="endDate" @change="checkAvailability()"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('end_date') border-accent-rose @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('end_date') border-accent-rose @enderror">
                         @error('end_date')
-                            <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Duration Display (Read-only visual) -->
+                    <div x-show="duration > 0" x-cloak>
+                        <label class="block text-sm font-medium mb-2">{{ __('Duration') }}</label>
+                        <div class="py-2.5 px-4 bg-zinc-50 dark:bg-surface-700/30 border border-black/10 dark:border-white/10 rounded-xl text-sm font-mono" :class="duration > 30 ? 'text-accent-rose' : ''">
+                            <span x-text="duration"></span> {{ __('days') }}
+                            <span x-show="duration > 30" class="text-xs">({{ __('Max: 30') }})</span>
+                        </div>
+                    </div>
+
+                    <!-- Purpose (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <label for="purpose" class="block text-sm font-medium mb-2">
+                            {{ __('Purpose of Reservation') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <textarea name="purpose" id="purpose" rows="3" required
+                            placeholder="{{ __('Please describe the purpose of this reservation...') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('purpose') border-accent-rose @enderror">{{ old('purpose') }}</textarea>
+                        @error('purpose')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Notes (Full Width) -->
+                    <div class="lg:col-span-3">
+                        <label for="notes" class="block text-sm font-medium mb-2">
+                            {{ __('Additional Notes') }}
+                        </label>
+                        <textarea name="notes" id="notes" rows="2"
+                            placeholder="{{ __('Any additional information...') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('notes') border-accent-rose @enderror">{{ old('notes') }}</textarea>
+                        @error('notes')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <!-- Duration Info -->
-                <div x-show="duration > 0" x-cloak class="mt-4">
-                    <div class="glass-card rounded-xl p-4" :class="duration > 30 ? 'border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-rose' : 'border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-cyan'">
-                        <div class="flex items-center gap-3">
-                            <svg class="h-5 w-5 flex-shrink-0" :class="duration > 30 ? 'text-accent-rose' : 'text-accent-cyan'" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                            </svg>
-                            <div class="text-sm">
-                                {{ __('Reservation Duration') }}: <strong x-text="duration" class="font-semibold font-mono"></strong> {{ __('days') }}
-                                <span x-show="duration > 30" class="text-accent-rose font-medium">
-                                    ({{ __('Maximum allowed') }}: 30 {{ __('days') }})
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quantity Section -->
-            <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Quantity Required') }}</h2>
-
-                <div>
-                    <label for="quantity" class="block text-sm font-medium mb-2">
-                        {{ __('Quantity') }} <span class="text-accent-rose">*</span>
-                    </label>
-                    <input type="number" name="quantity" id="quantity" required
-                        min="1" :max="maxQuantity"
-                        value="{{ old('quantity', 1) }}"
-                        x-model="quantity" @change="checkAvailability()"
-                        class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('quantity') border-accent-rose @enderror">
-                    @error('quantity')
-                        <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                    @enderror>
-                </div>
-
-                <!-- Availability Check Result -->
-                <div x-show="checking" x-cloak class="mt-4">
-                    <div class="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
-                        <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                <!-- Availability Status -->
+                <div x-show="checking || availabilityChecked" x-cloak class="mt-4">
+                    <div x-show="checking" class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                        <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
                         {{ __('Checking availability...') }}
                     </div>
-                </div>
 
-                <div x-show="availabilityChecked && !checking" x-cloak class="mt-4">
-                    <div class="glass-card rounded-xl p-4" :class="available ? 'border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-emerald' : 'border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-rose'">
-                        <div class="flex items-center gap-3">
-                            <svg class="h-5 w-5 flex-shrink-0" :class="available ? 'text-accent-emerald' : 'text-accent-rose'" fill="currentColor" viewBox="0 0 20 20">
+                    <div x-show="!checking && availabilityChecked" class="glass rounded-xl p-3 text-sm border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4" :class="available ? 'border-accent-emerald' : 'border-accent-rose'">
+                        <div class="flex items-center gap-2">
+                            <svg class="h-4 w-4 flex-shrink-0" :class="available ? 'text-accent-emerald' : 'text-accent-rose'" fill="currentColor" viewBox="0 0 20 20">
                                 <path x-show="available" fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                 <path x-show="!available" fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                             </svg>
-                            <div class="text-sm">
-                                <span x-show="available">
-                                    {{ __('Material is available for the selected dates and quantity') }}
-                                </span>
-                                <span x-show="!available">
-                                    {{ __('Material is not available. Please check conflicts or adjust your reservation.') }}
-                                </span>
-                            </div>
+                            <span x-show="available">{{ __('Material is available for the selected dates and quantity') }}</span>
+                            <span x-show="!available">{{ __('Material is not available. Please check conflicts or adjust your reservation.') }}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Purpose & Notes Section -->
-            <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Reservation Details') }}</h2>
-
-                <!-- Purpose -->
-                <div class="mb-5">
-                    <label for="purpose" class="block text-sm font-medium mb-2">
-                        {{ __('Purpose of Reservation') }} <span class="text-accent-rose">*</span>
-                    </label>
-                    <textarea name="purpose" id="purpose" rows="4" required
-                        placeholder="{{ __('Please describe the purpose of this reservation...') }}"
-                        class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('purpose') border-accent-rose @enderror">{{ old('purpose') }}</textarea>
-                    @error('purpose')
-                        <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                    @enderror
-                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                        {{ __('Provide a detailed explanation of why you need this equipment') }}
-                    </p>
-                </div>
-
-                <!-- Notes (Optional) -->
-                <div>
-                    <label for="notes" class="block text-sm font-medium mb-2">
-                        {{ __('Additional Notes') }}
-                    </label>
-                    <textarea name="notes" id="notes" rows="2"
-                        placeholder="{{ __('Any additional information...') }}"
-                        class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('notes') border-accent-rose @enderror">{{ old('notes') }}</textarea>
-                    @error('notes')
-                        <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Important Information -->
-            <div class="glass-card rounded-2xl p-5 lg:p-6 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-cyan">
+            <!-- Important Information (Compact Banner) -->
+            <div class="glass rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-cyan/50 mb-5">
                 <div class="flex items-start gap-3">
-                    <svg class="h-5 w-5 text-accent-cyan flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="h-4 w-4 text-accent-cyan flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                     </svg>
-                    <div>
-                        <strong class="font-semibold">{{ __('Important Information') }}:</strong>
-                        <ul class="list-disc {{ app()->getLocale() === 'ar' ? 'mr-5' : 'ml-5' }} mt-2 text-sm space-y-1 text-zinc-600 dark:text-zinc-300">
-                            <li>{{ __('Maximum 3 active reservations per user') }}</li>
-                            <li>{{ __('Maximum reservation duration is 30 days') }}</li>
-                            <li>{{ __('Reservation must be approved by material manager') }}</li>
-                            <li>{{ __('You will be notified once your reservation is reviewed') }}</li>
-                        </ul>
+                    <div class="text-xs text-zinc-600 dark:text-zinc-300">
+                        <strong class="font-semibold text-sm">{{ __('Important') }}:</strong>
+                        {{ __('Maximum 3 active reservations per user') }} • {{ __('Maximum duration is 30 days') }} • {{ __('Approval required by material manager') }}
                     </div>
                 </div>
             </div>
 
             <!-- Form Actions -->
-            <div class="flex items-center justify-end gap-3 pt-2">
+            <div class="flex items-center justify-between gap-3">
                 <a href="{{ route('reservations.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
                     {{ __('Cancel') }}
                 </a>
@@ -227,7 +193,6 @@
                 </button>
             </div>
         </form>
-    </div>
 
     @push('scripts')
     <script>

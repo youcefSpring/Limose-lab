@@ -18,7 +18,7 @@ class MaterialCategoryController extends Controller
 
         $categories = MaterialCategory::withCount('materials')
             ->orderBy('name')
-            ->paginate(15);
+            ->paginate(20);
 
         return view('material-categories.index', compact('categories'));
     }

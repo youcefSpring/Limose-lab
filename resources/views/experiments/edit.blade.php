@@ -12,111 +12,34 @@
         </div>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
         <x-card>
             <form method="POST" action="{{ route('experiments.update', $experiment) }}" class="space-y-6">
                 @csrf
                 @method('PUT')
 
-                <!-- Project Selection -->
-                <div>
-                    <label for="project_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Project') }} <span class="text-red-500">*</span>
-                    </label>
-                    <select name="project_id" id="project_id" required
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('project_id') border-red-500 @enderror">
-                        <option value="">{{ __('Select a project') }}</option>
-                        @foreach($projects ?? [] as $project)
-                            <option value="{{ $project->id }}" {{ old('project_id', $experiment->project_id) == $project->id ? 'selected' : '' }}>
-                                {{ $project->title }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('project_id')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
+                <!-- Primary Information Grid (3 columns) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Project Selection -->
+                    <div>
+                        <label for="project_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Project') }} <span class="text-red-500">*</span>
+                        </label>
+                        <select name="project_id" id="project_id" required
+                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('project_id') border-red-500 @enderror">
+                            <option value="">{{ __('Select a project') }}</option>
+                            @foreach($projects ?? [] as $project)
+                                <option value="{{ $project->id }}" {{ old('project_id', $experiment->project_id) == $project->id ? 'selected' : '' }}>
+                                    {{ $project->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('project_id')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                <!-- Title -->
-                <div>
-                    <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Experiment Title') }} <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="title" id="title" required value="{{ old('title', $experiment->title) }}"
-                        placeholder="{{ __('Enter experiment title...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('title') border-red-500 @enderror">
-                    @error('title')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Description -->
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Description') }} <span class="text-red-500">*</span>
-                    </label>
-                    <textarea name="description" id="description" rows="4" required
-                        placeholder="{{ __('Provide a detailed description of the experiment...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror">{{ old('description', $experiment->description) }}</textarea>
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Hypothesis -->
-                <div>
-                    <label for="hypothesis" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Hypothesis') }}
-                    </label>
-                    <textarea name="hypothesis" id="hypothesis" rows="3"
-                        placeholder="{{ __('State your hypothesis...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('hypothesis') border-red-500 @enderror">{{ old('hypothesis', $experiment->hypothesis) }}</textarea>
-                    @error('hypothesis')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Procedure -->
-                <div>
-                    <label for="procedure" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Procedure') }}
-                    </label>
-                    <textarea name="procedure" id="procedure" rows="5"
-                        placeholder="{{ __('Describe the experimental procedure step by step...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('procedure') border-red-500 @enderror">{{ old('procedure', $experiment->procedure) }}</textarea>
-                    @error('procedure')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Results -->
-                <div>
-                    <label for="results" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Results') }}
-                    </label>
-                    <textarea name="results" id="results" rows="5"
-                        placeholder="{{ __('Document the experiment results...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('results') border-red-500 @enderror">{{ old('results', $experiment->results) }}</textarea>
-                    @error('results')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Conclusions -->
-                <div>
-                    <label for="conclusions" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Conclusions') }}
-                    </label>
-                    <textarea name="conclusions" id="conclusions" rows="4"
-                        placeholder="{{ __('Summarize your conclusions and findings...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('conclusions') border-red-500 @enderror">{{ old('conclusions', $experiment->conclusions) }}</textarea>
-                    @error('conclusions')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Date and Duration -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Experiment Date -->
                     <div>
                         <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ __('Experiment Date') }} <span class="text-red-500">*</span>
@@ -129,6 +52,53 @@
                         @enderror
                     </div>
 
+                    <!-- Status -->
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Status') }} <span class="text-red-500">*</span>
+                        </label>
+                        <select name="status" id="status" required
+                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('status') border-red-500 @enderror">
+                            <option value="planned" {{ old('status', $experiment->status) == 'planned' ? 'selected' : '' }}>{{ __('Planned') }}</option>
+                            <option value="in_progress" {{ old('status', $experiment->status) == 'in_progress' ? 'selected' : '' }}>{{ __('In Progress') }}</option>
+                            <option value="completed" {{ old('status', $experiment->status) == 'completed' ? 'selected' : '' }}>{{ __('Completed') }}</option>
+                            <option value="cancelled" {{ old('status', $experiment->status) == 'cancelled' ? 'selected' : '' }}>{{ __('Cancelled') }}</option>
+                        </select>
+                        @error('status')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Title (Full Width) -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ __('Experiment Title') }} <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="title" id="title" required value="{{ old('title', $experiment->title) }}"
+                        placeholder="{{ __('Enter experiment title...') }}"
+                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('title') border-red-500 @enderror">
+                    @error('title')
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Secondary Information Grid (3 columns) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Description (2 columns) -->
+                    <div class="md:col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Description') }} <span class="text-red-500">*</span>
+                        </label>
+                        <textarea name="description" id="description" rows="4" required
+                            placeholder="{{ __('Provide a detailed description of the experiment...') }}"
+                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror">{{ old('description', $experiment->description) }}</textarea>
+                        @error('description')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Duration -->
                     <div>
                         <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ __('Duration') }} ({{ __('hours') }})
@@ -143,21 +113,59 @@
                     </div>
                 </div>
 
-                <!-- Status -->
+                <!-- Hypothesis (Full Width) -->
                 <div>
-                    <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Status') }} <span class="text-red-500">*</span>
+                    <label for="hypothesis" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ __('Hypothesis') }}
                     </label>
-                    <select name="status" id="status" required
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('status') border-red-500 @enderror">
-                        <option value="planned" {{ old('status', $experiment->status) == 'planned' ? 'selected' : '' }}>{{ __('Planned') }}</option>
-                        <option value="in_progress" {{ old('status', $experiment->status) == 'in_progress' ? 'selected' : '' }}>{{ __('In Progress') }}</option>
-                        <option value="completed" {{ old('status', $experiment->status) == 'completed' ? 'selected' : '' }}>{{ __('Completed') }}</option>
-                        <option value="cancelled" {{ old('status', $experiment->status) == 'cancelled' ? 'selected' : '' }}>{{ __('Cancelled') }}</option>
-                    </select>
-                    @error('status')
+                    <textarea name="hypothesis" id="hypothesis" rows="3"
+                        placeholder="{{ __('State your hypothesis...') }}"
+                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('hypothesis') border-red-500 @enderror">{{ old('hypothesis', $experiment->hypothesis) }}</textarea>
+                    @error('hypothesis')
                         <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                     @enderror
+                </div>
+
+                <!-- Procedure (Full Width) -->
+                <div>
+                    <label for="procedure" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ __('Procedure') }}
+                    </label>
+                    <textarea name="procedure" id="procedure" rows="5"
+                        placeholder="{{ __('Describe the experimental procedure step by step...') }}"
+                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('procedure') border-red-500 @enderror">{{ old('procedure', $experiment->procedure) }}</textarea>
+                    @error('procedure')
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Results and Conclusions Grid (3 columns) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Results (2 columns) -->
+                    <div class="md:col-span-2">
+                        <label for="results" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Results') }}
+                        </label>
+                        <textarea name="results" id="results" rows="5"
+                            placeholder="{{ __('Document the experiment results...') }}"
+                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('results') border-red-500 @enderror">{{ old('results', $experiment->results) }}</textarea>
+                        @error('results')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Conclusions (1 column) -->
+                    <div>
+                        <label for="conclusions" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Conclusions') }}
+                        </label>
+                        <textarea name="conclusions" id="conclusions" rows="5"
+                            placeholder="{{ __('Summarize your conclusions and findings...') }}"
+                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('conclusions') border-red-500 @enderror">{{ old('conclusions', $experiment->conclusions) }}</textarea>
+                        @error('conclusions')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Form Actions -->

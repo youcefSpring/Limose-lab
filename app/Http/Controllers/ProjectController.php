@@ -28,7 +28,7 @@ class ProjectController extends Controller
             $query->where('status', $request->status);
         }
 
-        $projects = $query->latest()->paginate(10);
+        $projects = $query->latest()->paginate(20);
 
         return view('projects.index', compact('projects'));
     }

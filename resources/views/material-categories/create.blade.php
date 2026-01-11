@@ -14,7 +14,7 @@
         </div>
     </header>
 
-    <div class="max-w-2xl">
+    <div class="w-full">
         <form method="POST" action="{{ route('material-categories.store') }}" class="space-y-6">
             @csrf
 

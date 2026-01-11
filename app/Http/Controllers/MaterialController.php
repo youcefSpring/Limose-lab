@@ -34,7 +34,7 @@ class MaterialController extends Controller
             $query->where('category_id', $request->category);
         }
 
-        $materials = $query->with('category')->paginate(12);
+        $materials = $query->with('category')->paginate(20);
         $categories = \App\Models\MaterialCategory::orderBy('name')->get();
 
         return view('materials.index', compact('materials', 'categories'));
@@ -45,7 +45,8 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        return view('materials.create');
+        $categories = \App\Models\MaterialCategory::orderBy('name')->get();
+        return view('materials.create', compact('categories'));
     }
 
     /**
@@ -90,7 +91,8 @@ class MaterialController extends Controller
      */
     public function edit(Material $material)
     {
-        return view('materials.edit', compact('material'));
+        $categories = \App\Models\MaterialCategory::orderBy('name')->get();
+        return view('materials.edit', compact('material', 'categories'));
     }
 
     /**

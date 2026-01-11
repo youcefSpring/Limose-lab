@@ -22,7 +22,7 @@ class EventController extends Controller
             $query->where('event_date', '<=', now());
         }
 
-        $events = $query->withCount('attendees')->orderBy('event_date', 'desc')->paginate(10);
+        $events = $query->withCount('attendees')->orderBy('event_date', 'desc')->paginate(20);
 
         return view('events.index', compact('events'));
     }

@@ -36,7 +36,7 @@ class UserController extends Controller
             $query->role($request->role);
         }
 
-        $users = $query->latest()->paginate(15);
+        $users = $query->latest()->paginate(20);
 
         return view('users.index', compact('users'));
     }

@@ -13,8 +13,11 @@
             <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         @endif
 
+        <!-- Turbo for SPA-like navigation -->
+        <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/dist/turbo.es2017-umd.js"></script>
+
         <!-- Styles -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             tailwind.config = {
@@ -135,13 +138,13 @@
     <body class="min-h-screen text-zinc-800 dark:text-white overflow-x-hidden {{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-outfit' }}">
         <div class="flex">
             <!-- Mobile Overlay -->
-            <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 opacity-0 invisible" onclick="toggleSidebar()"></div>
+            <div id="sidebar-overlay" data-turbo-permanent class="sidebar-overlay fixed inset-0 bg-black/50 z-40 opacity-0 invisible" onclick="toggleSidebar()"></div>
 
             <!-- Sidebar -->
             @include('layouts.navigation')
 
             <!-- Main Content -->
-            <main class="flex-1 p-4 sm:p-6 lg:p-8 lg:{{ app()->getLocale() === 'ar' ? 'mr' : 'ml' }}-72">
+            <main class="flex-1 p-4 sm:p-6 lg:p-8 lg:{{ app()->getLocale() === 'ar' ? 'mr' : 'ml' }}-64">
                 <!-- Flash Messages -->
                 @if(session('success'))
                     <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
@@ -187,14 +190,26 @@
             </main>
         </div>
 
+        <!-- Alpine.js and Axios -->
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+
         <!-- Scripts -->
         <script>
             // Initialize theme from localStorage or default to dark
-            if (localStorage.getItem('theme') === 'light') {
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
+            function initializeTheme() {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.remove('dark');
+                } else {
+                    document.documentElement.classList.add('dark');
+                }
             }
+
+            // Initialize on first load
+            initializeTheme();
+
+            // Re-initialize theme after Turbo navigation (for browser back/forward)
+            document.addEventListener('turbo:load', initializeTheme);
 
             function toggleTheme() {
                 const html = document.documentElement;
@@ -216,7 +231,8 @@
                 @if(app()->getLocale() === 'ar')
                     sidebar.classList.toggle('translate-x-full');
                 @endif
-                hamburger.classList.toggle('active');
+
+                if (hamburger) hamburger.classList.toggle('active');
 
                 if (sidebar.classList.contains('-translate-x-full') || sidebar.classList.contains('translate-x-full')) {
                     overlay.classList.add('opacity-0', 'invisible');
@@ -227,12 +243,19 @@
                 }
             }
 
-            // Close sidebar when clicking outside on mobile
-            document.addEventListener('DOMContentLoaded', function() {
-                const sidebar = document.getElementById('sidebar');
-                if (window.innerWidth >= 1024) {
-                    sidebar.classList.remove('-translate-x-full', 'translate-x-full');
+            // Close mobile sidebar on navigation
+            document.addEventListener('turbo:before-visit', function() {
+                if (window.innerWidth < 1024) {
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar && !sidebar.classList.contains('-translate-x-full') && !sidebar.classList.contains('translate-x-full')) {
+                        toggleSidebar();
+                    }
                 }
+            });
+
+            // Scroll to top on navigation
+            document.addEventListener('turbo:load', function() {
+                window.scrollTo(0, 0);
             });
         </script>
         @stack('scripts')

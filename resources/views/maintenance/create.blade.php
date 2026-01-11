@@ -12,7 +12,7 @@
         </div>
     </x-slot>
 
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="w-full">
         <x-card>
             <form method="POST" action="{{ route('maintenance.store') }}" class="space-y-6">
                 @csrf
@@ -36,38 +36,25 @@
                     @enderror
                 </div>
 
-                <!-- Type -->
-                <div>
-                    <label for="maintenance_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Maintenance Type') }} <span class="text-red-500">*</span>
-                    </label>
-                    <select name="maintenance_type" id="maintenance_type" required
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('maintenance_type') border-red-500 @enderror">
-                        <option value="preventive" {{ old('maintenance_type', 'preventive') == 'preventive' ? 'selected' : '' }}>{{ __('Preventive') }}</option>
-                        <option value="corrective" {{ old('maintenance_type') == 'corrective' ? 'selected' : '' }}>{{ __('Corrective') }}</option>
-                        <option value="inspection" {{ old('maintenance_type') == 'inspection' ? 'selected' : '' }}>{{ __('Inspection') }}</option>
-                        <option value="calibration" {{ old('maintenance_type') == 'calibration' ? 'selected' : '' }}>{{ __('Calibration') }}</option>
-                    </select>
-                    @error('maintenance_type')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Type -->
+                    <div>
+                        <label for="maintenance_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{ __('Maintenance Type') }} <span class="text-red-500">*</span>
+                        </label>
+                        <select name="maintenance_type" id="maintenance_type" required
+                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('maintenance_type') border-red-500 @enderror">
+                            <option value="preventive" {{ old('maintenance_type', 'preventive') == 'preventive' ? 'selected' : '' }}>{{ __('Preventive') }}</option>
+                            <option value="corrective" {{ old('maintenance_type') == 'corrective' ? 'selected' : '' }}>{{ __('Corrective') }}</option>
+                            <option value="inspection" {{ old('maintenance_type') == 'inspection' ? 'selected' : '' }}>{{ __('Inspection') }}</option>
+                            <option value="calibration" {{ old('maintenance_type') == 'calibration' ? 'selected' : '' }}>{{ __('Calibration') }}</option>
+                        </select>
+                        @error('maintenance_type')
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                <!-- Description -->
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Description') }} <span class="text-red-500">*</span>
-                    </label>
-                    <textarea name="description" id="description" rows="3" required
-                        placeholder="{{ __('Describe the maintenance activity...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Scheduled Date and Status -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Scheduled Date -->
                     <div>
                         <label for="scheduled_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ __('Scheduled Date') }} <span class="text-red-500">*</span>
@@ -80,6 +67,7 @@
                         @enderror
                     </div>
 
+                    <!-- Status -->
                     <div>
                         <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ __('Status') }} <span class="text-red-500">*</span>
@@ -94,10 +82,8 @@
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
-                </div>
 
-                <!-- Technician and Cost -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Technician -->
                     <div>
                         <label for="technician_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ __('Technician') }}
@@ -116,6 +102,7 @@
                         @enderror
                     </div>
 
+                    <!-- Cost -->
                     <div>
                         <label for="cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             {{ __('Cost') }} ({{ __('USD') }})
@@ -128,6 +115,19 @@
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ __('Description') }} <span class="text-red-500">*</span>
+                    </label>
+                    <textarea name="description" id="description" rows="3" required
+                        placeholder="{{ __('Describe the maintenance activity...') }}"
+                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Notes -->

@@ -14,8 +14,7 @@
         </div>
     </header>
 
-    <div class="max-w-2xl">
-        <form method="POST" action="{{ route('material-categories.update', $materialCategory) }}" class="space-y-6">
+    <form method="POST" action="{{ route('material-categories.update', $materialCategory) }}" class="space-y-6">
             @csrf
             @method('PUT')
 
@@ -79,5 +78,4 @@
                 </button>
             </div>
         </form>
-    </div>
 </x-app-layout>

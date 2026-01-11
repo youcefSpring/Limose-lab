@@ -56,7 +56,7 @@ class PublicationController extends Controller
             });
         }
 
-        $publications = $query->latest()->paginate(15);
+        $publications = $query->latest()->paginate(20);
 
         return view('publications.index', compact('publications'));
     }
@@ -90,7 +90,7 @@ class PublicationController extends Controller
             });
         }
 
-        $publications = $query->latest('publication_date')->paginate(12);
+        $publications = $query->latest('publication_date')->paginate(20);
         $featured = Publication::public()->published()->featured()->limit(3)->get();
 
         return view('frontend.publications', compact('publications', 'featured'));
@@ -131,7 +131,7 @@ class PublicationController extends Controller
             'doi' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:50',
             'url' => 'nullable|url|max:255',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
+            'pdf_file' => 'nullable|file|mimes:pdf,doc,docx,odt|max:10240',
             'type' => 'required|in:journal,conference,book,chapter,thesis,preprint,other',
             'status' => 'required|in:published,in_press,submitted,draft',
             'publication_date' => 'nullable|date',
@@ -213,7 +213,7 @@ class PublicationController extends Controller
             'doi' => 'nullable|string|max:255',
             'isbn' => 'nullable|string|max:50',
             'url' => 'nullable|url|max:255',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
+            'pdf_file' => 'nullable|file|mimes:pdf,doc,docx,odt|max:10240',
             'type' => 'required|in:journal,conference,book,chapter,thesis,preprint,other',
             'status' => 'required|in:published,in_press,submitted,draft',
             'publication_date' => 'nullable|date',

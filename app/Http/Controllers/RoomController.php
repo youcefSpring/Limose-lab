@@ -20,7 +20,7 @@ class RoomController extends Controller
 
         $rooms = Room::with('roomType')
             ->orderBy('room_number')
-            ->paginate(12);
+            ->paginate(20);
 
         return view('rooms.index', compact('rooms'));
     }
