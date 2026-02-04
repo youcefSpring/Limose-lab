@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Services\CacheService;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+    public function __construct(
+        private CacheService $cacheService
+    ) {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -63,6 +68,9 @@ class ProjectController extends Controller
 
         Project::create($validated);
 
+        // Clear project caches
+        $this->cacheService->clearProjectCaches();
+
         return redirect()->route('projects.index')->with('success', __('Project created successfully.'));
     }
 
@@ -103,6 +111,9 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
+        // Clear project caches
+        $this->cacheService->clearProjectCaches();
+
         return redirect()->route('projects.show', $project)->with('success', __('Project updated successfully.'));
     }
 
@@ -112,6 +123,9 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
+
+        // Clear project caches
+        $this->cacheService->clearProjectCaches();
 
         return redirect()->route('projects.index')->with('success', __('Project deleted successfully.'));
     }

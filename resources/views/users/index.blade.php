@@ -76,7 +76,7 @@
     @if(isset($users) && $users->total() > 0)
         <div class="glass-card rounded-xl px-4 py-3 mb-6 flex items-center justify-between">
             <span class="text-sm text-zinc-600 dark:text-zinc-300">
-                {{ __('Found') }} <strong class="font-semibold text-zinc-900 dark:text-white">{{ $users->total() }}</strong> {{ __('users') }}
+                Found <strong class="font-semibold text-zinc-900 dark:text-white">{{ $users->total() }}</strong> users
             </span>
             @if(request()->hasAny(['search', 'status', 'role']))
                 <a href="{{ route('users.index') }}" class="text-sm text-accent-amber hover:text-accent-coral transition-colors font-medium">
@@ -209,9 +209,9 @@
         <!-- Pagination -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-sm text-zinc-600 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-medium">{{ $users->firstItem() }}</span>
-                {{ __('to') }} <span class="font-medium">{{ $users->lastItem() }}</span>
-                {{ __('of') }} <span class="font-medium">{{ $users->total() }}</span> {{ __('users') }}
+                Showing <span class="font-medium">{{ $users->firstItem() }}</span>
+                to <span class="font-medium">{{ $users->lastItem() }}</span>
+                of <span class="font-medium">{{ $users->total() }}</span> users
             </div>
             <div>
                 {{ $users->appends(request()->query())->links() }}

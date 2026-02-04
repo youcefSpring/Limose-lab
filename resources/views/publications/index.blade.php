@@ -89,7 +89,7 @@
     @if(isset($publications) && $publications->total() > 0)
         <div class="glass-card rounded-xl px-4 py-3 mb-6 flex items-center justify-between">
             <span class="text-sm text-zinc-600 dark:text-zinc-300">
-                {{ __('Found') }} <strong class="font-semibold text-zinc-900 dark:text-white">{{ $publications->total() }}</strong> {{ __('publications') }}
+                Found <strong class="font-semibold text-zinc-900 dark:text-white">{{ $publications->total() }}</strong> publications
             </span>
             @if(request()->hasAny(['search', 'type', 'year', 'status']))
                 <a href="{{ route('publications.index') }}" class="text-sm text-accent-indigo hover:text-accent-violet transition-colors font-medium">
@@ -236,9 +236,9 @@
         <!-- Pagination -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-sm text-zinc-600 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-medium">{{ $publications->firstItem() }}</span>
-                {{ __('to') }} <span class="font-medium">{{ $publications->lastItem() }}</span>
-                {{ __('of') }} <span class="font-medium">{{ $publications->total() }}</span> {{ __('publications') }}
+                Showing <span class="font-medium">{{ $publications->firstItem() }}</span>
+                to <span class="font-medium">{{ $publications->lastItem() }}</span>
+                of <span class="font-medium">{{ $publications->total() }}</span> publications
             </div>
             <div>
                 {{ $publications->appends(request()->query())->links() }}

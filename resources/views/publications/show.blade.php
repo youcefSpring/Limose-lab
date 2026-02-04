@@ -1,40 +1,32 @@
 <x-app-layout>
-    <!-- Header -->
-    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
-        <div class="flex items-center gap-3">
-            <a href="{{ route('publications.index') }}" class="p-2 rounded-xl glass hover:glass-card transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ app()->getLocale() === 'ar' ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7' }}"/>
-                </svg>
-            </a>
-            <div class="flex-1">
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Publication Details') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ ucfirst($publication->type) }} • {{ $publication->year }}</p>
-            </div>
-        </div>
-        <div class="flex items-center gap-2">
-            @can('update', $publication)
-                <a href="{{ route('publications.edit', $publication) }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
-                    {{ __('Edit') }}
-                </a>
-            @endcan
-            @can('delete', $publication)
-                <form method="POST" action="{{ route('publications.destroy', $publication) }}" onsubmit="return confirm('{{ __('Are you sure you want to delete this publication?') }}')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent-rose/10 text-accent-rose hover:bg-accent-rose/20 text-sm font-medium transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
-                        {{ __('Delete') }}
-                    </button>
-                </form>
-            @endcan
-        </div>
-    </header>
+    <!-- Breadcrumbs -->
+    <x-breadcrumbs :items="[
+        ['label' => __('Publications'), 'url' => route('publications.index')],
+        ['label' => $publication->title]
+    ]" />
+
+    <!-- Page Header -->
+    <x-ui.page-header
+        :title="__('Publication Details')"
+        :description="ucfirst($publication->type) . ' • ' . $publication->year"
+        :backUrl="route('publications.index')"
+    >
+        @can('update', $publication)
+            <x-ui.button
+                variant="secondary"
+                href="{{ route('publications.edit', $publication) }}"
+                icon="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            >
+                {{ __('Edit') }}
+            </x-ui.button>
+        @endcan
+        @can('delete', $publication)
+            <x-ui.delete-confirm
+                :action="route('publications.destroy', $publication)"
+                variant="button"
+            />
+        @endcan
+    </x-ui.page-header>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         <!-- Main Content -->
@@ -62,14 +54,13 @@
                         @endif
                     </div>
                     <div class="flex gap-2 flex-wrap">
-                        <!-- Type Badge -->
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-accent-violet/10 text-accent-violet">
+                        <x-ui.badge variant="primary">
                             {{ ucfirst($publication->type) }}
-                        </span>
+                        </x-ui.badge>
                         @if($publication->is_featured)
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-accent-rose/10 text-accent-rose">
+                            <x-ui.badge variant="danger">
                                 ⭐ {{ __('Featured') }}
-                            </span>
+                            </x-ui.badge>
                         @endif
                     </div>
                 </div>
@@ -164,14 +155,18 @@
                     <div class="glass-card rounded-xl p-4">
                         <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Status') }}</dt>
                         <dd class="text-base font-semibold">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
-                                {{ $publication->status === 'published' ? 'bg-accent-emerald/10 text-accent-emerald' : '' }}
-                                {{ $publication->status === 'in_press' ? 'bg-accent-cyan/10 text-accent-cyan' : '' }}
-                                {{ $publication->status === 'submitted' ? 'bg-accent-amber/10 text-accent-amber' : '' }}
-                                {{ $publication->status === 'draft' ? 'bg-zinc-500/10 text-zinc-500' : '' }}">
-                                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                            @php
+                                $statusVariant = match($publication->status) {
+                                    'published' => 'success',
+                                    'in_press' => 'info',
+                                    'submitted' => 'warning',
+                                    'draft' => 'default',
+                                    default => 'default',
+                                };
+                            @endphp
+                            <x-ui.badge :variant="$statusVariant" dot="true">
                                 {{ __(ucfirst(str_replace('_', ' ', $publication->status))) }}
-                            </span>
+                            </x-ui.badge>
                         </dd>
                     </div>
                 </dl>
@@ -287,45 +282,48 @@
                     <div>
                         <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Current Status') }}</span>
                         <div class="mt-2">
-                            @if($publication->visibility === 'public')
-                                <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-accent-emerald/10 text-accent-emerald">
-                                    <span class="w-2 h-2 rounded-full bg-current"></span>
-                                    {{ __('Public') }}
-                                </span>
-                            @elseif($publication->visibility === 'pending')
-                                <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-accent-amber/10 text-accent-amber">
-                                    <span class="w-2 h-2 rounded-full bg-current"></span>
-                                    {{ __('Pending Approval') }}
-                                </span>
-                            @else
-                                <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-zinc-500/10 text-zinc-500">
-                                    <span class="w-2 h-2 rounded-full bg-current"></span>
-                                    {{ __('Private') }}
-                                </span>
-                            @endif
+                            @php
+                                $visibilityVariant = match($publication->visibility) {
+                                    'public' => 'success',
+                                    'pending' => 'warning',
+                                    default => 'default',
+                                };
+                                $visibilityLabel = match($publication->visibility) {
+                                    'public' => __('Public'),
+                                    'pending' => __('Pending Approval'),
+                                    default => __('Private'),
+                                };
+                            @endphp
+                            <x-ui.badge :variant="$visibilityVariant" dot="true" size="lg">
+                                {{ $visibilityLabel }}
+                            </x-ui.badge>
                         </div>
                     </div>
 
-                    @can('approve', App\Models\Publication::class)
+                    @can('approve', $publication)
                         @if($publication->visibility === 'pending')
                             <div class="pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
-                                <form method="POST" action="{{ route('publications.approve', $publication) }}">
+                                <form method="POST" action="{{ route('publications.approve', $publication) }}" class="w-full">
                                     @csrf
-                                    <button type="submit" class="w-full flex items-center justify-center gap-2 bg-accent-emerald px-4 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                        </svg>
+                                    <x-ui.button
+                                        variant="success"
+                                        type="submit"
+                                        icon="M5 13l4 4L19 7"
+                                        class="w-full justify-center"
+                                    >
                                         {{ __('Approve') }}
-                                    </button>
+                                    </x-ui.button>
                                 </form>
-                                <form method="POST" action="{{ route('publications.reject', $publication) }}">
+                                <form method="POST" action="{{ route('publications.reject', $publication) }}" class="w-full">
                                     @csrf
-                                    <button type="submit" class="w-full flex items-center justify-center gap-2 bg-accent-rose px-4 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                        </svg>
+                                    <x-ui.button
+                                        variant="danger"
+                                        type="submit"
+                                        icon="M6 18L18 6M6 6l12 12"
+                                        class="w-full justify-center"
+                                    >
                                         {{ __('Reject') }}
-                                    </button>
+                                    </x-ui.button>
                                 </form>
                             </div>
                         @endif
@@ -339,12 +337,12 @@
                 <div class="flex items-center gap-3">
                     <div class="h-12 w-12 rounded-full bg-gradient-to-br from-accent-indigo to-accent-violet flex items-center justify-center">
                         <span class="text-base font-semibold text-white">
-                            {{ substr($publication->user->name ?? 'U', 0, 2) }}
+                            {{ substr($publication->user?->name ?? 'U', 0, 2) }}
                         </span>
                     </div>
                     <div>
-                        <p class="font-medium">{{ $publication->user->name ?? __('Unknown User') }}</p>
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $publication->user->email ?? '' }}</p>
+                        <p class="font-medium">{{ $publication->user?->name ?? __('Unknown User') }}</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $publication->user?->email ?? '' }}</p>
                     </div>
                 </div>
                 <div class="mt-4 pt-4 border-t border-black/10 dark:border-white/10 text-sm text-zinc-500 dark:text-zinc-400">

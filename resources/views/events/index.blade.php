@@ -61,10 +61,10 @@
     </x-modal>
 
     <!-- Results Count -->
-    @if(isset($events) && $events->total() > 0)
+    @if(isset($events) && $events instanceof \Illuminate\Pagination\LengthAwarePaginator && $events->total() > 0)
         <div class="glass-card rounded-xl px-4 py-3 mb-6 flex items-center justify-between">
             <span class="text-sm text-zinc-600 dark:text-zinc-300">
-                {{ __('Found') }} <strong class="font-semibold text-zinc-900 dark:text-white">{{ $events->total() }}</strong> {{ __('events') }}
+                Found <strong class="font-semibold text-zinc-900 dark:text-white">{{ $events->total() }}</strong> events
             </span>
             @if(request()->hasAny(['search', 'type']))
                 <a href="{{ route('events.index') }}" class="text-sm text-accent-amber hover:text-accent-coral transition-colors font-medium">
@@ -201,9 +201,9 @@
         <!-- Pagination -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-sm text-zinc-600 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-medium">{{ $events->firstItem() }}</span>
-                {{ __('to') }} <span class="font-medium">{{ $events->lastItem() }}</span>
-                {{ __('of') }} <span class="font-medium">{{ $events->total() }}</span> {{ __('events') }}
+                Showing <span class="font-medium">{{ $events->firstItem() }}</span>
+                to <span class="font-medium">{{ $events->lastItem() }}</span>
+                of <span class="font-medium">{{ $events->total() }}</span> events
             </div>
             <div>
                 {{ $events->appends(request()->query())->links() }}

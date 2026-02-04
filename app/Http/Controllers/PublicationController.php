@@ -2,17 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePublicationRequest;
+use App\Http\Requests\UpdatePublicationRequest;
+use App\Mail\PublicationStatusChanged;
 use App\Models\Publication;
+use App\Models\Setting;
+use App\Services\CacheService;
+use App\Services\FileUploadService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class PublicationController extends Controller
 {
+    public function __construct(
+        private FileUploadService $fileService,
+        private CacheService $cacheService
+    ) {
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $query = Publication::with('user');
 
@@ -64,7 +78,7 @@ class PublicationController extends Controller
     /**
      * Display public publications (frontend)
      */
-    public function publicIndex(Request $request)
+    public function publicIndex(Request $request): View
     {
         $query = Publication::with('user')
             ->public()
@@ -91,7 +105,7 @@ class PublicationController extends Controller
         }
 
         $publications = $query->latest('publication_date')->paginate(20);
-        $featured = Publication::public()->published()->featured()->limit(3)->get();
+        $featured = Publication::with('user')->public()->published()->featured()->limit(3)->get();
 
         return view('frontend.publications', compact('publications', 'featured'));
     }
@@ -99,7 +113,7 @@ class PublicationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         Gate::authorize('create', Publication::class);
 
@@ -109,41 +123,16 @@ class PublicationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePublicationRequest $request): RedirectResponse
     {
-        Gate::authorize('create', Publication::class);
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'title_fr' => 'nullable|string|max:255',
-            'title_ar' => 'nullable|string|max:255',
-            'abstract' => 'nullable|string',
-            'abstract_fr' => 'nullable|string',
-            'abstract_ar' => 'nullable|string',
-            'authors' => 'required|string',
-            'journal' => 'nullable|string|max:255',
-            'conference' => 'nullable|string|max:255',
-            'publisher' => 'nullable|string|max:255',
-            'year' => 'required|integer|min:1900|max:' . (date('Y') + 5),
-            'volume' => 'nullable|string|max:50',
-            'issue' => 'nullable|string|max:50',
-            'pages' => 'nullable|string|max:50',
-            'doi' => 'nullable|string|max:255',
-            'isbn' => 'nullable|string|max:50',
-            'url' => 'nullable|url|max:255',
-            'pdf_file' => 'nullable|file|mimes:pdf,doc,docx,odt|max:10240',
-            'type' => 'required|in:journal,conference,book,chapter,thesis,preprint,other',
-            'status' => 'required|in:published,in_press,submitted,draft',
-            'publication_date' => 'nullable|date',
-            'keywords' => 'nullable|string',
-            'research_areas' => 'nullable|string',
-            'is_open_access' => 'boolean',
-            'citations_count' => 'nullable|integer|min:0',
-        ]);
-
-        // Handle PDF upload
+        // Handle PDF upload using FileUploadService
         if ($request->hasFile('pdf_file')) {
-            $validated['pdf_file'] = $request->file('pdf_file')->store('publications', 'public');
+            $fileData = $this->fileService->uploadPdf($request->file('pdf_file'), 'publications');
+            $validated['pdf_file'] = $fileData['path'];
+            $validated['pdf_original_name'] = $fileData['original_name'];
+            $validated['pdf_file_size'] = $fileData['size'];
         }
 
         // Set user_id
@@ -162,6 +151,9 @@ class PublicationController extends Controller
 
         $publication = Publication::create($validated);
 
+        // Clear publication caches
+        $this->cacheService->clearPublicationCaches();
+
         return redirect()->route('publications.index')
             ->with('success', __('Publication created successfully!'));
     }
@@ -169,7 +161,7 @@ class PublicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Publication $publication)
+    public function show(Publication $publication): View
     {
         Gate::authorize('view', $publication);
 
@@ -181,7 +173,7 @@ class PublicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Publication $publication)
+    public function edit(Publication $publication): View
     {
         Gate::authorize('update', $publication);
 
@@ -191,48 +183,21 @@ class PublicationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Publication $publication)
+    public function update(UpdatePublicationRequest $request, Publication $publication): RedirectResponse
     {
-        Gate::authorize('update', $publication);
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'title_fr' => 'nullable|string|max:255',
-            'title_ar' => 'nullable|string|max:255',
-            'abstract' => 'nullable|string',
-            'abstract_fr' => 'nullable|string',
-            'abstract_ar' => 'nullable|string',
-            'authors' => 'required|string',
-            'journal' => 'nullable|string|max:255',
-            'conference' => 'nullable|string|max:255',
-            'publisher' => 'nullable|string|max:255',
-            'year' => 'required|integer|min:1900|max:' . (date('Y') + 5),
-            'volume' => 'nullable|string|max:50',
-            'issue' => 'nullable|string|max:50',
-            'pages' => 'nullable|string|max:50',
-            'doi' => 'nullable|string|max:255',
-            'isbn' => 'nullable|string|max:50',
-            'url' => 'nullable|url|max:255',
-            'pdf_file' => 'nullable|file|mimes:pdf,doc,docx,odt|max:10240',
-            'type' => 'required|in:journal,conference,book,chapter,thesis,preprint,other',
-            'status' => 'required|in:published,in_press,submitted,draft',
-            'publication_date' => 'nullable|date',
-            'keywords' => 'nullable|string',
-            'research_areas' => 'nullable|string',
-            'is_open_access' => 'boolean',
-            'citations_count' => 'nullable|integer|min:0',
-            'visibility' => 'nullable|in:public,private,pending',
-            'is_featured' => 'boolean',
-        ]);
-
-        // Handle PDF upload
+        // Handle PDF upload using FileUploadService
         if ($request->hasFile('pdf_file')) {
-            // Delete old PDF if exists
-            if ($publication->pdf_file && Storage::disk('public')->exists($publication->pdf_file)) {
-                Storage::disk('public')->delete($publication->pdf_file);
-            }
-
-            $validated['pdf_file'] = $request->file('pdf_file')->store('publications', 'public');
+            $fileData = $this->fileService->replaceFile(
+                $request->file('pdf_file'),
+                $publication->pdf_file,
+                'publications',
+                'pdf'
+            );
+            $validated['pdf_file'] = $fileData['path'];
+            $validated['pdf_original_name'] = $fileData['original_name'];
+            $validated['pdf_file_size'] = $fileData['size'];
         }
 
         // Admin can change visibility and featured status
@@ -245,6 +210,9 @@ class PublicationController extends Controller
 
         $publication->update($validated);
 
+        // Clear publication caches
+        $this->cacheService->clearPublicationCaches();
+
         return redirect()->route('publications.index')
             ->with('success', __('Publication updated successfully!'));
     }
@@ -252,16 +220,17 @@ class PublicationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Publication $publication)
+    public function destroy(Publication $publication): RedirectResponse
     {
         Gate::authorize('delete', $publication);
 
-        // Delete PDF file if exists
-        if ($publication->pdf_file && Storage::disk('public')->exists($publication->pdf_file)) {
-            Storage::disk('public')->delete($publication->pdf_file);
-        }
+        // Delete PDF file using FileUploadService
+        $this->fileService->deleteFile($publication->pdf_file);
 
         $publication->delete();
+
+        // Clear publication caches
+        $this->cacheService->clearPublicationCaches();
 
         return redirect()->route('publications.index')
             ->with('success', __('Publication deleted successfully!'));
@@ -270,11 +239,26 @@ class PublicationController extends Controller
     /**
      * Approve publication (admin only)
      */
-    public function approve(Publication $publication)
+    public function approve(Publication $publication): RedirectResponse
     {
         Gate::authorize('approve', $publication);
 
         $publication->update(['visibility' => 'public']);
+
+        // Send email notification to author
+        if (Setting::get('notify_user_on_status_change', true)) {
+            Mail::to($publication->user->email)
+                ->send(new PublicationStatusChanged($publication, 'approved'));
+        }
+
+        // Send notification to admin
+        if (Setting::get('notify_admin_on_submission', true)) {
+            $adminEmail = Setting::get('admin_notification_email');
+            if ($adminEmail) {
+                Mail::to($adminEmail)
+                    ->send(new PublicationStatusChanged($publication, 'approved'));
+            }
+        }
 
         return redirect()->back()
             ->with('success', __('Publication approved successfully!'));
@@ -283,11 +267,26 @@ class PublicationController extends Controller
     /**
      * Reject publication (admin only)
      */
-    public function reject(Publication $publication)
+    public function reject(Publication $publication): RedirectResponse
     {
         Gate::authorize('approve', $publication);
 
         $publication->update(['visibility' => 'private']);
+
+        // Send email notification to author
+        if (Setting::get('notify_user_on_status_change', true)) {
+            Mail::to($publication->user->email)
+                ->send(new PublicationStatusChanged($publication, 'rejected'));
+        }
+
+        // Send notification to admin
+        if (Setting::get('notify_admin_on_submission', true)) {
+            $adminEmail = Setting::get('admin_notification_email');
+            if ($adminEmail) {
+                Mail::to($adminEmail)
+                    ->send(new PublicationStatusChanged($publication, 'rejected'));
+            }
+        }
 
         return redirect()->back()
             ->with('success', __('Publication rejected!'));

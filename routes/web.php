@@ -8,12 +8,14 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExperimentController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\EventSubmissionController;
 use App\Http\Controllers\MaintenanceLogController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -62,6 +64,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('events/{event}/rsvp', [EventController::class, 'cancelRsvp'])->name('events.rsvp.cancel');
     Route::post('events/{event}/comments', [EventController::class, 'addComment'])->name('events.add-comment');
 
+    // Event Submissions Routes
+    Route::resource('events.submissions', EventSubmissionController::class);
+    Route::post('events/{event}/submissions/{submission}/accept', [EventSubmissionController::class, 'accept'])->name('events.submissions.accept');
+    Route::post('events/{event}/submissions/{submission}/reject', [EventSubmissionController::class, 'reject'])->name('events.submissions.reject');
+    Route::post('events/{event}/submissions/{submission}/revision', [EventSubmissionController::class, 'requestRevision'])->name('events.submissions.revision');
+
     // Maintenance Routes
     Route::resource('maintenance', MaintenanceLogController::class);
     Route::post('maintenance/{maintenance}/complete', [MaintenanceLogController::class, 'complete'])->name('maintenance.complete');
@@ -87,5 +95,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Public routes
 Route::get('/research/publications', [PublicationController::class, 'publicIndex'])->name('frontend.publications');
+
+// Locale switching route
+Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 require __DIR__.'/auth.php';

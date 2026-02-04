@@ -93,7 +93,7 @@
         <div class="glass-card rounded-xl px-4 py-3 mb-6">
             <div class="flex items-center justify-between text-sm">
                 <span class="text-zinc-500 dark:text-zinc-400">
-                    {{ __('Found') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->total() }}</span> {{ __('reservations') }}
+                    Found <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->total() }}</span> reservations
                 </span>
                 @if(request()->has('search') || request()->has('filter'))
                     <a href="{{ route('reservations.index') }}" class="text-accent-rose hover:underline">

@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
+use App\Services\CacheService;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
+    public function __construct(
+        private CacheService $cacheService
+    ) {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -74,6 +79,9 @@ class MaterialController extends Controller
 
         Material::create($validated);
 
+        // Clear material caches
+        $this->cacheService->clearMaterialCaches();
+
         return redirect()->route('materials.index')->with('success', __('Material created successfully.'));
     }
 
@@ -124,6 +132,9 @@ class MaterialController extends Controller
 
         $material->update($validated);
 
+        // Clear material caches
+        $this->cacheService->clearMaterialCaches();
+
         return redirect()->route('materials.show', $material)->with('success', __('Material updated successfully.'));
     }
 
@@ -138,6 +149,9 @@ class MaterialController extends Controller
         }
 
         $material->delete();
+
+        // Clear material caches
+        $this->cacheService->clearMaterialCaches();
 
         return redirect()->route('materials.index')->with('success', __('Material deleted successfully.'));
     }

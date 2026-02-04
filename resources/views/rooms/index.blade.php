@@ -6,12 +6,12 @@
             <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Manage laboratory and office rooms') }}</p>
         </div>
         @can('create', App\Models\Room::class)
-            <a href="{{ route('rooms.create') }}" class="flex items-center gap-2 bg-gradient-to-r from-accent-teal to-accent-cyan px-4 lg:px-5 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
+            <x-ui.button variant="info" href="{{ route('rooms.create') }}" size="md">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 {{ __('Add Room') }}
-            </a>
+            </x-ui.button>
         @endcan
     </header>
 
@@ -19,7 +19,7 @@
     @if(isset($rooms) && $rooms->total() > 0)
         <div class="glass-card rounded-xl px-4 py-3 mb-6">
             <span class="text-sm text-zinc-600 dark:text-zinc-300">
-                {{ __('Found') }} <strong class="font-semibold text-zinc-900 dark:text-white">{{ $rooms->total() }}</strong> {{ __('rooms') }}
+                Found <strong class="font-semibold text-zinc-900 dark:text-white">{{ $rooms->total() }}</strong> rooms
             </span>
         </div>
     @endif
@@ -96,34 +96,27 @@
                                 <!-- Actions -->
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-center gap-2">
-                                        <a href="{{ route('rooms.show', $room) }}"
-                                            class="p-2 rounded-lg hover:bg-accent-cyan/10 text-accent-cyan transition-colors"
-                                            title="{{ __('View') }}">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </a>
+                                        <x-ui.action-button
+                                            variant="view"
+                                            :href="route('rooms.show', $room)"
+                                            :title="__('View')"
+                                        />
                                         @can('update', $room)
-                                            <a href="{{ route('rooms.edit', $room) }}"
-                                                class="p-2 rounded-lg hover:bg-accent-violet/10 text-accent-violet transition-colors"
-                                                title="{{ __('Edit') }}">
-                                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                </svg>
-                                            </a>
+                                            <x-ui.action-button
+                                                variant="edit"
+                                                :href="route('rooms.edit', $room)"
+                                                :title="__('Edit')"
+                                            />
                                         @endcan
                                         @can('delete', $room)
                                             <form method="POST" action="{{ route('rooms.destroy', $room) }}" class="inline-block" onsubmit="return confirm('{{ __('Are you sure you want to delete this room?') }}')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                    class="p-2 rounded-lg hover:bg-accent-rose/10 text-accent-rose transition-colors"
-                                                    title="{{ __('Delete') }}">
-                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                    </svg>
-                                                </button>
+                                                <x-ui.action-button
+                                                    variant="delete"
+                                                    type="submit"
+                                                    :title="__('Delete')"
+                                                />
                                             </form>
                                         @endcan
                                     </div>
@@ -138,9 +131,9 @@
         <!-- Pagination -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-sm text-zinc-600 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-medium">{{ $rooms->firstItem() }}</span>
-                {{ __('to') }} <span class="font-medium">{{ $rooms->lastItem() }}</span>
-                {{ __('of') }} <span class="font-medium">{{ $rooms->total() }}</span> {{ __('rooms') }}
+                Showing <span class="font-medium">{{ $rooms->firstItem() }}</span>
+                to <span class="font-medium">{{ $rooms->lastItem() }}</span>
+                of <span class="font-medium">{{ $rooms->total() }}</span> rooms
             </div>
             <div>
                 {{ $rooms->appends(request()->query())->links() }}
@@ -159,12 +152,12 @@
                 {{ __('Get started by adding your first room.') }}
             </p>
             @can('create', App\Models\Room::class)
-                <a href="{{ route('rooms.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-teal to-accent-cyan px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity">
+                <x-ui.button variant="info" href="{{ route('rooms.create') }}" size="lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
                     {{ __('Add Room') }}
-                </a>
+                </x-ui.button>
             @endcan
         </div>
     @endif

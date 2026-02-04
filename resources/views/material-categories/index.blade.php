@@ -19,7 +19,7 @@
     @if(isset($categories) && $categories->total() > 0)
         <div class="glass-card rounded-xl px-4 py-3 mb-6">
             <span class="text-sm text-zinc-600 dark:text-zinc-300">
-                {{ __('Found') }} <strong class="font-semibold text-zinc-900 dark:text-white">{{ $categories->total() }}</strong> {{ __('categories') }}
+                Found <strong class="font-semibold text-zinc-900 dark:text-white">{{ $categories->total() }}</strong> categories
             </span>
         </div>
     @endif
@@ -106,9 +106,9 @@
         <!-- Pagination -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-sm text-zinc-600 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-medium">{{ $categories->firstItem() }}</span>
-                {{ __('to') }} <span class="font-medium">{{ $categories->lastItem() }}</span>
-                {{ __('of') }} <span class="font-medium">{{ $categories->total() }}</span> {{ __('categories') }}
+                Showing <span class="font-medium">{{ $categories->firstItem() }}</span>
+                to <span class="font-medium">{{ $categories->lastItem() }}</span>
+                of <span class="font-medium">{{ $categories->total() }}</span> categories
             </div>
             <div>
                 {{ $categories->appends(request()->query())->links() }}

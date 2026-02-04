@@ -76,7 +76,7 @@
     @if(isset($experiments) && $experiments->total() > 0)
         <div class="glass-card rounded-xl px-4 py-3 mb-6 flex items-center justify-between">
             <span class="text-sm text-zinc-600 dark:text-zinc-300">
-                {{ __('Found') }} <strong class="font-semibold text-zinc-900 dark:text-white">{{ $experiments->total() }}</strong> {{ __('experiments') }}
+                Found <strong class="font-semibold text-zinc-900 dark:text-white">{{ $experiments->total() }}</strong> experiments
             </span>
             @if(request()->hasAny(['search', 'status', 'project']))
                 <a href="{{ route('experiments.index') }}" class="text-sm text-accent-amber hover:text-accent-coral transition-colors font-medium">
@@ -201,9 +201,9 @@
         <!-- Pagination -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-sm text-zinc-600 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-medium">{{ $experiments->firstItem() }}</span>
-                {{ __('to') }} <span class="font-medium">{{ $experiments->lastItem() }}</span>
-                {{ __('of') }} <span class="font-medium">{{ $experiments->total() }}</span> {{ __('experiments') }}
+                Showing <span class="font-medium">{{ $experiments->firstItem() }}</span>
+                to <span class="font-medium">{{ $experiments->lastItem() }}</span>
+                of <span class="font-medium">{{ $experiments->total() }}</span> experiments
             </div>
             <div>
                 {{ $experiments->appends(request()->query())->links() }}

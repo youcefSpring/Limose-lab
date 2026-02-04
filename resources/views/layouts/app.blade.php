@@ -218,7 +218,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
 
-        <!-- Scripts -->
+        <!-- Main Scripts -->
         <script>
             // Initialize theme from localStorage or default to dark
             function initializeTheme() {
@@ -267,6 +267,19 @@
                 }
             }
 
+            // Prevent Alpine.js from re-initializing on permanent elements
+            document.addEventListener('turbo:before-render', (event) => {
+                // Remove x-data from permanent elements to prevent re-initialization
+                const permanentElements = event.detail.newBody.querySelectorAll('[data-turbo-permanent]');
+                permanentElements.forEach(el => {
+                    const original = document.querySelector(`[data-turbo-permanent][id="${el.id}"]`);
+                    if (original) {
+                        // Replace the new element with the original to keep Alpine state
+                        el.replaceWith(original);
+                    }
+                });
+            });
+
             // Close mobile sidebar on navigation
             document.addEventListener('turbo:before-visit', function() {
                 if (window.innerWidth < 1024) {
@@ -284,7 +297,80 @@
                     mainContent.scrollTop = 0;
                 }
                 window.scrollTo(0, 0);
+
+                // Update active nav items after Turbo navigation
+                updateActiveNavItem();
+
+                // Handle autofocus with Turbo - remove focus and re-apply
+                setTimeout(() => {
+                    const autofocusElement = document.querySelector('[autofocus]');
+                    if (autofocusElement) {
+                        // Blur any currently focused element first
+                        if (document.activeElement) {
+                            document.activeElement.blur();
+                        }
+                        // Then focus the autofocus element
+                        autofocusElement.focus();
+                    }
+                }, 100);
             });
+
+            // Function to update active navigation item based on current URL
+            function updateActiveNavItem() {
+                const currentPath = window.location.pathname;
+                const navItems = document.querySelectorAll('.nav-item');
+
+                navItems.forEach(item => {
+                    const href = item.getAttribute('href');
+                    const isActive = currentPath === href ||
+                                   (href !== '/' && currentPath.startsWith(href));
+
+                    if (isActive) {
+                        // Add active classes
+                        item.classList.add('active');
+                        item.classList.add('text-zinc-800', 'dark:text-white', 'bg-black/5', 'dark:bg-white/5');
+                        item.classList.remove('text-zinc-500', 'dark:text-zinc-400', 'hover:text-zinc-800', 'dark:hover:text-white', 'hover:bg-black/5', 'dark:hover:bg-white/5');
+
+                        // Add color to icon if it exists
+                        const svg = item.querySelector('svg');
+                        if (svg) {
+                            // Determine color based on route
+                            const colorClass = getColorForRoute(currentPath);
+                            if (colorClass) {
+                                svg.classList.add(colorClass);
+                            }
+                        }
+                    } else {
+                        // Remove active classes
+                        item.classList.remove('active');
+                        item.classList.remove('text-zinc-800', 'dark:text-white', 'bg-black/5', 'dark:bg-white/5');
+                        item.classList.add('text-zinc-500', 'dark:text-zinc-400', 'hover:text-zinc-800', 'dark:hover:text-white', 'hover:bg-black/5', 'dark:hover:bg-white/5');
+
+                        // Remove color from icon
+                        const svg = item.querySelector('svg');
+                        if (svg) {
+                            svg.classList.remove('text-accent-amber', 'text-accent-violet', 'text-accent-cyan', 'text-accent-teal', 'text-accent-coral', 'text-accent-rose', 'text-accent-emerald', 'text-accent-indigo');
+                        }
+                    }
+                });
+            }
+
+            // Get color class for route
+            function getColorForRoute(path) {
+                if (path.includes('/dashboard')) return 'text-accent-amber';
+                if (path.includes('/materials')) return 'text-accent-violet';
+                if (path.includes('/reservations')) return 'text-accent-cyan';
+                if (path.includes('/rooms')) return 'text-accent-teal';
+                if (path.includes('/maintenance')) return 'text-accent-coral';
+                if (path.includes('/projects')) return 'text-accent-rose';
+                if (path.includes('/experiments')) return 'text-accent-emerald';
+                if (path.includes('/publications')) return 'text-accent-indigo';
+                if (path.includes('/events')) return 'text-accent-amber';
+                if (path.includes('/users')) return 'text-accent-violet';
+                if (path.includes('/material-categories')) return 'text-accent-cyan';
+                if (path.includes('/settings')) return 'text-accent-rose';
+                return null;
+            }
         </script>
         @stack('scripts')
     </body>

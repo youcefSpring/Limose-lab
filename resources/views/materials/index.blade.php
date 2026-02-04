@@ -101,11 +101,11 @@
     </x-modal>
 
     <!-- Results Count -->
-    @if(isset($materials))
+    @if(isset($materials) && $materials instanceof \Illuminate\Pagination\LengthAwarePaginator)
         <div class="glass-card rounded-xl px-4 py-3 mb-6">
             <div class="flex items-center justify-between text-sm">
                 <span class="text-zinc-500 dark:text-zinc-400">
-                    {{ __('Found') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->total() }}</span> {{ __('materials') }}
+                    Found <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->total() }}</span> materials
                 </span>
                 @if(request()->has('search') || request()->has('status') || request()->has('category'))
                     <a href="{{ route('materials.index') }}" class="text-accent-rose hover:underline">
@@ -210,7 +210,7 @@
 
                                 <!-- Location -->
                                 <td class="px-4 py-3">
-                                    <span class="text-sm">{{ $material->location }}</span>
+                                    <span class="text-sm">{{ $material->location ?? '-' }}</span>
                                 </td>
 
                                 <!-- Actions -->
@@ -262,10 +262,10 @@
         <!-- Pagination -->
         <div class="flex items-center justify-between mt-6">
             <div class="text-sm text-zinc-500 dark:text-zinc-400">
-                {{ __('Showing') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->firstItem() }}</span>
-                {{ __('to') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->lastItem() }}</span>
-                {{ __('of') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->total() }}</span>
-                {{ __('materials') }}
+                Showing <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->firstItem() }}</span>
+                to <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->lastItem() }}</span>
+                of <span class="font-semibold text-zinc-800 dark:text-white">{{ $materials->total() }}</span>
+                materials
             </div>
             <div>
                 {{ $materials->appends(request()->query())->links() }}

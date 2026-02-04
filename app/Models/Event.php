@@ -91,6 +91,22 @@ class Event extends Model
     }
 
     /**
+     * Get the submissions for the event.
+     */
+    public function submissions(): HasMany
+    {
+        return $this->hasMany(EventSubmission::class);
+    }
+
+    /**
+     * Check if event accepts submissions.
+     */
+    public function acceptsSubmissions(): bool
+    {
+        return in_array($this->event_type, ['conference', 'workshop']);
+    }
+
+    /**
      * Scope a query to only include upcoming events.
      */
     public function scopeUpcoming($query)

@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventRSVPConfirmation;
 use App\Models\Event;
+use App\Models\Setting;
+use App\Services\CacheService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class EventController extends Controller
 {
+    public function __construct(
+        private CacheService $cacheService
+    ) {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -59,6 +67,9 @@ class EventController extends Controller
 
         Event::create($validated);
 
+        // Clear event caches
+        $this->cacheService->clearEventCaches();
+
         return redirect()->route('events.index')->with('success', __('Event created successfully.'));
     }
 
@@ -109,6 +120,9 @@ class EventController extends Controller
 
         $event->update($validated);
 
+        // Clear event caches
+        $this->cacheService->clearEventCaches();
+
         return redirect()->route('events.show', $event)->with('success', __('Event updated successfully.'));
     }
 
@@ -122,6 +136,9 @@ class EventController extends Controller
         }
 
         $event->delete();
+
+        // Clear event caches
+        $this->cacheService->clearEventCaches();
 
         return redirect()->route('events.index')->with('success', __('Event deleted successfully.'));
     }
@@ -143,6 +160,24 @@ class EventController extends Controller
 
         $event->attendees()->attach($user->id, ['status' => 'confirmed']);
 
+        // Send RSVP confirmation email
+        if (Setting::get('notify_user_on_event_rsvp', true)) {
+            Mail::to($user->email)
+                ->send(new EventRSVPConfirmation($event, $user));
+        }
+
+        // Notify admin
+        if (Setting::get('notify_admin_on_submission', true)) {
+            $adminEmail = Setting::get('admin_notification_email');
+            if ($adminEmail) {
+                Mail::to($adminEmail)
+                    ->send(new EventRSVPConfirmation($event, $user));
+            }
+        }
+
+        // Clear event caches
+        $this->cacheService->clearEventCaches();
+
         return redirect()->back()->with('success', __('You have successfully registered for this event.'));
     }
 
@@ -152,6 +187,9 @@ class EventController extends Controller
     public function cancelRsvp(Event $event)
     {
         $event->attendees()->detach(auth()->id());
+
+        // Clear event caches
+        $this->cacheService->clearEventCaches();
 
         return redirect()->back()->with('success', __('Your RSVP has been cancelled.'));
     }
