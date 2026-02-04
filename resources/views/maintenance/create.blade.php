@@ -1,95 +1,102 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center space-x-4 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-            <a href="{{ route('maintenance.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('maintenance.index') }}" class="p-2 rounded-xl glass hover:glass-card transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ app()->getLocale() === 'ar' ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7' }}"/>
                 </svg>
             </a>
-            <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Log Maintenance Activity') }}
-            </h2>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Log Maintenance Activity') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Record a new maintenance log') }}</p>
+            </div>
         </div>
-    </x-slot>
+    </header>
 
     <div class="w-full">
-        <x-card>
-            <form method="POST" action="{{ route('maintenance.store') }}" class="space-y-6">
-                @csrf
+        <form method="POST" action="{{ route('maintenance.store') }}">
+            @csrf
 
-                <!-- Material Selection -->
-                <div>
-                    <label for="material_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Select Equipment') }} <span class="text-red-500">*</span>
-                    </label>
-                    <select name="material_id" id="material_id" required
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('material_id') border-red-500 @enderror">
-                        <option value="">{{ __('Select equipment') }}</option>
-                        @foreach($materials ?? [] as $material)
-                            <option value="{{ $material->id }}" {{ old('material_id', request('material')) == $material->id ? 'selected' : '' }}>
-                                {{ $material->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('material_id')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
+            <div class="glass-card rounded-2xl p-6">
+                <div class="mb-6">
+                    <h2 class="text-lg font-semibold mb-1">{{ __('Maintenance Information') }}</h2>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Fill in the maintenance details') }}</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Type -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Material Selection - Full Width -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="material_id" class="block text-sm font-medium mb-2">
+                            {{ __('Select Equipment') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <select name="material_id" id="material_id" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all @error('material_id') border-accent-rose @enderror">
+                            <option value="">{{ __('Select equipment') }}</option>
+                            @foreach($materials ?? [] as $material)
+                                <option value="{{ $material->id }}" {{ old('material_id', request('material')) == $material->id ? 'selected' : '' }}>
+                                    {{ $material->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('material_id')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Maintenance Type -->
                     <div>
-                        <label for="maintenance_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('Maintenance Type') }} <span class="text-red-500">*</span>
+                        <label for="maintenance_type" class="block text-sm font-medium mb-2">
+                            {{ __('Maintenance Type') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="maintenance_type" id="maintenance_type" required
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('maintenance_type') border-red-500 @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all @error('maintenance_type') border-accent-rose @enderror">
                             <option value="preventive" {{ old('maintenance_type', 'preventive') == 'preventive' ? 'selected' : '' }}>{{ __('Preventive') }}</option>
                             <option value="corrective" {{ old('maintenance_type') == 'corrective' ? 'selected' : '' }}>{{ __('Corrective') }}</option>
                             <option value="inspection" {{ old('maintenance_type') == 'inspection' ? 'selected' : '' }}>{{ __('Inspection') }}</option>
                             <option value="calibration" {{ old('maintenance_type') == 'calibration' ? 'selected' : '' }}>{{ __('Calibration') }}</option>
                         </select>
                         @error('maintenance_type')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Scheduled Date -->
                     <div>
-                        <label for="scheduled_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('Scheduled Date') }} <span class="text-red-500">*</span>
+                        <label for="scheduled_date" class="block text-sm font-medium mb-2">
+                            {{ __('Scheduled Date') }} <span class="text-accent-rose">*</span>
                         </label>
                         <input type="date" name="scheduled_date" id="scheduled_date" required
                             value="{{ old('scheduled_date', date('Y-m-d')) }}"
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('scheduled_date') border-red-500 @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all @error('scheduled_date') border-accent-rose @enderror">
                         @error('scheduled_date')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Status -->
                     <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{ __('Status') }} <span class="text-red-500">*</span>
+                        <label for="status" class="block text-sm font-medium mb-2">
+                            {{ __('Status') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="status" id="status" required
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('status') border-red-500 @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all @error('status') border-accent-rose @enderror">
                             <option value="scheduled" {{ old('status', 'scheduled') == 'scheduled' ? 'selected' : '' }}>{{ __('Scheduled') }}</option>
                             <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>{{ __('In Progress') }}</option>
                             <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>{{ __('Completed') }}</option>
                         </select>
                         @error('status')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Technician -->
                     <div>
-                        <label for="technician_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label for="technician_id" class="block text-sm font-medium mb-2">
                             {{ __('Technician') }}
                         </label>
                         <select name="technician_id" id="technician_id"
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('technician_id') border-red-500 @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all @error('technician_id') border-accent-rose @enderror">
                             <option value="">{{ __('Select technician') }}</option>
                             @foreach($technicians ?? [] as $technician)
                                 <option value="{{ $technician->id }}" {{ old('technician_id', auth()->id()) == $technician->id ? 'selected' : '' }}>
@@ -98,61 +105,64 @@
                             @endforeach
                         </select>
                         @error('technician_id')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Cost -->
                     <div>
-                        <label for="cost" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <label for="cost" class="block text-sm font-medium mb-2">
                             {{ __('Cost') }} ({{ __('USD') }})
                         </label>
                         <input type="number" name="cost" id="cost" step="0.01" min="0"
                             value="{{ old('cost') }}"
                             placeholder="0.00"
-                            class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('cost') border-red-500 @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all font-mono @error('cost') border-accent-rose @enderror">
                         @error('cost')
-                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Description - Full Width -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="description" class="block text-sm font-medium mb-2">
+                            {{ __('Description') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <textarea name="description" id="description" rows="3" required
+                            placeholder="{{ __('Describe the maintenance activity...') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all resize-none @error('description') border-accent-rose @enderror">{{ old('description') }}</textarea>
+                        @error('description')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Notes - Full Width -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <label for="notes" class="block text-sm font-medium mb-2">
+                            {{ __('Additional Notes') }}
+                        </label>
+                        <textarea name="notes" id="notes" rows="2"
+                            placeholder="{{ __('Any additional information...') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-coral/50 focus:border-accent-coral transition-all resize-none @error('notes') border-accent-rose @enderror">{{ old('notes') }}</textarea>
+                        @error('notes')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
+            </div>
 
-                <!-- Description -->
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Description') }} <span class="text-red-500">*</span>
-                    </label>
-                    <textarea name="description" id="description" rows="3" required
-                        placeholder="{{ __('Describe the maintenance activity...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Notes -->
-                <div>
-                    <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{ __('Additional Notes') }}
-                    </label>
-                    <textarea name="notes" id="notes" rows="2"
-                        placeholder="{{ __('Any additional information...') }}"
-                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-blue-500 focus:border-blue-500 @error('notes') border-red-500 @enderror">{{ old('notes') }}</textarea>
-                    @error('notes')
-                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Form Actions -->
-                <div class="flex items-center justify-end space-x-4 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }} pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <a href="{{ route('maintenance.index') }}">
-                        <x-button variant="outline" type="button">{{ __('Cancel') }}</x-button>
-                    </a>
-                    <x-button variant="primary" type="submit">
-                        {{ __('Save Log') }}
-                    </x-button>
-                </div>
-            </form>
-        </x-card>
+            <!-- Form Actions -->
+            <div class="flex items-center justify-end gap-3 mt-6">
+                <x-ui.button variant="secondary" href="{{ route('maintenance.index') }}" size="md">
+                    {{ __('Cancel') }}
+                </x-ui.button>
+                <x-ui.button variant="success" type="submit" size="md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {{ __('Save Log') }}
+                </x-ui.button>
+            </div>
+        </form>
     </div>
 </x-app-layout>

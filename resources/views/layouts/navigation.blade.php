@@ -71,7 +71,7 @@
     </div>
 
     {{-- Navigation Links --}}
-    <nav class="flex-1 p-4 space-y-1 overflow-y-auto" id="sidebar-nav">
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto overflow-x-hidden" id="sidebar-nav">
         {{-- Dashboard --}}
         <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }} flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('dashboard') ? 'text-zinc-800 dark:text-white bg-black/5 dark:bg-white/5' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5' }} transition-all">
             <svg class="w-5 h-5 {{ request()->routeIs('dashboard') ? 'text-accent-amber' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,34 +255,36 @@
             </div>
         </div>
 
-        {{-- Language Switcher --}}
-        <div class="px-4 mt-4">
-            <x-language-switcher />
-        </div>
     </nav>
 
     {{-- User Profile Section --}}
-    <div class="p-4 border-t border-black/5 dark:border-white/5">
-        <div class="glass-card rounded-xl p-4">
-            <div class="flex items-center gap-3">
-                <div class="relative">
+    <div class="mt-auto p-4 border-t border-black/5 dark:border-white/5">
+        {{-- Language Switcher --}}
+        <div class="mb-3">
+            <x-language-switcher />
+        </div>
+
+        {{-- User Profile Card --}}
+        <div class="glass-card rounded-xl p-3">
+            <div class="flex items-center gap-2.5">
+                <div class="relative flex-shrink-0">
                     @if(auth()->user()->avatar)
-                        <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-10 h-10 rounded-full object-cover">
+                        <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover">
                     @else
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-accent-violet to-accent-cyan flex items-center justify-center text-white font-semibold">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-accent-violet to-accent-cyan flex items-center justify-center text-white font-semibold text-sm">
                             {{ substr(auth()->user()->name, 0, 1) }}
                         </div>
                     @endif
-                    <div class="absolute -bottom-0.5 {{ app()->getLocale() === 'ar' ? '-left-0.5' : '-right-0.5' }} w-3 h-3 bg-accent-emerald rounded-full border-2 border-white dark:border-surface-800"></div>
+                    <div class="absolute -bottom-0.5 {{ app()->getLocale() === 'ar' ? '-left-0.5' : '-right-0.5' }} w-2.5 h-2.5 bg-accent-emerald rounded-full border-2 border-white dark:border-surface-800"></div>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium truncate">{{ auth()->user()->name }}</p>
-                    <p class="text-xs text-zinc-500 truncate">{{ auth()->user()->email }}</p>
+                    <p class="text-xs font-medium truncate">{{ auth()->user()->name }}</p>
+                    <p class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">{{ auth()->user()->email }}</p>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" class="inline">
+                <form method="POST" action="{{ route('logout') }}" class="flex-shrink-0">
                     @csrf
-                    <button type="submit" class="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400 hover:text-accent-rose transition-colors" title="{{ __('Logout') }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="submit" class="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400 hover:text-accent-rose transition-colors" title="{{ __('Logout') }}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
                     </button>

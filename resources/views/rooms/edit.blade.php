@@ -45,30 +45,40 @@
                     />
 
                     <!-- Room Type -->
-                    <x-ui.select
-                        name="room_type_id"
-                        :label="__('Room Type')"
-                        :placeholder="__('Select room type')"
-                        :required="true"
-                    >
-                        @foreach($roomTypes as $type)
-                            <option value="{{ $type->id }}" {{ old('room_type_id', $room->room_type_id) == $type->id ? 'selected' : '' }}>
-                                {{ __(ucfirst(str_replace('_', ' ', $type->name))) }}
-                            </option>
-                        @endforeach
-                    </x-ui.select>
+                    <div>
+                        <label for="room_type_id" class="block text-sm font-medium mb-2">
+                            {{ __('Room Type') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <select name="room_type_id" id="room_type_id" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-teal/50 focus:border-accent-teal transition-all @error('room_type_id') border-accent-rose @enderror">
+                            <option value="">{{ __('Select room type') }}</option>
+                            @foreach($roomTypes as $type)
+                                <option value="{{ $type->id }}" {{ old('room_type_id', $room->room_type_id) == $type->id ? 'selected' : '' }}>
+                                    {{ __(ucfirst(str_replace('_', ' ', $type->name))) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('room_type_id')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <!-- Status -->
-                    <x-ui.select
-                        name="status"
-                        :label="__('Status')"
-                        :required="true"
-                    >
-                        <option value="available" {{ old('status', $room->status) == 'available' ? 'selected' : '' }}>{{ __('Available') }}</option>
-                        <option value="occupied" {{ old('status', $room->status) == 'occupied' ? 'selected' : '' }}>{{ __('Occupied') }}</option>
-                        <option value="maintenance" {{ old('status', $room->status) == 'maintenance' ? 'selected' : '' }}>{{ __('Maintenance') }}</option>
-                        <option value="reserved" {{ old('status', $room->status) == 'reserved' ? 'selected' : '' }}>{{ __('Reserved') }}</option>
-                    </x-ui.select>
+                    <div>
+                        <label for="status" class="block text-sm font-medium mb-2">
+                            {{ __('Status') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <select name="status" id="status" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-teal/50 focus:border-accent-teal transition-all @error('status') border-accent-rose @enderror">
+                            <option value="available" {{ old('status', $room->status) == 'available' ? 'selected' : '' }}>{{ __('Available') }}</option>
+                            <option value="occupied" {{ old('status', $room->status) == 'occupied' ? 'selected' : '' }}>{{ __('Occupied') }}</option>
+                            <option value="maintenance" {{ old('status', $room->status) == 'maintenance' ? 'selected' : '' }}>{{ __('Maintenance') }}</option>
+                            <option value="reserved" {{ old('status', $room->status) == 'reserved' ? 'selected' : '' }}>{{ __('Reserved') }}</option>
+                        </select>
+                        @error('status')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <!-- Capacity -->
                     <x-ui.input
@@ -90,39 +100,43 @@
 
                     <!-- Description - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
-                        <x-ui.textarea
-                            name="description"
-                            :label="__('Description')"
-                            :value="$room->description"
-                            :placeholder="__('Provide additional details about the room...')"
-                            rows="3"
-                        />
+                        <label for="description" class="block text-sm font-medium mb-2">
+                            {{ __('Description') }}
+                        </label>
+                        <textarea name="description" id="description" rows="3"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-teal/50 focus:border-accent-teal transition-all resize-none @error('description') border-accent-rose @enderror"
+                            placeholder="{{ __('Provide additional details about the room...') }}">{{ old('description', $room->description) }}</textarea>
+                        @error('description')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Equipment - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
-                        <x-ui.textarea
-                            name="equipment"
-                            :label="__('Equipment')"
-                            :value="$room->equipment"
-                            :placeholder="__('List available equipment (e.g., projector, whiteboard, computer...)')"
-                            rows="3"
-                        />
+                        <label for="equipment" class="block text-sm font-medium mb-2">
+                            {{ __('Equipment') }}
+                        </label>
+                        <textarea name="equipment" id="equipment" rows="3"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-teal/50 focus:border-accent-teal transition-all resize-none @error('equipment') border-accent-rose @enderror"
+                            placeholder="{{ __('List available equipment (e.g., projector, whiteboard, computer...)') }}">{{ old('equipment', $room->equipment) }}</textarea>
+                        @error('equipment')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </div>
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-3 mt-6">
-                <x-ui.button variant="secondary" href="{{ route('rooms.index') }}" size="md">
+                <a href="{{ route('rooms.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
                     {{ __('Cancel') }}
-                </x-ui.button>
-                <x-ui.button variant="success" type="submit" size="md">
+                </a>
+                <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     {{ __('Update Room') }}
-                </x-ui.button>
+                </button>
             </div>
         </form>
     </div>

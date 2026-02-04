@@ -28,7 +28,12 @@ class LocaleController extends Controller
         // Store locale in session
         Session::put('locale', $locale);
 
-        // Redirect back with success message
-        return redirect()->back()->with('success', __('Language changed successfully!'));
+        // Set the locale immediately for the redirect message
+        app()->setLocale($locale);
+
+        // Redirect back with full page reload (disable Turbo cache)
+        return redirect()->back()
+            ->with('success', __('Language changed successfully!'))
+            ->header('Turbo-Visit-Control', 'reload');
     }
 }

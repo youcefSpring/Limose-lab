@@ -58,7 +58,10 @@ class ReservationController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('reservations.create', compact('materials'));
+        // Get all users for admin to select from
+        $users = \App\Models\User::orderBy('name')->get();
+
+        return view('reservations.create', compact('materials', 'users'));
     }
 
     /**
@@ -67,6 +70,7 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'user_id' => 'nullable|exists:users,id',
             'material_id' => 'required|exists:materials,id',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
@@ -102,7 +106,13 @@ class ReservationController extends Controller
                 ->with('error', __('The material is already reserved for this period. Available: :count', ['count' => $material->quantity - $hasConflict]));
         }
 
-        $validated['user_id'] = auth()->id();
+        // Determine user_id: Admin can select user, regular users create for themselves
+        if (auth()->user()->hasRole('admin') && isset($validated['user_id'])) {
+            $validated['user_id'] = $validated['user_id'];
+        } else {
+            $validated['user_id'] = auth()->id();
+        }
+
         $validated['status'] = 'pending';
 
         Reservation::create($validated);
@@ -336,10 +346,54 @@ class ReservationController extends Controller
      */
     public function calendar()
     {
+        return view('reservations.calendar');
+    }
+
+    /**
+     * Get calendar data in JSON format for FullCalendar.
+     */
+    public function calendarData()
+    {
         $reservations = Reservation::with(['user', 'material'])
-            ->whereIn('status', ['pending', 'approved'])
+            ->whereIn('status', ['pending', 'approved', 'completed'])
             ->get();
 
-        return view('reservations.calendar', compact('reservations'));
+        $events = $reservations->map(function ($reservation) {
+            // Determine event color based on status
+            $color = '#3B82F6';
+            switch ($reservation->status) {
+                case 'pending':
+                    $color = '#f59e0b'; // amber
+                    break;
+                case 'approved':
+                    $color = '#10b981'; // emerald
+                    break;
+                case 'completed':
+                    $color = '#06b6d4'; // cyan
+                    break;
+                case 'rejected':
+                case 'cancelled':
+                    $color = '#f43f5e'; // rose
+                    break;
+            }
+
+            return [
+                'id' => $reservation->id,
+                'title' => $reservation->material->name . ' - ' . $reservation->user->name,
+                'start' => $reservation->start_date->format('Y-m-d'),
+                'end' => $reservation->end_date->copy()->addDay()->format('Y-m-d'), // FullCalendar end date is exclusive
+                'backgroundColor' => $color,
+                'borderColor' => $color,
+                'extendedProps' => [
+                    'status' => $reservation->status,
+                    'quantity' => $reservation->quantity,
+                    'purpose' => $reservation->purpose,
+                    'user' => $reservation->user->name,
+                    'material' => $reservation->material->name,
+                ]
+            ];
+        });
+
+        return response()->json($events);
     }
 }

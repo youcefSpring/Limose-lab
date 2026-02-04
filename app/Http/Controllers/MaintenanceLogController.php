@@ -81,6 +81,11 @@ class MaintenanceLogController extends Controller
             'status' => 'required|in:scheduled,in_progress,completed,cancelled',
         ]);
 
+        // Convert empty string to null for nullable fields
+        if (empty($validated['technician_id'])) {
+            $validated['technician_id'] = null;
+        }
+
         MaintenanceLog::create($validated);
 
         // Update material status if maintenance is scheduled
@@ -129,6 +134,11 @@ class MaintenanceLogController extends Controller
             'notes' => 'nullable|string',
             'status' => 'required|in:scheduled,in_progress,completed,cancelled',
         ]);
+
+        // Convert empty string to null for nullable fields
+        if (empty($validated['technician_id'])) {
+            $validated['technician_id'] = null;
+        }
 
         $maintenance->update($validated);
 

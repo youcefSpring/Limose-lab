@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reservations', ReservationController::class);
     Route::post('reservations/check-availability', [ReservationController::class, 'checkAvailability'])->name('reservations.check-availability');
     Route::get('reservations-calendar', [ReservationController::class, 'calendar'])->name('reservations.calendar');
+    Route::get('reservations-calendar/data', [ReservationController::class, 'calendarData'])->name('reservations.calendar.data');
     Route::post('reservations/{reservation}/approve', [ReservationController::class, 'approve'])->name('reservations.approve');
     Route::post('reservations/{reservation}/reject', [ReservationController::class, 'reject'])->name('reservations.reject');
     Route::post('reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');

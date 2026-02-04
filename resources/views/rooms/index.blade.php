@@ -6,12 +6,12 @@
             <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Manage laboratory and office rooms') }}</p>
         </div>
         @can('create', App\Models\Room::class)
-            <x-ui.button variant="info" href="{{ route('rooms.create') }}" size="md">
+            <a href="{{ route('rooms.create') }}" class="flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-4 lg:px-5 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 {{ __('Add Room') }}
-            </x-ui.button>
+            </a>
         @endcan
     </header>
 
@@ -152,12 +152,12 @@
                 {{ __('Get started by adding your first room.') }}
             </p>
             @can('create', App\Models\Room::class)
-                <x-ui.button variant="info" href="{{ route('rooms.create') }}" size="lg">
+                <a href="{{ route('rooms.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
                     {{ __('Add Room') }}
-                </x-ui.button>
+                </a>
             @endcan
         </div>
     @endif

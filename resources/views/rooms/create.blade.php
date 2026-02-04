@@ -123,15 +123,15 @@
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-3 mt-6">
-                <x-ui.button variant="secondary" href="{{ route('rooms.index') }}" size="md">
+                <a href="{{ route('rooms.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
                     {{ __('Cancel') }}
-                </x-ui.button>
-                <x-ui.button variant="success" type="submit" size="md">
+                </a>
+                <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-accent-emerald to-accent-cyan px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     {{ __('Create Room') }}
-                </x-ui.button>
+                </button>
             </div>
         </form>
     </div>

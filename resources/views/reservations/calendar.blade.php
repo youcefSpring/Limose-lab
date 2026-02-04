@@ -1,74 +1,166 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
+    <!-- Header -->
+    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
+        <div class="flex items-center gap-3">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ __('Reservations Calendar') }}
-                </h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {{ __('View all reservations in calendar format') }}
-                </p>
-            </div>
-            <div class="flex space-x-3 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-                <a href="{{ route('reservations.index') }}">
-                    <x-button variant="outline">
-                        <svg class="h-5 w-5 {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                        </svg>
-                        {{ __('List View') }}
-                    </x-button>
-                </a>
-                <a href="{{ route('reservations.create') }}">
-                    <x-button variant="primary">
-                        <svg class="h-5 w-5 {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                        </svg>
-                        {{ __('New Reservation') }}
-                    </x-button>
-                </a>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Reservations Calendar') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('View all reservations in calendar format') }}</p>
             </div>
         </div>
-    </x-slot>
+        <div class="flex items-center gap-3">
+            <x-ui.button variant="secondary" href="{{ route('reservations.index') }}" size="md">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                </svg>
+                {{ __('List View') }}
+            </x-ui.button>
+            <x-ui.button variant="primary" href="{{ route('reservations.create') }}" size="md">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                {{ __('New Reservation') }}
+            </x-ui.button>
+        </div>
+    </header>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Calendar Legend -->
-        <x-card class="mb-6">
-            <div class="flex flex-wrap items-center gap-4">
-                <div class="flex items-center space-x-2 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-                    <div class="h-4 w-4 rounded bg-yellow-500"></div>
-                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Pending') }}</span>
-                </div>
-                <div class="flex items-center space-x-2 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-                    <div class="h-4 w-4 rounded bg-green-500"></div>
-                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Approved') }}</span>
-                </div>
-                <div class="flex items-center space-x-2 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-                    <div class="h-4 w-4 rounded bg-blue-500"></div>
-                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Completed') }}</span>
-                </div>
-                <div class="flex items-center space-x-2 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
-                    <div class="h-4 w-4 rounded bg-red-500"></div>
-                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Rejected/Cancelled') }}</span>
-                </div>
+    <!-- Calendar Legend -->
+    <div class="glass-card rounded-2xl p-4 mb-6">
+        <div class="flex flex-wrap items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="h-3 w-3 rounded-full bg-accent-amber"></div>
+                <span class="text-sm font-medium">{{ __('Pending') }}</span>
             </div>
-        </x-card>
+            <div class="flex items-center gap-2">
+                <div class="h-3 w-3 rounded-full bg-accent-emerald"></div>
+                <span class="text-sm font-medium">{{ __('Approved') }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="h-3 w-3 rounded-full bg-accent-cyan"></div>
+                <span class="text-sm font-medium">{{ __('Completed') }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="h-3 w-3 rounded-full bg-accent-rose"></div>
+                <span class="text-sm font-medium">{{ __('Rejected/Cancelled') }}</span>
+            </div>
+        </div>
+    </div>
 
-        <!-- Calendar Container -->
-        <x-card>
-            <div id="calendar"></div>
-        </x-card>
+    <!-- Calendar Container -->
+    <div class="glass-card rounded-2xl p-6">
+        <div id="calendar"></div>
     </div>
 
     @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <style>
+        /* FullCalendar custom styling */
+        #calendar {
+            font-family: inherit;
+        }
+
+        .fc {
+            background: transparent;
+        }
+
+        .fc .fc-toolbar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: inherit;
+        }
+
+        .fc .fc-button {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: #3f3f46;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            text-transform: capitalize;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .dark .fc .fc-button {
+            background: rgba(37, 37, 50, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e4e4e7;
+        }
+
+        .fc .fc-button:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .dark .fc .fc-button:hover {
+            background: rgba(37, 37, 50, 0.95);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .fc .fc-button-primary:not(:disabled).fc-button-active {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            border-color: transparent;
+            color: white;
+        }
+
+        .fc .fc-daygrid-day-number,
+        .fc .fc-col-header-cell-cushion {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .fc .fc-day-today {
+            background: rgba(245, 158, 11, 0.1) !important;
+        }
+
+        .dark .fc-theme-standard td,
+        .dark .fc-theme-standard th {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .fc-theme-standard td,
+        .fc-theme-standard th {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .fc .fc-event {
+            border-radius: 0.375rem;
+            padding: 2px 4px;
+            font-size: 0.75rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .fc .fc-event:hover {
+            opacity: 0.8;
+        }
+    </style>
     @endpush
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js" data-turbo-track="reload"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        let calendarInstance = null;
+
+        function initializeCalendar() {
             const calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
+
+            if (!calendarEl) return;
+
+            // Check if FullCalendar is loaded
+            if (typeof FullCalendar === 'undefined') {
+                console.log('FullCalendar not loaded yet, retrying...');
+                setTimeout(initializeCalendar, 100);
+                return;
+            }
+
+            // Destroy existing calendar instance if it exists
+            if (calendarInstance) {
+                calendarInstance.destroy();
+            }
+
+            // Clear any existing content
+            calendarEl.innerHTML = '';
+
+            calendarInstance = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 headerToolbar: {
                     left: 'prev,next today',
@@ -83,21 +175,58 @@
                     week: '{{ __('Week') }}',
                     list: '{{ __('List') }}'
                 },
-                events: '/reservations/calendar/data',
+                height: 'auto',
+                events: function(info, successCallback, failureCallback) {
+                    fetch('{{ route('reservations.calendar.data') }}')
+                        .then(response => response.json())
+                        .then(data => successCallback(data))
+                        .catch(error => {
+                            console.error('Error fetching calendar data:', error);
+                            failureCallback(error);
+                        });
+                },
                 eventClick: function(info) {
-                    window.location.href = '/reservations/' + info.event.id;
+                    info.jsEvent.preventDefault();
+                    window.Turbo.visit('/reservations/' + info.event.id);
                 },
-                eventClassNames: function(arg) {
-                    return ['cursor-pointer', 'hover:opacity-80', 'transition-opacity'];
-                },
-                eventColor: '#3B82F6',
-                eventTimeFormat: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    meridiem: false
+                eventDidMount: function(info) {
+                    // Add custom styling based on status
+                    const status = info.event.extendedProps.status;
+                    let bgColor = '#3B82F6';
+
+                    switch(status) {
+                        case 'pending':
+                            bgColor = '#f59e0b'; // amber
+                            break;
+                        case 'approved':
+                            bgColor = '#10b981'; // emerald
+                            break;
+                        case 'completed':
+                            bgColor = '#06b6d4'; // cyan
+                            break;
+                        case 'rejected':
+                        case 'cancelled':
+                            bgColor = '#f43f5e'; // rose
+                            break;
+                    }
+
+                    info.el.style.backgroundColor = bgColor;
+                    info.el.style.borderColor = bgColor;
                 }
             });
-            calendar.render();
+
+            calendarInstance.render();
+        }
+
+        // Initialize on turbo:load
+        document.addEventListener('turbo:load', initializeCalendar);
+
+        // Cleanup before caching
+        document.addEventListener('turbo:before-cache', function() {
+            if (calendarInstance) {
+                calendarInstance.destroy();
+                calendarInstance = null;
+            }
         });
     </script>
     @endpush

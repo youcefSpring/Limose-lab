@@ -9,13 +9,56 @@
             </a>
             <div>
                 <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Create New Reservation') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Reserve laboratory equipment for your research') }}</p>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
+                    @can('manage', \App\Models\Reservation::class)
+                        {{ __('Create a reservation for any user in the system') }}
+                    @else
+                        {{ __('Reserve laboratory equipment for your research') }}
+                    @endcan
+                </p>
             </div>
         </div>
     </header>
 
     <form method="POST" action="{{ route('reservations.store') }}" x-data="reservationForm()">
             @csrf
+
+            <!-- User Selection Section (Admin Only) -->
+            @can('manage', \App\Models\Reservation::class)
+            <div class="glass-card rounded-2xl p-6 mb-5">
+                <h2 class="text-lg font-semibold mb-5">{{ __('User Selection') }}</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div class="lg:col-span-2">
+                        <label for="user_id" class="block text-sm font-medium mb-2">
+                            {{ __('Select User') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <select name="user_id" id="user_id" required
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('user_id') border-accent-rose @enderror">
+                            <option value="">{{ __('Select a user') }}</option>
+                            @foreach($users ?? [] as $user)
+                                <option value="{{ $user->id }}" {{ old('user_id', auth()->id()) == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }} - {{ $user->email }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('user_id')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Info Note -->
+                <div class="mt-4 glass rounded-xl p-3 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-cyan/50 text-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="h-4 w-4 text-accent-cyan flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ __('As an admin, you can create reservations for any user in the system.') }}</span>
+                    </div>
+                </div>
+            </div>
+            @endcan
 
             <!-- Equipment & Quantity Section -->
             <div class="glass-card rounded-2xl p-6 mb-5">

@@ -94,4 +94,12 @@ class ReservationPolicy
         return $user->id === $reservation->user_id &&
                in_array($reservation->status, ['pending', 'approved']);
     }
+
+    /**
+     * Determine whether the user can manage reservations (create for other users).
+     */
+    public function manage(User $user): bool
+    {
+        return $user->hasRole('admin');
+    }
 }
