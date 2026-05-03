@@ -120,13 +120,39 @@
             .dark .table-row:hover { background: rgba(255,255,255,0.02); }
             .table-row:hover { background: rgba(0,0,0,0.02); }
 
-            .sidebar { transition: transform 0.3s ease; }
-            .sidebar-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; }
+            /* Sidebar transitions */
+            .sidebar {
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            /* Sidebar hidden states */
+            .sidebar.sidebar-hidden {
+                transform: translateX(-100%);
+            }
+            [dir="rtl"] .sidebar.sidebar-hidden {
+                transform: translateX(100%);
+            }
+            @media (min-width: 1024px) {
+                .sidebar.sidebar-hidden {
+                    transform: translateX(0);
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    overflow: hidden;
+                }
+                [dir="rtl"] .sidebar.sidebar-hidden {
+                    transform: translateX(0);
+                }
+            }
+            
+            /* Overlay transitions */
+            .sidebar-overlay {
+                transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            }
 
-            .hamburger-line { transition: all 0.3s ease; }
-            .hamburger.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-            .hamburger.active .hamburger-line:nth-child(2) { opacity: 0; }
-            .hamburger.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+            /* Body scroll lock for mobile */
+            body.sidebar-open {
+                overflow: hidden;
+            }
 
             ::-webkit-scrollbar { width: 6px; height: 6px; }
             ::-webkit-scrollbar-track { background: transparent; }
@@ -137,10 +163,14 @@
         <!-- Additional Styles -->
         @stack('styles')
     </head>
-    <body class="min-h-screen text-zinc-800 dark:text-white overflow-x-hidden {{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-outfit' }}">
-        <div class="flex">
+    <body class="min-h-screen text-zinc-800 dark:text-white {{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-outfit' }}">
+        <div class="flex min-h-screen">
             <!-- Mobile Overlay -->
-            <div id="sidebar-overlay" data-turbo-permanent class="sidebar-overlay fixed inset-0 bg-black/50 z-40 opacity-0 invisible" onclick="toggleSidebar()"></div>
+            <div id="sidebar-overlay" 
+                 class="sidebar-overlay fixed inset-0 bg-black/50 z-30 lg:hidden opacity-0 invisible"
+                 aria-hidden="true"
+                 onclick="toggleSidebar()">
+            </div>
 
             <!-- Sidebar -->
             @include('layouts.navigation')
@@ -149,49 +179,51 @@
             @include('components.header')
 
             <!-- Main Content -->
-            <main class="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:{{ app()->getLocale() === 'ar' ? 'mr' : 'ml' }}-64">
-                <!-- Flash Messages -->
-                @if(session('success'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
-                        <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-emerald">
-                            <div class="flex items-center">
-                                <svg class="h-5 w-5 text-accent-emerald {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                <p class="text-sm">{{ session('success') }}</p>
+            <main class="flex-1 min-h-screen pt-16 lg:pt-20 {{ app()->getLocale() === 'ar' ? 'lg:mr-64' : 'lg:ml-64' }}">
+                <div class="p-4 sm:p-6 lg:p-8">
+                    <!-- Flash Messages -->
+                    @if(session('success'))
+                        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
+                            <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-emerald">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-accent-emerald {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p class="text-sm">{{ session('success') }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
 
-                @if(session('error'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
-                        <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-rose">
-                            <div class="flex items-center">
-                                <svg class="h-5 w-5 text-accent-rose {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                                </svg>
-                                <p class="text-sm">{{ session('error') }}</p>
+                    @if(session('error'))
+                        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
+                            <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-rose">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-accent-rose {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p class="text-sm">{{ session('error') }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
 
-                @if(session('warning'))
-                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
-                        <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-amber">
-                            <div class="flex items-center">
-                                <svg class="h-5 w-5 text-accent-amber {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                </svg>
-                                <p class="text-sm">{{ session('warning') }}</p>
+                    @if(session('warning'))
+                        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="mb-6">
+                            <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-amber">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-accent-amber {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p class="text-sm">{{ session('warning') }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
 
-                <!-- Page Content -->
-                {{ $slot }}
+                    <!-- Page Content -->
+                    {{ $slot }}
+                </div>
             </main>
         </div>
 
@@ -210,50 +242,98 @@
                 }
             }
 
-            // Initialize on first load
+// Initialize on first load
             initializeTheme();
 
-            // Re-initialize theme after Turbo navigation (for browser back/forward)
-            document.addEventListener('turbo:load', initializeTheme);
-
-            function toggleTheme() {
-                const html = document.documentElement;
-                if (html.classList.contains('dark')) {
-                    html.classList.remove('dark');
-                    localStorage.setItem('theme', 'light');
+            // Initialize sidebar state
+            function initSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.querySelector('main');
+                const header = document.getElementById('header');
+                
+                if (window.innerWidth >= 1024) {
+                    // Desktop: sidebar visible by default
+                    sidebar.classList.remove('sidebar-hidden');
+                    mainContent.classList.add('lg:ml-64');
+                    @if(app()->getLocale() === 'ar')
+                        mainContent.classList.add('lg:mr-64');
+                    @endif
+                    header.classList.add('lg:left-64');
+                    @if(app()->getLocale() === 'ar')
+                        header.classList.add('lg:right-64');
+                    @endif
                 } else {
-                    html.classList.add('dark');
-                    localStorage.setItem('theme', 'dark');
+                    // Mobile: sidebar hidden by default
+                    sidebar.classList.add('sidebar-hidden');
+                    mainContent.classList.add('ml-0', 'mr-0');
+                    header.classList.add('left-0');
+                    header.classList.remove('lg:left-64');
                 }
             }
+            initSidebar();
 
+            // Toggle sidebar function
             function toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('sidebar-overlay');
                 const hamburger = document.getElementById('hamburger');
+                const header = document.getElementById('header');
+                const mainContent = document.querySelector('main');
+                const body = document.body;
+                
+                if (window.innerWidth < 1024) {
+                    // Mobile: slide sidebar
+                    sidebar.classList.toggle('sidebar-hidden');
 
-                sidebar.classList.toggle('-translate-x-full');
-                @if(app()->getLocale() === 'ar')
-                    sidebar.classList.toggle('translate-x-full');
-                @endif
-
-                if (hamburger) hamburger.classList.toggle('active');
-
-                if (sidebar.classList.contains('-translate-x-full') || sidebar.classList.contains('translate-x-full')) {
-                    overlay.classList.add('opacity-0', 'invisible');
-                    overlay.classList.remove('opacity-100', 'visible');
+                    if (sidebar.classList.contains('sidebar-hidden')) {
+                        overlay.classList.add('opacity-0', 'invisible');
+                        body.classList.remove('sidebar-open');
+                    } else {
+                        overlay.classList.remove('opacity-0', 'invisible');
+                        body.classList.add('sidebar-open');
+                    }
                 } else {
-                    overlay.classList.remove('opacity-0', 'invisible');
-                    overlay.classList.add('opacity-100', 'visible');
+                    // Desktop: toggle sidebar
+                    sidebar.classList.toggle('sidebar-hidden');
+
+                    if (sidebar.classList.contains('sidebar-hidden')) {
+                        mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
+                        header.classList.remove('lg:left-64');
+                        header.classList.add('lg:left-0');
+                        @if(app()->getLocale() === 'ar')
+                            header.classList.remove('lg:right-64');
+                            header.classList.add('lg:right-0');
+                        @endif
+                    } else {
+                        mainContent.classList.add('lg:ml-64');
+                        @if(app()->getLocale() === 'ar')
+                            mainContent.classList.add('lg:mr-64');
+                        @endif
+                        header.classList.remove('lg:left-0');
+                        header.classList.add('lg:left-64');
+                        @if(app()->getLocale() === 'ar')
+                            header.classList.remove('lg:right-0');
+                            header.classList.add('lg:right-64');
+                        @endif
+                    }
+                }
+
+                if (hamburger) {
+                    hamburger.classList.toggle('active');
                 }
             }
-
+            
             // Close mobile sidebar on navigation
             document.addEventListener('turbo:before-visit', function() {
                 if (window.innerWidth < 1024) {
                     const sidebar = document.getElementById('sidebar');
-                    if (sidebar && !sidebar.classList.contains('-translate-x-full') && !sidebar.classList.contains('translate-x-full')) {
-                        toggleSidebar();
+                    const overlay = document.getElementById('sidebar-overlay');
+                    const body = document.body;
+                    
+                    if (sidebar && !sidebar.classList.contains('sidebar-hidden')) {
+                        sidebar.classList.add('sidebar-hidden');
+                        overlay.classList.add('opacity-0', 'invisible');
+                        body.classList.remove('sidebar-open');
                     }
                 }
             });
@@ -261,6 +341,44 @@
             // Scroll to top on navigation
             document.addEventListener('turbo:load', function() {
                 window.scrollTo(0, 0);
+            });
+
+            // Scroll to top on navigation
+            document.addEventListener('turbo:load', function() {
+                window.scrollTo(0, 0);
+            });
+
+// Handle window resize
+            window.addEventListener('resize', function() {
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.querySelector('main');
+                const header = document.getElementById('header');
+                const overlay = document.getElementById('sidebar-overlay');
+                const body = document.body;
+                
+                if (window.innerWidth >= 1024) {
+                    // Switch to desktop: show sidebar
+                    sidebar.classList.remove('sidebar-hidden');
+                    mainContent.classList.remove('ml-0', 'mr-0');
+                    mainContent.classList.add('lg:ml-64');
+                    @if(app()->getLocale() === 'ar')
+                        mainContent.classList.add('lg:mr-64');
+                    @endif
+                    header.classList.remove('lg:left-0');
+                    header.classList.add('lg:left-64');
+                    @if(app()->getLocale() === 'ar')
+                        header.classList.remove('lg:right-0');
+                        header.classList.add('lg:right-64');
+                    @endif
+                    overlay.classList.add('opacity-0', 'invisible');
+                    body.classList.remove('sidebar-open');
+                } else {
+                    // Switch to mobile: hide sidebar
+                    sidebar.classList.add('sidebar-hidden');
+                    mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
+                    header.classList.remove('lg:left-64', 'lg:right-64');
+                    header.classList.add('left-0');
+                }
             });
         </script>
         @stack('scripts')
