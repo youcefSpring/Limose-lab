@@ -152,7 +152,7 @@
                             </button>
                             <div x-show="open" @click.away="open = false" class="absolute {{ app()->getLocale() === 'ar' ? 'left-0' : 'right-0' }} top-full mt-2 w-40 glass-card rounded-xl shadow-lg overflow-hidden z-50" style="display: none;">
                                 @foreach(['en' => 'English', 'fr' => 'Français', 'ar' => 'العربية'] as $code => $label)
-                                    <a href="{{ route('locale.switch', $code) }}" class="flex items-center gap-2 px-4 py-2.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors {{ app()->getLocale() === $code ? 'bg-accent-amber/10 text-accent-amber' : '' }}">
+                                    <a href="{{ route('locale.switch', $code) }}" data-turbo="false" class="flex items-center gap-2 px-4 py-2.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors {{ app()->getLocale() === $code ? 'bg-accent-amber/10 text-accent-amber' : '' }}">
                                         <span class="text-sm">{{ $label }}</span>
                                     </a>
                                 @endforeach

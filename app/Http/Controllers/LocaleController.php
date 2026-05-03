@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
 class LocaleController extends Controller
 {
     /**
      * Switch the application locale
-     *
-     * @param Request $request
-     * @param string $locale
-     * @return RedirectResponse
      */
     public function switch(Request $request, string $locale): RedirectResponse
     {
@@ -21,19 +18,17 @@ class LocaleController extends Controller
         $availableLocales = ['en', 'fr', 'ar'];
 
         // Validate locale
-        if (!in_array($locale, $availableLocales)) {
-            return redirect()->back()->with('error', __('Invalid language selection.'));
+        if (! in_array($locale, $availableLocales)) {
+            return redirect()->back();
         }
 
         // Store locale in session
         Session::put('locale', $locale);
 
-        // Set the locale immediately for the redirect message
-        app()->setLocale($locale);
+        // Also store in cookie for persistence
+        Cookie::queue('locale', $locale, 60 * 24 * 365); // 1 year
 
-        // Redirect back with full page reload (disable Turbo cache)
-        return redirect()->back()
-            ->with('success', __('Language changed successfully!'))
-            ->header('Turbo-Visit-Control', 'reload');
+        // Redirect back - will reload with new locale
+        return redirect()->back();
     }
 }

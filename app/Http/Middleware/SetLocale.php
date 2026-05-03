@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,10 +21,13 @@ class SetLocale
         // Available locales
         $availableLocales = ['en', 'fr', 'ar'];
 
-        // Check if locale is in session
+        // Check if locale is in session first, then cookie, then browser preference
         $locale = Session::get('locale');
 
-        // If not in session, check browser preference
+        if (! $locale) {
+            $locale = Cookie::get('locale');
+        }
+
         if (! $locale) {
             $locale = $request->getPreferredLanguage($availableLocales);
         }

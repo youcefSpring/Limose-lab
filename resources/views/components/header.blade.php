@@ -44,6 +44,7 @@
                  style="display: none;">
                 @foreach(['en' => 'English', 'fr' => 'Français', 'ar' => 'العربية'] as $code => $label)
                     <a href="{{ route('locale.switch', $code) }}" 
+                       data-turbo="false"
                        class="flex items-center gap-2 px-4 py-2.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors {{ app()->getLocale() === $code ? 'bg-accent-amber/10 text-accent-amber' : '' }}">
                         <span class="text-sm">{{ $label }}</span>
                     </a>
