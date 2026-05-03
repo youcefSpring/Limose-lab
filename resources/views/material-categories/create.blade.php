@@ -8,8 +8,8 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Add New Category') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Create a new material category') }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Add New Category') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Create a new material category') }}</p>
             </div>
         </div>
     </header>
@@ -20,16 +20,16 @@
 
             <!-- Basic Information Section -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Basic Information') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Basic Information') }}</h2>
 
                 <!-- Category Name -->
                 <div class="mb-5">
                     <label for="name" class="block text-sm font-medium mb-2">
-                        {{ __('Category Name') }} <span class="text-accent-rose">*</span>
+                        {{ __('messages.Category Name') }} <span class="text-accent-rose">*</span>
                     </label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}" required
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-cyan/50 focus:border-accent-cyan transition-all @error('name') border-accent-rose @enderror"
-                        placeholder="{{ __('e.g., Microscopes, Lab Equipment, Chemicals') }}">
+                        placeholder="{{ __('messages.e.g., Microscopes, Lab Equipment, Chemicals') }}">
                     @error('name')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                     @enderror
@@ -38,28 +38,28 @@
                 <!-- Description -->
                 <div>
                     <label for="description" class="block text-sm font-medium mb-2">
-                        {{ __('Description') }}
+                        {{ __('messages.Description') }}
                     </label>
                     <textarea name="description" id="description" rows="4"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-cyan/50 focus:border-accent-cyan transition-all resize-none @error('description') border-accent-rose @enderror"
-                        placeholder="{{ __('Provide a brief description of this category...') }}">{{ old('description') }}</textarea>
+                        placeholder="{{ __('messages.Provide a brief description of this category...') }}">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                     @enderror
-                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{{ __('Optional: Describe what type of materials belong to this category') }}</p>
+                    <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Optional: Describe what type of materials belong to this category') }}</p>
                 </div>
             </div>
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-3 pt-2">
                 <a href="{{ route('material-categories.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
-                    {{ __('Cancel') }}
+                    {{ __('messages.Cancel') }}
                 </a>
                 <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-accent-cyan to-accent-teal px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
-                    {{ __('Create Category') }}
+                    {{ __('messages.Create Category') }}
                 </button>
             </div>
         </form>

@@ -1,29 +1,29 @@
 @component('mail::message')
-# {{ __('New Event Submission Received') }}
+# {{ __('messages.New Event Submission Received') }}
 
-{{ __('A new submission has been received for') }} **{{ $event->title }}**.
+{{ __('messages.A new submission has been received for') }} **{{ $event->title }}**.
 
-## {{ __('Submission Details') }}
+## {{ __('messages.Submission Details') }}
 
-**{{ __('Title') }}:** {{ $submission->title }}
+**{{ __('messages.Title') }}:** {{ $submission->title }}
 
-**{{ __('Submitted By') }}:** {{ $submitter->name }} ({{ $submitter->email }})
+**{{ __('messages.Submitted By') }}:** {{ $submitter->name }} ({{ $submitter->email }})
 
-**{{ __('Submission Type') }}:** {{ ucfirst($submission->submission_type) }}
+**{{ __('messages.Submission Type') }}:** {{ ucfirst($submission->submission_type) }}
 
-**{{ __('Abstract') }}:**
+**{{ __('messages.Abstract') }}:**
 {{ Str::limit($submission->abstract, 200) }}
 
 @if($submission->authors)
-**{{ __('Authors') }}:** {{ $submission->authors }}
+**{{ __('messages.Authors') }}:** {{ $submission->authors }}
 @endif
 
 @component('mail::button', ['url' => route('events.show', $event)])
-{{ __('View Event') }}
+{{ __('messages.View Event') }}
 @endcomponent
 
-{{ __('Please review this submission and take appropriate action.') }}
+{{ __('messages.Please review this submission and take appropriate action.') }}
 
-{{ __('Thanks') }},<br>
+{{ __('messages.Thanks') }},<br>
 {{ config('app.name') }}
 @endcomponent

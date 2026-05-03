@@ -2,9 +2,9 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div>
-            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Dashboard') }}</h1>
+            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Dashboard') }}</h1>
             <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
-                {{ __('Welcome back') }}, <span class="font-semibold">{{ auth()->user()->name ?? 'User' }}</span>
+                {{ __('messages.Welcome back') }}, <span class="font-semibold">{{ auth()->user()->name ?? 'User' }}</span>
             </p>
         </div>
     </header>
@@ -20,9 +20,9 @@
                 </div>
             </div>
             <p class="text-3xl font-bold font-mono mb-1">{{ $myReservationsCount ?? 0 }}</p>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('My Reservations') }}</p>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('messages.My Reservations') }}</p>
             <a href="{{ route('reservations.index') }}" class="text-sm text-accent-cyan hover:text-accent-cyan/80 font-medium">
-                {{ __('View all') }} →
+                {{ __('messages.View all') }} →
             </a>
         </div>
 
@@ -36,9 +36,9 @@
                 </div>
             </div>
             <p class="text-3xl font-bold font-mono mb-1">{{ $availableMaterialsCount ?? 0 }}</p>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('Available Materials') }}</p>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('messages.Available Materials') }}</p>
             <a href="{{ route('materials.index') }}" class="text-sm text-accent-emerald hover:text-accent-emerald/80 font-medium">
-                {{ __('Browse materials') }} →
+                {{ __('messages.Browse materials') }} →
             </a>
         </div>
 
@@ -52,9 +52,9 @@
                 </div>
             </div>
             <p class="text-3xl font-bold font-mono mb-1">{{ $myProjectsCount ?? 0 }}</p>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('My Projects') }}</p>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('messages.My Projects') }}</p>
             <a href="{{ route('projects.index') }}" class="text-sm text-accent-violet hover:text-accent-violet/80 font-medium">
-                {{ __('View projects') }} →
+                {{ __('messages.View projects') }} →
             </a>
         </div>
 
@@ -68,9 +68,9 @@
                 </div>
             </div>
             <p class="text-3xl font-bold font-mono mb-1">{{ $upcomingEventsCount ?? 0 }}</p>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('Upcoming Events') }}</p>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">{{ __('messages.Upcoming Events') }}</p>
             <a href="{{ route('events.index', ['filter' => 'upcoming']) }}" class="text-sm text-accent-amber hover:text-accent-amber/80 font-medium">
-                {{ __('View events') }} →
+                {{ __('messages.View events') }} →
             </a>
         </div>
     </div>
@@ -79,9 +79,9 @@
         <!-- Recent Reservations -->
         <div class="glass-card rounded-2xl p-5 lg:p-6">
             <div class="flex items-center justify-between mb-5">
-                <h2 class="text-lg font-semibold">{{ __('Recent Reservations') }}</h2>
+                <h2 class="text-lg font-semibold">{{ __('messages.Recent Reservations') }}</h2>
                 <a href="{{ route('reservations.index') }}" class="text-sm text-accent-cyan hover:text-accent-cyan/80 font-medium">
-                    {{ __('View all') }} →
+                    {{ __('messages.View all') }} →
                 </a>
             </div>
 
@@ -91,7 +91,7 @@
                         <div class="flex items-start justify-between p-4 glass rounded-xl">
                             <div class="flex-1 min-w-0">
                                 <h4 class="font-semibold text-sm truncate">
-                                    {{ $reservation->material->name ?? __('Material') }}
+                                    {{ $reservation->material->name ?? __('messages.Material') }}
                                 </h4>
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 font-mono">
                                     {{ $reservation->start_date?->format('d M Y') }} - {{ $reservation->end_date?->format('d M Y') }}
@@ -109,7 +109,7 @@
                 </div>
             @else
                 <p class="text-zinc-500 dark:text-zinc-400 text-center py-8">
-                    {{ __('No recent reservations') }}
+                    {{ __('messages.No recent reservations') }}
                 </p>
             @endif
         </div>
@@ -117,7 +117,7 @@
         <!-- Notifications -->
         <div class="glass-card rounded-2xl p-5 lg:p-6">
             <div class="flex items-center justify-between mb-5">
-                <h2 class="text-lg font-semibold">{{ __('Recent Notifications') }}</h2>
+                <h2 class="text-lg font-semibold">{{ __('messages.Recent Notifications') }}</h2>
             </div>
 
             @if(isset($recentNotifications) && $recentNotifications->count() > 0)
@@ -129,7 +129,7 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm">
-                                    {{ $notification->data['message'] ?? __('New notification') }}
+                                    {{ $notification->data['message'] ?? __('messages.New notification') }}
                                 </p>
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
                                     {{ $notification->created_at?->diffForHumans() }}
@@ -140,7 +140,7 @@
                 </div>
             @else
                 <p class="text-zinc-500 dark:text-zinc-400 text-center py-8">
-                    {{ __('No recent notifications') }}
+                    {{ __('messages.No recent notifications') }}
                 </p>
             @endif
         </div>
@@ -148,7 +148,7 @@
 
     <!-- Quick Actions -->
     <div class="glass-card rounded-2xl p-5 lg:p-6">
-        <h2 class="text-lg font-semibold mb-5">{{ __('Quick Actions') }}</h2>
+        <h2 class="text-lg font-semibold mb-5">{{ __('messages.Quick Actions') }}</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="{{ route('reservations.create') }}" class="flex items-center p-4 glass rounded-xl hover:glass-card transition-all group">
@@ -158,7 +158,7 @@
                     </svg>
                 </div>
                 <span class="text-sm font-medium">
-                    {{ __('New Reservation') }}
+                    {{ __('messages.New Reservation') }}
                 </span>
             </a>
 
@@ -169,7 +169,7 @@
                     </svg>
                 </div>
                 <span class="text-sm font-medium">
-                    {{ __('Browse Materials') }}
+                    {{ __('messages.Browse Materials') }}
                 </span>
             </a>
 
@@ -180,7 +180,7 @@
                     </svg>
                 </div>
                 <span class="text-sm font-medium">
-                    {{ __('View Events') }}
+                    {{ __('messages.View Events') }}
                 </span>
             </a>
 
@@ -191,7 +191,7 @@
                     </svg>
                 </div>
                 <span class="text-sm font-medium">
-                    {{ __('My Projects') }}
+                    {{ __('messages.My Projects') }}
                 </span>
             </a>
         </div>

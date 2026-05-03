@@ -1,10 +1,10 @@
-<header id="header" class="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 sm:px-6 py-3 glass border-b border-black/5 dark:border-white/5 transition-all duration-300 lg:left-64 {{ app()->getLocale() === 'ar' ? 'lg:right-64' : '' }}">
+<header id="header" class="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 sm:px-6 py-3 glass border-b border-black/5 dark:border-white/5 transition-all duration-300 {{ app()->getLocale() === 'ar' ? 'lg:right-64 lg:left-0' : 'lg:left-64 lg:right-0' }}">
     <!-- Hamburger menu -->
     <button type="button" 
             id="hamburger" 
             onclick="toggleSidebar()"
             class="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-            aria-label="{{ __('Toggle menu') }}"
+            aria-label="{{ __('messages.Toggle menu') }}"
             aria-controls="sidebar"
             aria-expanded="false">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -23,7 +23,7 @@
                     @click="open = !open" 
                     @click.outside="open = false"
                     class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-                    aria-label="{{ __('Select language') }}"
+                    aria-label="{{ __('messages.Select language') }}"
                     :aria-expanded="open">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
@@ -55,8 +55,8 @@
         <button type="button" 
                 onclick="toggleTheme()" 
                 class="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors" 
-                title="{{ __('Toggle theme') }}"
-                aria-label="{{ __('Toggle dark mode') }}">
+                title="{{ __('messages.Toggle theme') }}"
+                aria-label="{{ __('messages.Toggle dark mode') }}">
             <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
@@ -101,7 +101,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    <span class="text-sm">{{ __('Profile') }}</span>
+                    <span class="text-sm">{{ __('messages.Profile') }}</span>
                 </a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -109,7 +109,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
-                        <span class="text-sm">{{ __('Logout') }}</span>
+                        <span class="text-sm">{{ __('messages.Logout') }}</span>
                     </button>
                 </form>
             </div>

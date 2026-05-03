@@ -2,7 +2,7 @@
     type="button"
     onclick="toggleTheme()"
     class="absolute {{ app()->getLocale() === 'ar' ? 'left-3' : 'right-3' }} top-3 p-2 rounded-lg text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 transition-colors"
-    title="{{ __('Toggle theme') }}"
+    title="{{ __('messages.Toggle theme') }}"
 >
     <!-- Sun icon (shown in dark mode) -->
     <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">

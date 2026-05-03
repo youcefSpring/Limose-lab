@@ -23,7 +23,7 @@
                 @endif
                 <input type="file" id="{{ $setting->key }}" name="settings[{{ $setting->key }}]" accept="image/*" class="w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-accent-amber/10 file:text-accent-amber hover:file:bg-accent-amber/20 file:cursor-pointer">
                 <input type="hidden" name="settings[{{ $setting->key }}]" value="{{ $setting->value }}">
-                <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{{ __('Supported: JPG, PNG. Max: 2MB') }}</p>
+                <p class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Supported: JPG, PNG. Max: 2MB') }}</p>
             </div>
             @break
 
@@ -37,7 +37,7 @@
         @case('boolean')
             <label class="flex items-center gap-3 cursor-pointer">
                 <input type="checkbox" id="{{ $setting->key }}" name="settings[{{ $setting->key }}]" value="1" {{ $setting->value ? 'checked' : '' }} class="w-5 h-5 text-accent-amber bg-white dark:bg-surface-700/50 border-black/10 dark:border-white/10 rounded focus:ring-2 focus:ring-accent-amber/50">
-                <span class="text-sm text-zinc-600 dark:text-zinc-400">{{ __('Enable') }}</span>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400">{{ __('messages.Enable') }}</span>
             </label>
             @break
 

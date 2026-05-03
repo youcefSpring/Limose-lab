@@ -8,7 +8,7 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('User Profile') }}</h1>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.User Profile') }}</h1>
                 <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ $user->name }}</p>
             </div>
         </div>
@@ -18,7 +18,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                    {{ __('Edit User') }}
+                    {{ __('messages.Edit User') }}
                 </a>
             @endcan
         </div>
@@ -54,35 +54,35 @@
 
             <!-- Roles Card -->
             <div class="glass-card rounded-2xl p-6">
-                <h3 class="text-lg font-semibold mb-4">{{ __('Roles') }}</h3>
+                <h3 class="text-lg font-semibold mb-4">{{ __('messages.Roles') }}</h3>
                 <div class="flex flex-wrap gap-2">
                     @forelse($user->roles as $role)
                         <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-accent-violet/10 text-accent-violet">
                             {{ __(ucfirst($role->name)) }}
                         </span>
                     @empty
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('No roles assigned') }}</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.No roles assigned') }}</p>
                     @endforelse
                 </div>
             </div>
 
             <!-- Contact Info -->
             <div class="glass-card rounded-2xl p-6">
-                <h3 class="text-lg font-semibold mb-4">{{ __('Contact Information') }}</h3>
+                <h3 class="text-lg font-semibold mb-4">{{ __('messages.Contact Information') }}</h3>
                 <div class="space-y-3">
                     <div>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('Email') }}</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Email') }}</p>
                         <p class="text-sm">{{ $user->email }}</p>
                     </div>
                     @if($user->phone)
                         <div>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('Phone') }}</p>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Phone') }}</p>
                             <p class="text-sm">{{ $user->phone }}</p>
                         </div>
                     @endif
                     @if($user->research_group)
                         <div>
-                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('Research Group') }}</p>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Research Group') }}</p>
                             <p class="text-sm">{{ $user->research_group }}</p>
                         </div>
                     @endif
@@ -92,7 +92,7 @@
             @if($user->bio)
                 <!-- Bio -->
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold mb-3">{{ __('Bio') }}</h3>
+                    <h3 class="text-lg font-semibold mb-3">{{ __('messages.Bio') }}</h3>
                     <p class="text-sm text-zinc-600 dark:text-zinc-400">{{ $user->bio }}</p>
                 </div>
             @endif
@@ -103,13 +103,13 @@
             <!-- Recent Reservations -->
             @if($user->reservations && $user->reservations->count() > 0)
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold mb-4">{{ __('Recent Reservations') }}</h3>
+                    <h3 class="text-lg font-semibold mb-4">{{ __('messages.Recent Reservations') }}</h3>
                     <div class="space-y-3">
                         @foreach($user->reservations as $reservation)
                             <div class="p-4 glass-card rounded-xl">
                                 <div class="flex items-start justify-between">
                                     <div>
-                                        <h4 class="font-medium">{{ $reservation->material->name ?? __('N/A') }}</h4>
+                                        <h4 class="font-medium">{{ $reservation->material->name ?? __('messages.N/A') }}</h4>
                                         <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
                                             {{ $reservation->start_date->format('M d, Y') }} - {{ $reservation->end_date->format('M d, Y') }}
                                         </p>
@@ -130,7 +130,7 @@
             <!-- Recent Projects -->
             @if($user->createdProjects && $user->createdProjects->count() > 0)
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold mb-4">{{ __('Recent Projects') }}</h3>
+                    <h3 class="text-lg font-semibold mb-4">{{ __('messages.Recent Projects') }}</h3>
                     <div class="space-y-3">
                         @foreach($user->createdProjects as $project)
                             <div class="p-4 glass-card rounded-xl">
@@ -146,7 +146,7 @@
             <!-- Recent Experiments -->
             @if($user->experiments && $user->experiments->count() > 0)
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold mb-4">{{ __('Recent Experiments') }}</h3>
+                    <h3 class="text-lg font-semibold mb-4">{{ __('messages.Recent Experiments') }}</h3>
                     <div class="space-y-3">
                         @foreach($user->experiments as $experiment)
                             <div class="p-4 glass-card rounded-xl">
@@ -162,7 +162,7 @@
             <!-- Recent Events -->
             @if($user->createdEvents && $user->createdEvents->count() > 0)
                 <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-lg font-semibold mb-4">{{ __('Recent Events') }}</h3>
+                    <h3 class="text-lg font-semibold mb-4">{{ __('messages.Recent Events') }}</h3>
                     <div class="space-y-3">
                         @foreach($user->createdEvents as $event)
                             <div class="p-4 glass-card rounded-xl">
@@ -178,14 +178,14 @@
 
             <!-- Account Information -->
             <div class="glass-card rounded-2xl p-6">
-                <h3 class="text-lg font-semibold mb-4">{{ __('Account Information') }}</h3>
+                <h3 class="text-lg font-semibold mb-4">{{ __('messages.Account Information') }}</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('Member Since') }}</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Member Since') }}</p>
                         <p class="text-sm font-medium">{{ $user->created_at->format('M d, Y') }}</p>
                     </div>
                     <div>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('Last Updated') }}</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Last Updated') }}</p>
                         <p class="text-sm font-medium">{{ $user->updated_at->diffForHumans() }}</p>
                     </div>
                 </div>

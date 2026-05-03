@@ -24,12 +24,12 @@ class SetLocale
         $locale = Session::get('locale');
 
         // If not in session, check browser preference
-        if (!$locale) {
+        if (! $locale) {
             $locale = $request->getPreferredLanguage($availableLocales);
         }
 
         // Fallback to default locale
-        if (!$locale || !in_array($locale, $availableLocales)) {
+        if (! $locale || ! in_array($locale, $availableLocales)) {
             $locale = config('app.locale', 'en');
         }
 

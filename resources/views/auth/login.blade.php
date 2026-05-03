@@ -6,8 +6,8 @@
 
     <!-- Page Title -->
     <div class="mb-6">
-        <h2 class="text-2xl font-semibold">{{ __('Welcome Back') }}</h2>
-        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{{ __('Sign in to your account to continue') }}</p>
+        <h2 class="text-2xl font-semibold">{{ __('messages.Welcome Back') }}</h2>
+        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{{ __('messages.Sign in to your account to continue') }}</p>
     </div>
 
     <!-- Session Status -->
@@ -18,7 +18,7 @@
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-sm font-medium mb-2">{{ __('Email') }}</label>
+            <label for="email" class="block text-sm font-medium mb-2">{{ __('messages.Email') }}</label>
             <div class="relative">
                 <div class="absolute inset-y-0 {{ app()->getLocale() === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3' }} flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@
                     autofocus
                     autocomplete="username"
                     class="block w-full {{ app()->getLocale() === 'ar' ? 'pr-10 text-right' : 'pl-10' }} py-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
-                    placeholder="{{ __('your@email.com') }}"
+                    placeholder="{{ __('messages.your@email.com') }}"
                 >
             </div>
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -42,7 +42,7 @@
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-medium mb-2">{{ __('Password') }}</label>
+            <label for="password" class="block text-sm font-medium mb-2">{{ __('messages.Password') }}</label>
             <div class="relative">
                 <div class="absolute inset-y-0 {{ app()->getLocale() === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3' }} flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@
                     required
                     autocomplete="current-password"
                     class="block w-full {{ app()->getLocale() === 'ar' ? 'pr-10 text-right' : 'pl-10' }} py-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
-                    placeholder="{{ __('Enter your password') }}"
+                    placeholder="{{ __('messages.Enter your password') }}"
                 >
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -72,13 +72,13 @@
                     class="w-4 h-4 rounded border-zinc-300 dark:border-zinc-600 text-accent-amber focus:ring-accent-amber/50 focus:ring-2 cursor-pointer"
                 >
                 <span class="{{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }} text-sm text-zinc-600 dark:text-zinc-400">
-                    {{ __('Remember me') }}
+                    {{ __('messages.Remember me') }}
                 </span>
             </label>
 
             @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}" class="text-sm text-accent-amber hover:text-accent-coral transition-colors">
-                    {{ __('Forgot password?') }}
+                    {{ __('messages.Forgot password?') }}
                 </a>
             @endif
         </div>
@@ -88,7 +88,7 @@
             type="submit"
             class="w-full bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-accent-amber/20"
         >
-            {{ __('Sign In') }}
+            {{ __('messages.Sign In') }}
         </button>
 
         <!-- Register Link -->
@@ -97,7 +97,7 @@
                 <p class="text-sm text-zinc-600 dark:text-zinc-400">
                     {{ __("Don't have an account?") }}
                     <a href="{{ route('register') }}" class="text-accent-amber hover:text-accent-coral font-medium transition-colors">
-                        {{ __('Sign up') }}
+                        {{ __('messages.Sign up') }}
                     </a>
                 </p>
             </div>

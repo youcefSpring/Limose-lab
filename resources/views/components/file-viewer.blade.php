@@ -172,8 +172,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">{{ __('file-viewer.no_files_title') }}</h3>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('file-viewer.no_files_description') }}</p>
+            <h3 class="text-lg font-semibold mb-2">{{ __('messages.file-viewer.no_files_title') }}</h3>
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.file-viewer.no_files_description') }}</p>
         </div>
 
     @elseif($detectedType === 'image')
@@ -193,7 +193,7 @@
                             <button
                                 @click="downloadFile(files[currentIndex], getFileName(files[currentIndex]))"
                                 class="p-2.5 rounded-xl glass hover:glass-card transition-all hover:text-accent-amber"
-                                title="{{ __('file-viewer.download') }}"
+                                title="{{ __('messages.file-viewer.download') }}"
                             >
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -205,7 +205,7 @@
                             <button
                                 @click="toggleFullscreen()"
                                 class="p-2.5 rounded-xl glass hover:glass-card transition-all hover:text-accent-violet"
-                                title="{{ __('file-viewer.toggle_fullscreen') }}"
+                                title="{{ __('messages.file-viewer.toggle_fullscreen') }}"
                             >
                                 <svg x-show="!isFullscreen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
@@ -300,7 +300,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
-                            <span class="text-sm font-medium">{{ __('file-viewer.download') }}</span>
+                            <span class="text-sm font-medium">{{ __('messages.file-viewer.download') }}</span>
                         </a>
                     @endif
                 </div>
@@ -345,7 +345,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
-                            <span class="text-sm font-medium">{{ __('file-viewer.download') }}</span>
+                            <span class="text-sm font-medium">{{ __('messages.file-viewer.download') }}</span>
                         </a>
                     @endif
                 </div>
@@ -373,7 +373,7 @@
                         </div>
                         <h3 class="text-xl font-semibold mb-2">{{ basename($filesList[0]) }}</h3>
                         <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
-                            {{ __('file-viewer.cannot_preview') }}
+                            {{ __('messages.file-viewer.cannot_preview') }}
                         </p>
                         <a
                             href="{{ Storage::url($filesList[0]) }}"
@@ -384,7 +384,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
-                            {{ __('file-viewer.download_to_view') }}
+                            {{ __('messages.file-viewer.download_to_view') }}
                         </a>
                     </div>
                 @endif

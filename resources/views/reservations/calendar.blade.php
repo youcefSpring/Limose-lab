@@ -3,8 +3,8 @@
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div class="flex items-center gap-3">
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Reservations Calendar') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('View all reservations in calendar format') }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Reservations Calendar') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.View all reservations in calendar format') }}</p>
             </div>
         </div>
         <div class="flex items-center gap-3">
@@ -12,13 +12,13 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
-                {{ __('List View') }}
+                {{ __('messages.List View') }}
             </x-ui.button>
             <x-ui.button variant="primary" href="{{ route('reservations.create') }}" size="md">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                 </svg>
-                {{ __('New Reservation') }}
+                {{ __('messages.New Reservation') }}
             </x-ui.button>
         </div>
     </header>
@@ -28,19 +28,19 @@
         <div class="flex flex-wrap items-center gap-6">
             <div class="flex items-center gap-2">
                 <div class="h-3 w-3 rounded-full bg-accent-amber"></div>
-                <span class="text-sm font-medium">{{ __('Pending') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Pending') }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="h-3 w-3 rounded-full bg-accent-emerald"></div>
-                <span class="text-sm font-medium">{{ __('Approved') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Approved') }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="h-3 w-3 rounded-full bg-accent-cyan"></div>
-                <span class="text-sm font-medium">{{ __('Completed') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Completed') }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="h-3 w-3 rounded-full bg-accent-rose"></div>
-                <span class="text-sm font-medium">{{ __('Rejected/Cancelled') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Rejected/Cancelled') }}</span>
             </div>
         </div>
     </div>
@@ -170,10 +170,10 @@
                 direction: '{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}',
                 locale: '{{ app()->getLocale() }}',
                 buttonText: {
-                    today: '{{ __('Today') }}',
-                    month: '{{ __('Month') }}',
-                    week: '{{ __('Week') }}',
-                    list: '{{ __('List') }}'
+                    today: '{{ __('messages.Today') }}',
+                    month: '{{ __('messages.Month') }}',
+                    week: '{{ __('messages.Week') }}',
+                    list: '{{ __('messages.List') }}'
                 },
                 height: 'auto',
                 events: function(info, successCallback, failureCallback) {

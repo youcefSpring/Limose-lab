@@ -27,6 +27,9 @@ Route::get('/', function () {
     return view('welcome', compact('upcomingEvents', 'settings'));
 });
 
+// Locale switching route (must be outside auth middleware)
+Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -101,8 +104,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Public routes
 Route::get('/research/publications', [PublicationController::class, 'publicIndex'])->name('frontend.publications');
-
-// Locale switching route (must be outside auth middleware)
-Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 require __DIR__.'/auth.php';

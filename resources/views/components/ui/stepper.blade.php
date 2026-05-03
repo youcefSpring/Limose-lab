@@ -76,7 +76,7 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ app()->getLocale() === 'ar' ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7' }}"/>
             </svg>
-            {{ __('Previous') }}
+            {{ __('messages.Previous') }}
         </button>
 
         <div class="flex-1"></div>
@@ -88,7 +88,7 @@
             x-transition
             class="flex items-center gap-2 bg-gradient-to-r from-accent-indigo to-accent-violet px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity"
         >
-            {{ __('Next') }}
+            {{ __('messages.Next') }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ app()->getLocale() === 'ar' ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7' }}"/>
             </svg>
@@ -103,7 +103,7 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
-            {{ __('Submit') }}
+            {{ __('messages.Submit') }}
         </button>
     </div>
 </div>

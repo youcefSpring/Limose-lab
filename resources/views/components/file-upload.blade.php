@@ -198,7 +198,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
-                    {{ __('Remove File') }}
+                    {{ __('messages.Remove File') }}
                 </button>
             </div>
         </div>
@@ -213,23 +213,23 @@
 
             <div class="flex text-sm justify-center">
                 <label for="{{ $uniqueId }}" class="relative cursor-pointer rounded-md font-medium text-accent-violet hover:text-accent-amber transition-colors px-2">
-                    <span>{{ __('Upload a file') }}</span>
+                    <span>{{ __('messages.Upload a file') }}</span>
                 </label>
-                <p class="text-zinc-500 dark:text-zinc-400">{{ __('or drag and drop') }}</p>
+                <p class="text-zinc-500 dark:text-zinc-400">{{ __('messages.or drag and drop') }}</p>
             </div>
 
             <div class="space-y-1">
                 <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                    {{ __('Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)') }}
+                    {{ __('messages.Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)') }}
                 </p>
                 <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                    {{ __('Maximum file size:') }} {{ $maxSize }}
+                    {{ __('messages.Maximum file size:') }} {{ $maxSize }}
                 </p>
             </div>
 
             @if($currentFile)
                 <div class="pt-3 mt-3 border-t border-black/10 dark:border-white/10">
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('Current file:') }}</p>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('messages.Current file:') }}</p>
                     <p class="text-sm font-medium text-accent-amber mt-1">{{ basename($currentFile) }}</p>
                 </div>
             @endif

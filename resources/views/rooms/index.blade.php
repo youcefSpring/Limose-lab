@@ -2,15 +2,15 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div>
-            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Rooms') }}</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Manage laboratory and office rooms') }}</p>
+            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Rooms') }}</h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Manage laboratory and office rooms') }}</p>
         </div>
         @can('create', App\Models\Room::class)
             <a href="{{ route('rooms.create') }}" class="flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-4 lg:px-5 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
-                {{ __('Add Room') }}
+                {{ __('messages.Add Room') }}
             </a>
         @endcan
     </header>
@@ -31,13 +31,13 @@
                 <table class="w-full">
                     <thead class="bg-zinc-50 dark:bg-surface-800/50 border-b border-black/5 dark:border-white/5">
                         <tr>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('Room') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('Number') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('Type') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('Capacity') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('Floor') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('Status') }}</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('Actions') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Room') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Number') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Type') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Capacity') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Floor') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Status') }}</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('messages.Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-black/5 dark:divide-white/5">
@@ -99,23 +99,23 @@
                                         <x-ui.action-button
                                             variant="view"
                                             :href="route('rooms.show', $room)"
-                                            :title="__('View')"
+                                            :title="__('messages.View')"
                                         />
                                         @can('update', $room)
                                             <x-ui.action-button
                                                 variant="edit"
                                                 :href="route('rooms.edit', $room)"
-                                                :title="__('Edit')"
+                                                :title="__('messages.Edit')"
                                             />
                                         @endcan
                                         @can('delete', $room)
-                                            <form method="POST" action="{{ route('rooms.destroy', $room) }}" class="inline-block" onsubmit="return confirm('{{ __('Are you sure you want to delete this room?') }}')">
+                                            <form method="POST" action="{{ route('rooms.destroy', $room) }}" class="inline-block" onsubmit="return confirm('{{ __('messages.Are you sure you want to delete this room?') }}')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <x-ui.action-button
                                                     variant="delete"
                                                     type="submit"
-                                                    :title="__('Delete')"
+                                                    :title="__('messages.Delete')"
                                                 />
                                             </form>
                                         @endcan
@@ -147,16 +147,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">{{ __('No rooms found') }}</h3>
+            <h3 class="text-xl font-semibold mb-2">{{ __('messages.No rooms found') }}</h3>
             <p class="text-zinc-500 dark:text-zinc-400 mb-6 max-w-md mx-auto">
-                {{ __('Get started by adding your first room.') }}
+                {{ __('messages.Get started by adding your first room.') }}
             </p>
             @can('create', App\Models\Room::class)
                 <a href="{{ route('rooms.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    {{ __('Add Room') }}
+                    {{ __('messages.Add Room') }}
                 </a>
             @endcan
         </div>

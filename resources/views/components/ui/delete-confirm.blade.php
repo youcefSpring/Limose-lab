@@ -6,8 +6,8 @@
 ])
 
 @php
-$defaultMessage = $message ?? __('Are you sure you want to delete this item? This action cannot be undone.');
-$defaultButtonText = $buttonText ?? __('Delete');
+$defaultMessage = $message ?? __('messages.Are you sure you want to delete this item? This action cannot be undone.');
+$defaultButtonText = $buttonText ?? __('messages.Delete');
 @endphp
 
 <div x-data="{ showModal: false }">
@@ -63,7 +63,7 @@ $defaultButtonText = $buttonText ?? __('Delete');
                 </div>
 
                 <!-- Content -->
-                <h3 class="text-lg font-semibold text-center mb-2">{{ __('Confirm Deletion') }}</h3>
+                <h3 class="text-lg font-semibold text-center mb-2">{{ __('messages.Confirm Deletion') }}</h3>
                 <p class="text-sm text-zinc-600 dark:text-zinc-400 text-center mb-6">
                     {{ $defaultMessage }}
                 </p>
@@ -72,7 +72,7 @@ $defaultButtonText = $buttonText ?? __('Delete');
                 <div class="flex gap-3">
                     <button @click="showModal = false" type="button"
                         class="flex-1 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
-                        {{ __('Cancel') }}
+                        {{ __('messages.Cancel') }}
                     </button>
                     <form action="{{ $action }}" method="POST" class="flex-1">
                         @csrf

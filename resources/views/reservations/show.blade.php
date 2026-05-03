@@ -8,8 +8,8 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Reservation Details') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('Reservation') }} #{{ $reservation->id ?? '---' }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Reservation Details') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Reservation') }} #{{ $reservation->id ?? '---' }}</p>
             </div>
         </div>
         <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium
@@ -28,7 +28,7 @@
         <div class="lg:col-span-2 space-y-4 lg:space-y-6">
             <!-- Material Info -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Reserved Material') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Reserved Material') }}</h2>
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0 h-24 w-24 bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-surface-700 dark:to-surface-600 rounded-xl overflow-hidden">
                         @if($reservation->material?->image)
@@ -44,14 +44,14 @@
                     </div>
                     <div class="flex-1">
                         <h3 class="text-lg font-semibold">
-                            {{ $reservation->material?->name ?? __('Material') }}
+                            {{ $reservation->material?->name ?? __('messages.Material') }}
                         </h3>
                         <p class="text-sm text-zinc-500 dark:text-zinc-400">
-                            {{ $reservation->material?->category->name ?? __('Uncategorized') }}
+                            {{ $reservation->material?->category->name ?? __('messages.Uncategorized') }}
                         </p>
                         <div class="mt-3">
                             <a href="{{ route('materials.show', $reservation->material) }}" class="text-sm text-accent-violet hover:text-accent-rose transition-colors">
-                                {{ __('View material details') }} →
+                                {{ __('messages.View material details') }} →
                             </a>
                         </div>
                     </div>
@@ -60,30 +60,30 @@
 
             <!-- Reservation Details -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Reservation Information') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Reservation Information') }}</h2>
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="glass-card rounded-xl p-4">
-                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Start Date') }}</dt>
+                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Start Date') }}</dt>
                         <dd class="text-base font-semibold">{{ $reservation->start_date?->format('l, d M Y') }}</dd>
                     </div>
                     <div class="glass-card rounded-xl p-4">
-                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('End Date') }}</dt>
+                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.End Date') }}</dt>
                         <dd class="text-base font-semibold">{{ $reservation->end_date?->format('l, d M Y') }}</dd>
                     </div>
                     <div class="glass-card rounded-xl p-4">
-                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Duration') }}</dt>
-                        <dd class="text-base font-semibold font-mono">{{ $reservation->start_date?->diffInDays($reservation->end_date) }} {{ __('days') }}</dd>
+                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Duration') }}</dt>
+                        <dd class="text-base font-semibold font-mono">{{ $reservation->start_date?->diffInDays($reservation->end_date) }} {{ __('messages.days') }}</dd>
                     </div>
                     <div class="glass-card rounded-xl p-4">
-                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Quantity') }}</dt>
+                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Quantity') }}</dt>
                         <dd class="text-base font-semibold font-mono">{{ $reservation->quantity }}</dd>
                     </div>
                     <div class="glass-card rounded-xl p-4">
-                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Created At') }}</dt>
+                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Created At') }}</dt>
                         <dd class="text-base font-semibold">{{ $reservation->created_at?->format('d M Y H:i') }}</dd>
                     </div>
                     <div class="glass-card rounded-xl p-4">
-                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Status') }}</dt>
+                        <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Status') }}</dt>
                         <dd>
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
                                 {{ $reservation->status === 'approved' ? 'bg-accent-emerald/10 text-accent-emerald' : '' }}
@@ -101,14 +101,14 @@
 
             <!-- Purpose -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Purpose') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Purpose') }}</h2>
                 <p class="text-zinc-600 dark:text-zinc-300 whitespace-pre-line leading-relaxed">{{ $reservation->purpose }}</p>
             </div>
 
             <!-- Notes -->
             @if($reservation->notes)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('Additional Notes') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Additional Notes') }}</h2>
                     <p class="text-zinc-600 dark:text-zinc-300 whitespace-pre-line leading-relaxed">{{ $reservation->notes }}</p>
                 </div>
             @endif
@@ -121,7 +121,7 @@
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                         </svg>
                         <div>
-                            <h3 class="font-semibold mb-2">{{ __('Rejection Reason') }}</h3>
+                            <h3 class="font-semibold mb-2">{{ __('messages.Rejection Reason') }}</h3>
                             <p class="text-sm text-zinc-600 dark:text-zinc-300">{{ $reservation->rejection_reason }}</p>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
         <div class="space-y-4 lg:space-y-6">
             <!-- Timeline -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('Timeline') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Timeline') }}</h2>
                 <div class="space-y-6">
                     <!-- Created -->
                     <div class="flex gap-4">
@@ -148,7 +148,7 @@
                             @endif
                         </div>
                         <div class="flex-1 pb-6">
-                            <p class="text-sm font-medium">{{ __('Reservation Created') }}</p>
+                            <p class="text-sm font-medium">{{ __('messages.Reservation Created') }}</p>
                             <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ $reservation->created_at?->format('d M Y H:i') }}</p>
                         </div>
                     </div>
@@ -169,10 +169,10 @@
                             </div>
                             <div class="flex-1">
                                 <p class="text-sm font-medium">
-                                    {{ $reservation->status === 'approved' ? __('Approved') : __('Rejected') }}
+                                    {{ $reservation->status === 'approved' ? __('messages.Approved') : __('messages.Rejected') }}
                                 </p>
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                                    {{ __('by') }} {{ $reservation->validator?->name ?? __('Admin') }}<br>
+                                    {{ __('messages.by') }} {{ $reservation->validator?->name ?? __('messages.Admin') }}<br>
                                     {{ $reservation->validated_at?->format('d M Y H:i') }}
                                 </p>
                             </div>
@@ -183,7 +183,7 @@
 
             <!-- User Info -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Reserved By') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Reserved By') }}</h2>
                 <div class="flex items-center gap-3">
                     <div class="h-12 w-12 rounded-full bg-gradient-to-br from-accent-violet to-accent-rose flex items-center justify-center">
                         <span class="text-lg font-semibold text-white">
@@ -191,7 +191,7 @@
                         </span>
                     </div>
                     <div>
-                        <p class="text-sm font-medium">{{ $reservation->user?->name ?? __('Unknown User') }}</p>
+                        <p class="text-sm font-medium">{{ $reservation->user?->name ?? __('messages.Unknown User') }}</p>
                         <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ $reservation->user?->email }}</p>
                     </div>
                 </div>
@@ -200,15 +200,15 @@
             <!-- User Actions -->
             @if(in_array($reservation->status, ['pending', 'approved']) && $reservation->start_date > now())
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('Actions') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Actions') }}</h2>
                     <form method="POST" action="{{ route('reservations.cancel', $reservation) }}"
-                        onsubmit="return confirm('{{ __('Are you sure you want to cancel this reservation?') }}')">
+                        onsubmit="return confirm('{{ __('messages.Are you sure you want to cancel this reservation?') }}')">
                         @csrf
                         <button type="submit" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-accent-rose/10 text-accent-rose hover:bg-accent-rose/20 text-sm font-medium transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
-                            {{ __('Cancel Reservation') }}
+                            {{ __('messages.Cancel Reservation') }}
                         </button>
                     </form>
                 </div>
@@ -218,7 +218,7 @@
             @can('approve', $reservation)
                 @if($reservation->status === 'pending')
                     <div class="glass-card rounded-2xl p-5 lg:p-6">
-                        <h2 class="text-lg font-semibold mb-4">{{ __('Manager Actions') }}</h2>
+                        <h2 class="text-lg font-semibold mb-4">{{ __('messages.Manager Actions') }}</h2>
                         <div class="space-y-3">
                             <form method="POST" action="{{ route('reservations.approve', $reservation) }}">
                                 @csrf
@@ -226,19 +226,19 @@
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                     </svg>
-                                    {{ __('Approve Reservation') }}
+                                    {{ __('messages.Approve Reservation') }}
                                 </button>
                             </form>
                             <form method="POST" action="{{ route('reservations.reject', $reservation) }}"
-                                onsubmit="return confirm('{{ __('Are you sure you want to reject this reservation?') }}')">
+                                onsubmit="return confirm('{{ __('messages.Are you sure you want to reject this reservation?') }}')">
                                 @csrf
-                                <textarea name="rejection_reason" rows="2" placeholder="{{ __('Rejection reason (optional)') }}"
+                                <textarea name="rejection_reason" rows="2" placeholder="{{ __('messages.Rejection reason (optional)') }}"
                                     class="w-full mb-2 py-2 px-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none text-sm"></textarea>
                                 <button type="submit" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-accent-rose/10 text-accent-rose hover:bg-accent-rose/20 text-sm font-medium transition-all">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                     </svg>
-                                    {{ __('Reject Reservation') }}
+                                    {{ __('messages.Reject Reservation') }}
                                 </button>
                             </form>
                         </div>

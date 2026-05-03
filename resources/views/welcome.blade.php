@@ -1065,20 +1065,20 @@
             <div class="contact-grid">
                 <div class="contact-info">
                     <div class="contact-icon">📍</div>
-                    <h3>{{ __('Location') }}</h3>
+                    <h3>{{ __('messages.Location') }}</h3>
                     <p>{!! nl2br(e($settings['location_address'] ?? 'Research Building, University Campus, City, Country')) !!}</p>
                 </div>
 
                 <div class="contact-info">
                     <div class="contact-icon">📧</div>
-                    <h3>{{ __('Email') }}</h3>
+                    <h3>{{ __('messages.Email') }}</h3>
                     <p>{{ $settings['contact_email_2'] ?? 'info@lab.edu' }}</p>
                     <p>{{ $settings['contact_email'] ?? 'lab@research.edu' }}</p>
                 </div>
 
                 <div class="contact-info">
                     <div class="contact-icon">📞</div>
-                    <h3>{{ __('Phone') }}</h3>
+                    <h3>{{ __('messages.Phone') }}</h3>
                     <p>{{ $settings['contact_phone'] ?? '+1 (555) 123-4567' }}</p>
                     <p>{{ $settings['contact_hours'] ?? 'Mon-Fri, 9AM-5PM' }}</p>
                 </div>

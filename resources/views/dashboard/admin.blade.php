@@ -3,7 +3,7 @@
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div class="flex items-center gap-4">
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('Welcome back') }}, {{ auth()->user()->name }}</h1>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Welcome back') }}, {{ auth()->user()->name }}</h1>
                 <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1 hidden sm:block">{{ __("Here's what's happening with your laboratory today") }}</p>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
-                <span class="hidden lg:inline">{{ __('New Material') }}</span>
+                <span class="hidden lg:inline">{{ __('messages.New Material') }}</span>
             </a>
         </div>
     </header>
@@ -46,11 +46,11 @@
         <div class="stat-card glass-card rounded-2xl p-5 lg:p-6 transition-all duration-300 glow-amber">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('Pending Users') }}</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('messages.Pending Users') }}</p>
                     <p class="text-2xl lg:text-3xl font-semibold mt-2 font-mono">{{ $pendingUsersCount ?? 0 }}</p>
                     <div class="flex items-center gap-1.5 mt-3">
                         <a href="{{ route('users.index') }}" class="text-accent-amber text-sm hover:text-accent-coral transition-colors">
-                            {{ __('Review now') }} →
+                            {{ __('messages.Review now') }} →
                         </a>
                     </div>
                 </div>
@@ -66,11 +66,11 @@
         <div class="stat-card glass-card rounded-2xl p-5 lg:p-6 transition-all duration-300 glow-cyan">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('Pending Reservations') }}</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('messages.Pending Reservations') }}</p>
                     <p class="text-2xl lg:text-3xl font-semibold mt-2 font-mono">{{ $pendingReservationsCount ?? 0 }}</p>
                     <div class="flex items-center gap-1.5 mt-3">
                         <a href="{{ route('reservations.index') }}" class="text-accent-cyan text-sm hover:text-accent-emerald transition-colors">
-                            {{ __('Review now') }} →
+                            {{ __('messages.Review now') }} →
                         </a>
                     </div>
                 </div>
@@ -86,11 +86,11 @@
         <div class="stat-card glass-card rounded-2xl p-5 lg:p-6 transition-all duration-300 glow-violet">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('Total Materials') }}</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('messages.Total Materials') }}</p>
                     <p class="text-2xl lg:text-3xl font-semibold mt-2 font-mono">{{ $totalMaterialsCount ?? 0 }}</p>
                     <div class="flex items-center gap-1.5 mt-3">
                         <a href="{{ route('materials.index') }}" class="text-accent-violet text-sm hover:text-accent-rose transition-colors">
-                            {{ __('Manage') }} →
+                            {{ __('messages.Manage') }} →
                         </a>
                     </div>
                 </div>
@@ -106,11 +106,11 @@
         <div class="stat-card glass-card rounded-2xl p-5 lg:p-6 transition-all duration-300 glow-emerald">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('Active Users') }}</p>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm">{{ __('messages.Active Users') }}</p>
                     <p class="text-2xl lg:text-3xl font-semibold mt-2 font-mono">{{ $activeUsersCount ?? 0 }}</p>
                     <div class="flex items-center gap-1.5 mt-3">
                         <a href="{{ route('users.index') }}" class="text-accent-emerald text-sm hover:text-accent-cyan transition-colors">
-                            {{ __('View all') }} →
+                            {{ __('messages.View all') }} →
                         </a>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
         <div class="xl:col-span-2 space-y-4 lg:space-y-6">
             <!-- System Alerts -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('System Alerts') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.System Alerts') }}</h2>
                 <div class="space-y-3">
                     @if(isset($maintenanceDueCount) && $maintenanceDueCount > 0)
                         <div class="glass-card rounded-xl p-4 border-{{ app()->getLocale() === 'ar' ? 'r' : 'l' }}-4 border-accent-amber">
@@ -138,8 +138,8 @@
                                     <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                                 </svg>
                                 <p class="text-sm flex-1">
-                                    <strong>{{ $maintenanceDueCount }}</strong> {{ __('materials require maintenance') }}
-                                    <a href="{{ route('materials.index') }}" class="underline font-semibold text-accent-amber hover:text-accent-coral">{{ __('View') }}</a>
+                                    <strong>{{ $maintenanceDueCount }}</strong> {{ __('messages.materials require maintenance') }}
+                                    <a href="{{ route('materials.index') }}" class="underline font-semibold text-accent-amber hover:text-accent-coral">{{ __('messages.View') }}</a>
                                 </p>
                             </div>
                         </div>
@@ -152,8 +152,8 @@
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                 </svg>
                                 <p class="text-sm flex-1">
-                                    <strong>{{ $pendingUsersCount }}</strong> {{ __('users waiting for approval') }}
-                                    <a href="{{ route('users.index') }}" class="underline font-semibold text-accent-cyan hover:text-accent-emerald">{{ __('Review') }}</a>
+                                    <strong>{{ $pendingUsersCount }}</strong> {{ __('messages.users waiting for approval') }}
+                                    <a href="{{ route('users.index') }}" class="underline font-semibold text-accent-cyan hover:text-accent-emerald">{{ __('messages.Review') }}</a>
                                 </p>
                             </div>
                         </div>
@@ -166,8 +166,8 @@
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                 </svg>
                                 <p class="text-sm flex-1">
-                                    <strong>{{ $pendingReservationsCount }}</strong> {{ __('reservations pending review') }}
-                                    <a href="{{ route('reservations.index') }}" class="underline font-semibold text-accent-violet hover:text-accent-rose">{{ __('Review') }}</a>
+                                    <strong>{{ $pendingReservationsCount }}</strong> {{ __('messages.reservations pending review') }}
+                                    <a href="{{ route('reservations.index') }}" class="underline font-semibold text-accent-violet hover:text-accent-rose">{{ __('messages.Review') }}</a>
                                 </p>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                 <svg class="h-5 w-5 text-accent-emerald {{ app()->getLocale() === 'ar' ? 'ml-3' : 'mr-3' }}" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                 </svg>
-                                <p class="text-sm">{{ __('All systems operational. No pending actions required.') }}</p>
+                                <p class="text-sm">{{ __('messages.All systems operational. No pending actions required.') }}</p>
                             </div>
                         </div>
                     @endif
@@ -188,19 +188,19 @@
 
             <!-- Materials Overview -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-6">{{ __('Materials Overview') }}</h2>
+                <h2 class="text-lg font-semibold mb-6">{{ __('messages.Materials Overview') }}</h2>
                 <div class="grid grid-cols-3 gap-4">
                     <div class="text-center p-4 glass-card rounded-xl border border-accent-emerald/20">
                         <p class="text-3xl font-bold text-accent-emerald font-mono">{{ $availableMaterialsCount ?? 0 }}</p>
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">{{ __('Available') }}</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">{{ __('messages.Available') }}</p>
                     </div>
                     <div class="text-center p-4 glass-card rounded-xl border border-accent-coral/20">
                         <p class="text-3xl font-bold text-accent-coral font-mono">{{ $maintenanceMaterialsCount ?? 0 }}</p>
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">{{ __('Maintenance') }}</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">{{ __('messages.Maintenance') }}</p>
                     </div>
                     <div class="text-center p-4 glass-card rounded-xl border border-zinc-400/20">
                         <p class="text-3xl font-bold text-zinc-500 dark:text-zinc-400 font-mono">{{ $retiredMaterialsCount ?? 0 }}</p>
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">{{ __('Retired') }}</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-2">{{ __('messages.Retired') }}</p>
                     </div>
                 </div>
             </div>
@@ -208,7 +208,7 @@
 
         <!-- Activity Feed -->
         <div class="glass-card rounded-2xl p-5 lg:p-6">
-            <h2 class="text-lg font-semibold mb-6">{{ __('Recent Activity') }}</h2>
+            <h2 class="text-lg font-semibold mb-6">{{ __('messages.Recent Activity') }}</h2>
             <div class="space-y-6">
                 @if(isset($recentActivities) && $recentActivities->count() > 0)
                     @foreach($recentActivities->take(5) as $activity)
@@ -224,7 +224,7 @@
                                 @endif
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm">{{ $activity->description ?? __('Activity') }}</p>
+                                <p class="text-sm">{{ $activity->description ?? __('messages.Activity') }}</p>
                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ $activity->created_at?->diffForHumans() }}</p>
                             </div>
                         </div>
@@ -234,7 +234,7 @@
                         <svg class="w-12 h-12 text-zinc-300 dark:text-zinc-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('No recent activity') }}</p>
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.No recent activity') }}</p>
                     </div>
                 @endif
             </div>
@@ -243,7 +243,7 @@
 
     <!-- Admin Quick Actions -->
     <div class="glass-card rounded-2xl p-5 lg:p-6">
-        <h2 class="text-lg font-semibold mb-6">{{ __('Quick Actions') }}</h2>
+        <h2 class="text-lg font-semibold mb-6">{{ __('messages.Quick Actions') }}</h2>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <a href="{{ route('users.create') }}" class="glass-card rounded-xl p-4 hover:border-accent-amber transition-all group text-center">
                 <div class="w-12 h-12 rounded-xl bg-accent-amber/10 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
@@ -251,7 +251,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                     </svg>
                 </div>
-                <span class="text-sm font-medium">{{ __('Add User') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Add User') }}</span>
             </a>
 
             <a href="{{ route('materials.create') }}" class="glass-card rounded-xl p-4 hover:border-accent-emerald transition-all group text-center">
@@ -260,7 +260,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
                 </div>
-                <span class="text-sm font-medium">{{ __('Add Material') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Add Material') }}</span>
             </a>
 
             <a href="{{ route('events.create') }}" class="glass-card rounded-xl p-4 hover:border-accent-violet transition-all group text-center">
@@ -269,7 +269,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </div>
-                <span class="text-sm font-medium">{{ __('Create Event') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.Create Event') }}</span>
             </a>
 
             <a href="{{ route('projects.create') }}" class="glass-card rounded-xl p-4 hover:border-accent-cyan transition-all group text-center">
@@ -278,7 +278,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                     </svg>
                 </div>
-                <span class="text-sm font-medium">{{ __('New Project') }}</span>
+                <span class="text-sm font-medium">{{ __('messages.New Project') }}</span>
             </a>
         </div>
     </div>

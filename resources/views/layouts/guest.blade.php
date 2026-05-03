@@ -121,7 +121,7 @@
                         </svg>
                     </div>
                     <h1 class="text-2xl font-semibold tracking-tight">{{ config('app.name', 'RLMS') }}</h1>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Research Laboratory Management System') }}</p>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Research Laboratory Management System') }}</p>
                 </a>
             </div>
 
@@ -134,7 +134,7 @@
 
             <!-- Footer -->
             <div class="mt-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
-                <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</p>
+                <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('messages.All rights reserved.') }}</p>
             </div>
         </div>
 

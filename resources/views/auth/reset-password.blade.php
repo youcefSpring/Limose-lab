@@ -1,8 +1,8 @@
 <x-guest-layout>
     <!-- Page Title -->
     <div class="mb-6">
-        <h2 class="text-2xl font-semibold">{{ __('Reset Password') }}</h2>
-        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{{ __('Enter your new password below') }}</p>
+        <h2 class="text-2xl font-semibold">{{ __('messages.Reset Password') }}</h2>
+        <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{{ __('messages.Enter your new password below') }}</p>
     </div>
 
     <form method="POST" action="{{ route('password.store') }}" class="space-y-5">
@@ -13,7 +13,7 @@
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-sm font-medium mb-2">{{ __('Email') }}</label>
+            <label for="email" class="block text-sm font-medium mb-2">{{ __('messages.Email') }}</label>
             <div class="relative">
                 <div class="absolute inset-y-0 {{ app()->getLocale() === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3' }} flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,7 +29,7 @@
                     autofocus
                     autocomplete="username"
                     class="block w-full {{ app()->getLocale() === 'ar' ? 'pr-10 text-right' : 'pl-10' }} py-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
-                    placeholder="{{ __('your@email.com') }}"
+                    placeholder="{{ __('messages.your@email.com') }}"
                 >
             </div>
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -37,7 +37,7 @@
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-medium mb-2">{{ __('Password') }}</label>
+            <label for="password" class="block text-sm font-medium mb-2">{{ __('messages.Password') }}</label>
             <div class="relative">
                 <div class="absolute inset-y-0 {{ app()->getLocale() === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3' }} flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
                     required
                     autocomplete="new-password"
                     class="block w-full {{ app()->getLocale() === 'ar' ? 'pr-10 text-right' : 'pl-10' }} py-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
-                    placeholder="{{ __('Create a new password') }}"
+                    placeholder="{{ __('messages.Create a new password') }}"
                 >
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -59,7 +59,7 @@
 
         <!-- Confirm Password -->
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium mb-2">{{ __('Confirm Password') }}</label>
+            <label for="password_confirmation" class="block text-sm font-medium mb-2">{{ __('messages.Confirm Password') }}</label>
             <div class="relative">
                 <div class="absolute inset-y-0 {{ app()->getLocale() === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3' }} flex items-center pointer-events-none">
                     <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@
                     required
                     autocomplete="new-password"
                     class="block w-full {{ app()->getLocale() === 'ar' ? 'pr-10 text-right' : 'pl-10' }} py-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
-                    placeholder="{{ __('Confirm your password') }}"
+                    placeholder="{{ __('messages.Confirm your password') }}"
                 >
             </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
@@ -84,7 +84,7 @@
             type="submit"
             class="w-full bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity shadow-lg shadow-accent-amber/20"
         >
-            {{ __('Reset Password') }}
+            {{ __('messages.Reset Password') }}
         </button>
     </form>
 </x-guest-layout>

@@ -11,9 +11,9 @@
 
 @php
 $tabs = [
-    ['id' => 'en', 'label' => __('English'), 'icon' => '🇬🇧'],
-    ['id' => 'fr', 'label' => __('French'), 'icon' => '🇫🇷'],
-    ['id' => 'ar', 'label' => __('Arabic'), 'icon' => '🇸🇦'],
+    ['id' => 'en', 'label' => __('messages.English'), 'icon' => '🇬🇧'],
+    ['id' => 'fr', 'label' => __('messages.French'), 'icon' => '🇫🇷'],
+    ['id' => 'ar', 'label' => __('messages.Arabic'), 'icon' => '🇸🇦'],
 ];
 
 $enValue = $values['en'] ?? old($name);
@@ -45,7 +45,7 @@ $arError = $errors['ar'] ?? null;
                     rows="{{ $rows }}"
                     {{ $required ? 'required' : '' }}
                     class="block w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border {{ $enError ? 'border-accent-rose' : 'border-black/10 dark:border-white/10' }} rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all resize-none"
-                    placeholder="{{ __('Enter') }} {{ strtolower($label ?? $name) }} {{ __('in English') }}"
+                    placeholder="{{ __('messages.Enter') }} {{ strtolower($label ?? $name) }} {{ __('messages.in English') }}"
                 >{{ $enValue }}</textarea>
             @else
                 <input
@@ -55,7 +55,7 @@ $arError = $errors['ar'] ?? null;
                     value="{{ $enValue }}"
                     {{ $required ? 'required' : '' }}
                     class="block w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border {{ $enError ? 'border-accent-rose' : 'border-black/10 dark:border-white/10' }} rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all"
-                    placeholder="{{ __('Enter') }} {{ strtolower($label ?? $name) }} {{ __('in English') }}"
+                    placeholder="{{ __('messages.Enter') }} {{ strtolower($label ?? $name) }} {{ __('messages.in English') }}"
                 />
             @endif
             @if($enError)
@@ -74,7 +74,7 @@ $arError = $errors['ar'] ?? null;
                     id="{{ $name }}_fr"
                     rows="{{ $rows }}"
                     class="block w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border {{ $frError ? 'border-accent-rose' : 'border-black/10 dark:border-white/10' }} rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all resize-none"
-                    placeholder="{{ __('Enter') }} {{ strtolower($label ?? $name) }} {{ __('in French') }}"
+                    placeholder="{{ __('messages.Enter') }} {{ strtolower($label ?? $name) }} {{ __('messages.in French') }}"
                 >{{ $frValue }}</textarea>
             @else
                 <input
@@ -83,7 +83,7 @@ $arError = $errors['ar'] ?? null;
                     id="{{ $name }}_fr"
                     value="{{ $frValue }}"
                     class="block w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border {{ $frError ? 'border-accent-rose' : 'border-black/10 dark:border-white/10' }} rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all"
-                    placeholder="{{ __('Enter') }} {{ strtolower($label ?? $name) }} {{ __('in French') }}"
+                    placeholder="{{ __('messages.Enter') }} {{ strtolower($label ?? $name) }} {{ __('messages.in French') }}"
                 />
             @endif
             @if($frError)
@@ -103,7 +103,7 @@ $arError = $errors['ar'] ?? null;
                     rows="{{ $rows }}"
                     dir="rtl"
                     class="block w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border {{ $arError ? 'border-accent-rose' : 'border-black/10 dark:border-white/10' }} rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all resize-none text-right"
-                    placeholder="{{ __('Enter') }} {{ strtolower($label ?? $name) }} {{ __('in Arabic') }}"
+                    placeholder="{{ __('messages.Enter') }} {{ strtolower($label ?? $name) }} {{ __('messages.in Arabic') }}"
                 >{{ $arValue }}</textarea>
             @else
                 <input
@@ -113,7 +113,7 @@ $arError = $errors['ar'] ?? null;
                     value="{{ $arValue }}"
                     dir="rtl"
                     class="block w-full px-4 py-2.5 bg-white dark:bg-surface-700/50 border {{ $arError ? 'border-accent-rose' : 'border-black/10 dark:border-white/10' }} rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-indigo/50 focus:border-accent-indigo transition-all text-right"
-                    placeholder="{{ __('Enter') }} {{ strtolower($label ?? $name) }} {{ __('in Arabic') }}"
+                    placeholder="{{ __('messages.Enter') }} {{ strtolower($label ?? $name) }} {{ __('messages.in Arabic') }}"
                 />
             @endif
             @if($arError)

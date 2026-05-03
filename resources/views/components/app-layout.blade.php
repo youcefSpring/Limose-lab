@@ -125,22 +125,32 @@
                 transition: transform 0.3s ease-in-out;
             }
             
-            /* Sidebar hidden states */
+            /* Sidebar hidden states - LTR */
             .sidebar.sidebar-hidden {
                 transform: translateX(-100%);
             }
+            
+            /* Sidebar hidden states - RTL */
             [dir="rtl"] .sidebar.sidebar-hidden {
                 transform: translateX(100%);
             }
+            
             @media (min-width: 1024px) {
                 .sidebar.sidebar-hidden {
-                    transform: translateX(0);
                     width: 0 !important;
                     min-width: 0 !important;
                     overflow: hidden;
+                    opacity: 0;
                 }
+            }
+            
+            /* RTL Layout - Sidebar should stay on right but hidden */
+            @media (min-width: 1024px) {
                 [dir="rtl"] .sidebar.sidebar-hidden {
-                    transform: translateX(0);
+                    width: 0 !important;
+                    min-width: 0 !important;
+                    overflow: hidden;
+                    opacity: 0;
                 }
             }
             
@@ -179,7 +189,7 @@
             @include('components.header')
 
             <!-- Main Content -->
-            <main class="flex-1 min-h-screen pt-16 lg:pt-20 {{ app()->getLocale() === 'ar' ? 'lg:mr-64' : 'lg:ml-64' }}">
+            <main class="flex-1 min-h-screen pt-16 lg:pt-20 transition-all duration-300 {{ app()->getLocale() === 'ar' ? 'lg:mr-64' : 'lg:ml-64' }}">
                 <div class="p-4 sm:p-6 lg:p-8">
                     <!-- Flash Messages -->
                     @if(session('success'))
@@ -250,24 +260,28 @@
                 const sidebar = document.getElementById('sidebar');
                 const mainContent = document.querySelector('main');
                 const header = document.getElementById('header');
+                const isRtl = document.documentElement.dir === 'rtl';
                 
                 if (window.innerWidth >= 1024) {
                     // Desktop: sidebar visible by default
                     sidebar.classList.remove('sidebar-hidden');
-                    mainContent.classList.add('lg:ml-64');
-                    @if(app()->getLocale() === 'ar')
+                    if (isRtl) {
                         mainContent.classList.add('lg:mr-64');
-                    @endif
-                    header.classList.add('lg:left-64');
-                    @if(app()->getLocale() === 'ar')
+                        mainContent.classList.remove('lg:ml-64');
                         header.classList.add('lg:right-64');
-                    @endif
+                        header.classList.remove('lg:left-64');
+                    } else {
+                        mainContent.classList.add('lg:ml-64');
+                        mainContent.classList.remove('lg:mr-64');
+                        header.classList.add('lg:left-64');
+                        header.classList.remove('lg:right-64');
+                    }
                 } else {
                     // Mobile: sidebar hidden by default
                     sidebar.classList.add('sidebar-hidden');
-                    mainContent.classList.add('ml-0', 'mr-0');
+                    mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
+                    header.classList.remove('lg:left-64', 'lg:right-64');
                     header.classList.add('left-0');
-                    header.classList.remove('lg:left-64');
                 }
             }
             initSidebar();
@@ -280,6 +294,7 @@
                 const header = document.getElementById('header');
                 const mainContent = document.querySelector('main');
                 const body = document.body;
+                const isRtl = document.documentElement.dir === 'rtl';
                 
                 if (window.innerWidth < 1024) {
                     // Mobile: slide sidebar
@@ -298,23 +313,22 @@
 
                     if (sidebar.classList.contains('sidebar-hidden')) {
                         mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
-                        header.classList.remove('lg:left-64');
-                        header.classList.add('lg:left-0');
-                        @if(app()->getLocale() === 'ar')
-                            header.classList.remove('lg:right-64');
+                        header.classList.remove('lg:left-64', 'lg:right-64');
+                        if (isRtl) {
                             header.classList.add('lg:right-0');
-                        @endif
+                        } else {
+                            header.classList.add('lg:left-0');
+                        }
                     } else {
-                        mainContent.classList.add('lg:ml-64');
-                        @if(app()->getLocale() === 'ar')
+                        if (isRtl) {
                             mainContent.classList.add('lg:mr-64');
-                        @endif
-                        header.classList.remove('lg:left-0');
-                        header.classList.add('lg:left-64');
-                        @if(app()->getLocale() === 'ar')
                             header.classList.remove('lg:right-0');
                             header.classList.add('lg:right-64');
-                        @endif
+                        } else {
+                            mainContent.classList.add('lg:ml-64');
+                            header.classList.remove('lg:left-0');
+                            header.classList.add('lg:left-64');
+                        }
                     }
                 }
 
@@ -355,21 +369,21 @@
                 const header = document.getElementById('header');
                 const overlay = document.getElementById('sidebar-overlay');
                 const body = document.body;
+                const isRtl = document.documentElement.dir === 'rtl';
                 
                 if (window.innerWidth >= 1024) {
                     // Switch to desktop: show sidebar
                     sidebar.classList.remove('sidebar-hidden');
                     mainContent.classList.remove('ml-0', 'mr-0');
-                    mainContent.classList.add('lg:ml-64');
-                    @if(app()->getLocale() === 'ar')
+                    if (isRtl) {
                         mainContent.classList.add('lg:mr-64');
-                    @endif
-                    header.classList.remove('lg:left-0');
-                    header.classList.add('lg:left-64');
-                    @if(app()->getLocale() === 'ar')
                         header.classList.remove('lg:right-0');
                         header.classList.add('lg:right-64');
-                    @endif
+                    } else {
+                        mainContent.classList.add('lg:ml-64');
+                        header.classList.remove('lg:left-0');
+                        header.classList.add('lg:left-64');
+                    }
                     overlay.classList.add('opacity-0', 'invisible');
                     body.classList.remove('sidebar-open');
                 } else {

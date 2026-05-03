@@ -8,8 +8,8 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ $material->name ?? __('Material Details') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ $material->category->name ?? __('Uncategorized') }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ $material->name ?? __('messages.Material Details') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ $material->category->name ?? __('messages.Uncategorized') }}</p>
             </div>
         </div>
         <div class="flex items-center gap-2">
@@ -18,7 +18,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                    {{ __('Edit') }}
+                    {{ __('messages.Edit') }}
                 </a>
             @endcan
             @if($material->status === 'available')
@@ -26,7 +26,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    {{ __('Reserve Now') }}
+                    {{ __('messages.Reserve Now') }}
                 </a>
             @endif
         </div>
@@ -52,30 +52,30 @@
 
             <!-- Description -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Description') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Description') }}</h2>
                 <p class="text-zinc-600 dark:text-zinc-300 whitespace-pre-line leading-relaxed">{{ $material->description }}</p>
             </div>
 
             <!-- Specifications -->
             @if($material->serial_number || $material->purchase_date)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-5">{{ __('Specifications') }}</h2>
+                    <h2 class="text-lg font-semibold mb-5">{{ __('messages.Specifications') }}</h2>
                     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         @if($material->serial_number)
                             <div class="glass-card rounded-xl p-4">
-                                <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Serial Number') }}</dt>
+                                <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Serial Number') }}</dt>
                                 <dd class="text-base font-semibold font-mono">{{ $material->serial_number }}</dd>
                             </div>
                         @endif
                         @if($material->purchase_date)
                             <div class="glass-card rounded-xl p-4">
-                                <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Purchase Date') }}</dt>
+                                <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Purchase Date') }}</dt>
                                 <dd class="text-base font-semibold">{{ $material->purchase_date->format('d M Y') }}</dd>
                             </div>
                         @endif
                         @if($material->maintenance_schedule)
                             <div class="glass-card rounded-xl p-4">
-                                <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('Maintenance Schedule') }}</dt>
+                                <dt class="text-sm text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Maintenance Schedule') }}</dt>
                                 <dd class="text-base font-semibold">{{ __(ucfirst($material->maintenance_schedule)) }}</dd>
                             </div>
                         @endif
@@ -86,9 +86,9 @@
             <!-- Recent Reservations -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
                 <div class="flex items-center justify-between mb-5">
-                    <h2 class="text-lg font-semibold">{{ __('Recent Reservations') }}</h2>
+                    <h2 class="text-lg font-semibold">{{ __('messages.Recent Reservations') }}</h2>
                     <a href="{{ route('reservations.index', ['material' => $material->id]) }}" class="text-sm text-accent-violet hover:text-accent-rose transition-colors">
-                        {{ __('View all') }} →
+                        {{ __('messages.View all') }} →
                     </a>
                 </div>
 
@@ -105,7 +105,7 @@
                                         </div>
                                         <div>
                                             <p class="text-sm font-medium">
-                                                {{ $reservation->user->name ?? __('Unknown User') }}
+                                                {{ $reservation->user->name ?? __('messages.Unknown User') }}
                                             </p>
                                             <p class="text-xs text-zinc-500 dark:text-zinc-400">
                                                 {{ $reservation->start_date?->format('d M Y') }} - {{ $reservation->end_date?->format('d M Y') }}
@@ -130,7 +130,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                             </svg>
                         </div>
-                        <p class="text-zinc-500 dark:text-zinc-400">{{ __('No reservations yet') }}</p>
+                        <p class="text-zinc-500 dark:text-zinc-400">{{ __('messages.No reservations yet') }}</p>
                     </div>
                 @endif
             </div>
@@ -140,25 +140,25 @@
         <div class="space-y-4 lg:space-y-6">
             <!-- Status Card -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Status') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Status') }}</h2>
                 <div class="space-y-4">
                     <div>
-                        <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Current Status') }}</span>
+                        <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Current Status') }}</span>
                         <div class="mt-2">
                             @if($material->status === 'available')
                                 <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-accent-emerald/10 text-accent-emerald">
                                     <span class="w-2 h-2 rounded-full bg-current"></span>
-                                    {{ __('Available') }}
+                                    {{ __('messages.Available') }}
                                 </span>
                             @elseif($material->status === 'maintenance')
                                 <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-accent-amber/10 text-accent-amber">
                                     <span class="w-2 h-2 rounded-full bg-current"></span>
-                                    {{ __('Maintenance') }}
+                                    {{ __('messages.Maintenance') }}
                                 </span>
                             @else
                                 <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-zinc-500/10 text-zinc-500">
                                     <span class="w-2 h-2 rounded-full bg-current"></span>
-                                    {{ __('Retired') }}
+                                    {{ __('messages.Retired') }}
                                 </span>
                             @endif
                         </div>
@@ -166,7 +166,7 @@
 
                     <div class="pt-4 border-t border-black/5 dark:border-white/5">
                         <div class="flex justify-between items-center mb-3">
-                            <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Available Quantity') }}</span>
+                            <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Available Quantity') }}</span>
                             <span class="text-2xl font-bold font-mono">{{ $material->quantity }}</span>
                         </div>
                         <div class="w-full bg-zinc-200 dark:bg-surface-700 rounded-full h-2.5">
@@ -178,7 +178,7 @@
 
             <!-- Location Card -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Location') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Location') }}</h2>
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-xl bg-accent-rose/10 flex items-center justify-center flex-shrink-0">
                         <svg class="h-5 w-5 text-accent-rose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,14 +188,14 @@
                     </div>
                     <div>
                         <p class="text-base font-medium">{{ $material->location }}</p>
-                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ __('Storage Location') }}</p>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ __('messages.Storage Location') }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Category Card -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-4">{{ __('Category') }}</h2>
+                <h2 class="text-lg font-semibold mb-4">{{ __('messages.Category') }}</h2>
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-xl bg-accent-violet/10 flex items-center justify-center flex-shrink-0">
                         <svg class="h-5 w-5 text-accent-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +203,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-base font-medium">{{ $material->category->name ?? __('Uncategorized') }}</p>
+                        <p class="text-base font-medium">{{ $material->category->name ?? __('messages.Uncategorized') }}</p>
                         @if($material->category?->description)
                             <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{{ $material->category->description }}</p>
                         @endif
@@ -214,15 +214,15 @@
             <!-- Maintenance Card -->
             @if($material->maintenance_schedule)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('Maintenance') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Maintenance') }}</h2>
                     <div class="space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Schedule') }}</span>
+                            <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Schedule') }}</span>
                             <span class="text-sm font-semibold">{{ __(ucfirst($material->maintenance_schedule)) }}</span>
                         </div>
                         @if(isset($lastMaintenance))
                             <div class="flex justify-between items-center">
-                                <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Last Maintenance') }}</span>
+                                <span class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Last Maintenance') }}</span>
                                 <span class="text-sm font-semibold">{{ $lastMaintenance->completed_date?->format('d M Y') }}</span>
                             </div>
                         @endif
@@ -232,7 +232,7 @@
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                                     </svg>
-                                    {{ __('Schedule Maintenance') }}
+                                    {{ __('messages.Schedule Maintenance') }}
                                 </a>
                             </div>
                         @endcan
@@ -243,26 +243,26 @@
             <!-- Actions Card -->
             @canany(['update', 'delete'], $material)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('Actions') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Actions') }}</h2>
                     <div class="space-y-3">
                         @can('update', $material)
                             <a href="{{ route('materials.edit', $material) }}" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>
-                                {{ __('Edit Material') }}
+                                {{ __('messages.Edit Material') }}
                             </a>
                         @endcan
                         @can('delete', $material)
                             <form method="POST" action="{{ route('materials.destroy', $material) }}"
-                                onsubmit="return confirm('{{ __('Are you sure you want to delete this material?') }}')">
+                                onsubmit="return confirm('{{ __('messages.Are you sure you want to delete this material?') }}')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-accent-rose/10 text-accent-rose hover:bg-accent-rose/20 text-sm font-medium transition-all">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
-                                    {{ __('Delete Material') }}
+                                    {{ __('messages.Delete Material') }}
                                 </button>
                             </form>
                         @endcan
