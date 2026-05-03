@@ -13,12 +13,14 @@
             <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
         @endif
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Styles (Tailwind CDN) -->
+        <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
         <script>
             tailwind.config = {
                 darkMode: 'class',
+                corePlugins: {
+                    preflight: true,
+                },
                 theme: {
                     extend: {
                         fontFamily: {

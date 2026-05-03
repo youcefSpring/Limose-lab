@@ -16,12 +16,14 @@
         <!-- Turbo for SPA-like navigation -->
         <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/dist/turbo.es2017-umd.js"></script>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Styles (Tailwind CDN) -->
+        <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
         <script>
             tailwind.config = {
                 darkMode: 'class',
+                corePlugins: {
+                    preflight: true,
+                },
                 theme: {
                     extend: {
                         fontFamily: {

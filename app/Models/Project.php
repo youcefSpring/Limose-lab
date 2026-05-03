@@ -21,11 +21,16 @@ class Project extends Model
     protected $fillable = [
         'title',
         'description',
+        'objectives',
+        'methodology',
         'start_date',
         'end_date',
         'status',
         'created_by',
         'project_type',
+        'budget',
+        'funding_source',
+        'progress',
     ];
 
     /**
@@ -39,6 +44,8 @@ class Project extends Model
             'start_date' => 'date',
             'end_date' => 'date',
             'status' => 'string',
+            'budget' => 'decimal:2',
+            'progress' => 'integer',
         ];
     }
 

@@ -1,4 +1,4 @@
-<header class="fixed top-0 right-0 left-0 lg:left-auto {{ app()->getLocale() === 'ar' ? 'lg:left-0 lg:right-64' : 'lg:left-64 lg:right-auto' }} z-30 flex items-center justify-between px-4 sm:px-6 py-3 glass border-b border-black/5 dark:border-white/5 transition-all">
+<header class="fixed top-0 left-0 right-0 lg:{{ app()->getLocale() === 'ar' ? 'right-64' : 'left-64' }} z-30 flex items-center justify-between px-4 sm:px-6 py-3 glass border-b border-black/5 dark:border-white/5 transition-all">
     <!-- Mobile menu button -->
     <button type="button" id="hamburger" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

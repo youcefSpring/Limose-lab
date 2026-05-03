@@ -2,157 +2,113 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMaterialRequest;
+use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
+use App\Models\MaterialCategory;
 use App\Services\CacheService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class MaterialController extends Controller
 {
     public function __construct(
         private CacheService $cacheService
-    ) {
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    ) {}
+
+    public function index(Request $request): View
     {
         $query = Material::query();
 
-        // Search functionality
         if ($request->filled('search')) {
-            $search = $request->get('search');
+            $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('serial_number', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('serial_number', 'like', "%{$search}%");
             });
         }
 
-        // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter by category
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
 
         $materials = $query->with('category')->paginate(20);
-        $categories = \App\Models\MaterialCategory::orderBy('name')->get();
+        $categories = MaterialCategory::orderBy('name')->get();
 
         return view('materials.index', compact('materials', 'categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        $categories = \App\Models\MaterialCategory::orderBy('name')->get();
+        $categories = MaterialCategory::orderBy('name')->get();
+
         return view('materials.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreMaterialRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'nullable|exists:material_categories,id',
-            'quantity' => 'required|integer|min:0',
-            'min_quantity' => 'nullable|integer|min:0',
-            'status' => 'required|in:available,maintenance,retired',
-            'location' => 'nullable|string|max:255',
-            'serial_number' => 'nullable|string|max:255|unique:materials',
-            'purchase_date' => 'nullable|date',
-            'maintenance_schedule' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('materials', 'public');
         }
 
         Material::create($validated);
-
-        // Clear material caches
         $this->cacheService->clearMaterialCaches();
 
-        return redirect()->route('materials.index')->with('success', __('Material created successfully.'));
+        return redirect()->route('materials.index')
+            ->with('success', __('Material created successfully.'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Material $material)
+    public function show(Material $material): View
     {
         $material->load('category');
+
         return view('materials.show', compact('material'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Material $material)
+    public function edit(Material $material): View
     {
-        $categories = \App\Models\MaterialCategory::orderBy('name')->get();
+        $categories = MaterialCategory::orderBy('name')->get();
+
         return view('materials.edit', compact('material', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Material $material)
+    public function update(UpdateMaterialRequest $request, Material $material): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category_id' => 'nullable|exists:material_categories,id',
-            'quantity' => 'required|integer|min:0',
-            'min_quantity' => 'nullable|integer|min:0',
-            'status' => 'required|in:available,maintenance,retired',
-            'location' => 'nullable|string|max:255',
-            'serial_number' => 'nullable|string|max:255|unique:materials,serial_number,' . $material->id,
-            'purchase_date' => 'nullable|date',
-            'maintenance_schedule' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($material->image) {
-                \Storage::disk('public')->delete($material->image);
+                Storage::disk('public')->delete($material->image);
             }
             $validated['image'] = $request->file('image')->store('materials', 'public');
         }
 
         $material->update($validated);
-
-        // Clear material caches
         $this->cacheService->clearMaterialCaches();
 
-        return redirect()->route('materials.show', $material)->with('success', __('Material updated successfully.'));
+        return redirect()->route('materials.show', $material)
+            ->with('success', __('Material updated successfully.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Material $material)
+    public function destroy(Material $material): RedirectResponse
     {
-        // Delete image if exists
         if ($material->image) {
-            \Storage::disk('public')->delete($material->image);
+            Storage::disk('public')->delete($material->image);
         }
 
         $material->delete();
-
-        // Clear material caches
         $this->cacheService->clearMaterialCaches();
 
-        return redirect()->route('materials.index')->with('success', __('Material deleted successfully.'));
+        return redirect()->route('materials.index')
+            ->with('success', __('Material deleted successfully.'));
     }
 }

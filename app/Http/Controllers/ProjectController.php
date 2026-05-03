@@ -2,34 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use App\Services\CacheService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
     public function __construct(
         private CacheService $cacheService
-    ) {
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        $query = Project::with(['creator', 'members']);
+    ) {}
 
-        // Search functionality
-        if ($request->has('search')) {
-            $search = $request->get('search');
+    public function index(Request $request): View
+    {
+        $query = Project::with(['creator', 'users']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        // Filter by status
-        if ($request->has('status') && $request->status !== '') {
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
@@ -38,104 +37,57 @@ class ProjectController extends Controller
         return view('projects.index', compact('projects'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
         return view('projects.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'objectives' => 'nullable|string',
-            'methodology' => 'nullable|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date',
-            'status' => 'required|in:active,completed,on_hold',
-            'budget' => 'nullable|numeric|min:0',
-            'funding_source' => 'nullable|string|max:255',
-            'progress' => 'nullable|integer|min:0|max:100',
-        ]);
-
+        $validated = $request->validated();
         $validated['created_by'] = auth()->id();
 
         Project::create($validated);
-
-        // Clear project caches
         $this->cacheService->clearProjectCaches();
 
-        return redirect()->route('projects.index')->with('success', __('Project created successfully.'));
+        return redirect()->route('projects.index')
+            ->with('success', __('Project created successfully.'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Project $project)
+    public function show(Project $project): View
     {
-        $project->load(['creator', 'members', 'experiments']);
+        $project->load(['creator', 'users', 'experiments']);
+
         return view('projects.show', compact('project'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Project $project)
+    public function edit(Project $project): View
     {
         return view('projects.edit', compact('project'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'objectives' => 'nullable|string',
-            'methodology' => 'nullable|string',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date',
-            'status' => 'required|in:active,completed,on_hold',
-            'budget' => 'nullable|numeric|min:0',
-            'funding_source' => 'nullable|string|max:255',
-            'progress' => 'nullable|integer|min:0|max:100',
-        ]);
-
-        $project->update($validated);
-
-        // Clear project caches
+        $project->update($request->validated());
         $this->cacheService->clearProjectCaches();
 
-        return redirect()->route('projects.show', $project)->with('success', __('Project updated successfully.'));
+        return redirect()->route('projects.show', $project)
+            ->with('success', __('Project updated successfully.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Project $project)
+    public function destroy(Project $project): RedirectResponse
     {
         $project->delete();
-
-        // Clear project caches
         $this->cacheService->clearProjectCaches();
 
-        return redirect()->route('projects.index')->with('success', __('Project deleted successfully.'));
+        return redirect()->route('projects.index')
+            ->with('success', __('Project deleted successfully.'));
     }
 
-    /**
-     * Show project members management page.
-     */
-    public function members(Project $project)
+    public function members(Project $project): View
     {
-        $project->load('members');
+        $project->load('users');
+
         return view('projects.members', compact('project'));
     }
 }
