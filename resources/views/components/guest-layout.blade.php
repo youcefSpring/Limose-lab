@@ -28,10 +28,10 @@
                         },
                         colors: {
                             'surface': {
-                                900: '#0a0a0f',
-                                800: '#12121a',
-                                700: '#1a1a25',
-                                600: '#252532',
+                                900: '#18181b',
+                                800: '#27272a',
+                                700: '#3f3f46',
+                                600: '#52525b',
                             },
                             'accent': {
                                 amber: '#f59e0b',
@@ -50,24 +50,24 @@
             * { font-family: {{ app()->getLocale() === 'ar' ? "'Cairo', sans-serif" : "'Outfit', sans-serif" }}; }
 
             .dark body {
-                background: #0a0a0f;
+                background: #18181b;
                 background-image:
-                    radial-gradient(ellipse 80% 50% at 20% -20%, rgba(245, 158, 11, 0.08), transparent),
-                    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139, 92, 246, 0.06), transparent);
+                    radial-gradient(ellipse 80% 50% at 20% -20%, rgba(245, 158, 11, 0.05), transparent),
+                    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139, 92, 246, 0.04), transparent);
             }
 
             body {
                 background: #f8fafc;
                 background-image:
-                    radial-gradient(ellipse 80% 50% at 20% -20%, rgba(245, 158, 11, 0.1), transparent),
-                    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139, 92, 246, 0.08), transparent);
+                    radial-gradient(ellipse 80% 50% at 20% -20%, rgba(245, 158, 11, 0.08), transparent),
+                    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139, 92, 246, 0.05), transparent);
                 transition: background 0.3s ease;
             }
 
             .dark .glass {
-                background: rgba(26, 26, 37, 0.6);
+                background: rgba(39, 39, 42, 0.7);
                 backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.08);
             }
 
             .glass {
@@ -78,13 +78,13 @@
             }
 
             .dark .glass-card {
-                background: linear-gradient(135deg, rgba(37, 37, 50, 0.8), rgba(26, 26, 37, 0.4));
+                background: linear-gradient(135deg, rgba(63, 63, 70, 0.7), rgba(39, 39, 42, 0.5));
                 backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }
 
             .glass-card {
-                background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.6));
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.8));
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(0, 0, 0, 0.05);
                 box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.1);
@@ -117,11 +117,11 @@
 
         <!-- Scripts -->
         <script>
-            // Initialize theme from localStorage or default to dark
-            if (localStorage.getItem('theme') === 'light') {
-                document.documentElement.classList.remove('dark');
-            } else {
+            // Initialize theme from localStorage or default to light
+            if (localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme')) {
                 document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
             }
         </script>
         @stack('scripts')

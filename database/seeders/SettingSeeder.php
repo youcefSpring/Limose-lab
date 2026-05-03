@@ -85,6 +85,11 @@ class SettingSeeder extends Seeder
             ['key' => 'about_image', 'value' => null, 'type' => 'image', 'group' => 'branding', 'order' => 6],
             ['key' => 'primary_color', 'value' => '#8C1515', 'type' => 'color', 'group' => 'branding', 'order' => 7],
             ['key' => 'secondary_color', 'value' => '#F9F6F2', 'type' => 'color', 'group' => 'branding', 'order' => 8],
+            ['key' => 'accent_color', 'value' => '#FF6B35', 'type' => 'color', 'group' => 'branding', 'order' => 9],
+            ['key' => 'text_color', 'value' => '#4D4F53', 'type' => 'color', 'group' => 'branding', 'order' => 10],
+            ['key' => 'header_color', 'value' => '#8C1515', 'type' => 'color', 'group' => 'branding', 'order' => 11],
+            ['key' => 'button_color', 'value' => '#8C1515', 'type' => 'color', 'group' => 'branding', 'order' => 12],
+            ['key' => 'button_hover_color', 'value' => '#6B0F0F', 'type' => 'color', 'group' => 'branding', 'order' => 13],
 
             // Frontend - Hero Section
             ['key' => 'hero_title', 'value' => 'Research Laboratory Management System', 'type' => 'text', 'group' => 'frontend_hero', 'order' => 1, 'is_multilingual' => true],
@@ -101,6 +106,20 @@ class SettingSeeder extends Seeder
             ['key' => 'location_address', 'value' => 'Research Building, University Campus, City, Country', 'type' => 'textarea', 'group' => 'frontend_contact', 'order' => 1],
             ['key' => 'contact_email_2', 'value' => 'lab@research.edu', 'type' => 'text', 'group' => 'frontend_contact', 'order' => 2],
             ['key' => 'contact_hours', 'value' => 'Mon-Fri, 9AM-5PM', 'type' => 'text', 'group' => 'frontend_contact', 'order' => 3],
+            ['key' => 'contact_phone', 'value' => '+1 (555) 123-4567', 'type' => 'text', 'group' => 'frontend_contact', 'order' => 4],
+
+            // Frontend - Slider
+            ['key' => 'slider_enabled', 'value' => '1', 'type' => 'boolean', 'group' => 'frontend_slider', 'order' => 1],
+            ['key' => 'slider_speed', 'value' => '5000', 'type' => 'text', 'group' => 'frontend_slider', 'order' => 2],
+            ['key' => 'slider_slide_1_title', 'value' => 'Welcome to Our Research Lab', 'type' => 'text', 'group' => 'frontend_slider', 'order' => 3, 'is_multilingual' => true],
+            ['key' => 'slider_slide_1_subtitle', 'value' => 'Advancing scientific knowledge through innovative research', 'type' => 'textarea', 'group' => 'frontend_slider', 'order' => 4, 'is_multilingual' => true],
+            ['key' => 'slider_slide_1_image', 'value' => null, 'type' => 'image', 'group' => 'frontend_slider', 'order' => 5],
+            ['key' => 'slider_slide_2_title', 'value' => 'State-of-the-Art Equipment', 'type' => 'text', 'group' => 'frontend_slider', 'order' => 6, 'is_multilingual' => true],
+            ['key' => 'slider_slide_2_subtitle', 'value' => 'Access to cutting-edge research tools and facilities', 'type' => 'textarea', 'group' => 'frontend_slider', 'order' => 7, 'is_multilingual' => true],
+            ['key' => 'slider_slide_2_image', 'value' => null, 'type' => 'image', 'group' => 'frontend_slider', 'order' => 8],
+            ['key' => 'slider_slide_3_title', 'value' => 'Join Our Team', 'type' => 'text', 'group' => 'frontend_slider', 'order' => 9, 'is_multilingual' => true],
+            ['key' => 'slider_slide_3_subtitle', 'value' => 'Be part of groundbreaking research projects', 'type' => 'textarea', 'group' => 'frontend_slider', 'order' => 10, 'is_multilingual' => true],
+            ['key' => 'slider_slide_3_image', 'value' => null, 'type' => 'image', 'group' => 'frontend_slider', 'order' => 11],
         ];
 
         foreach ($settings as $setting) {
@@ -111,6 +130,6 @@ class SettingSeeder extends Seeder
         }
 
         $this->command->info('Settings seeded successfully!');
-        $this->command->info('Total settings: ' . count($settings));
+        $this->command->info('Total settings: '.count($settings));
     }
 }

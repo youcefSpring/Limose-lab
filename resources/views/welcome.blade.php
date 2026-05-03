@@ -1015,148 +1015,72 @@
         <h2 class="section-title">Upcoming Events</h2>
         <p class="section-subtitle">Join us for seminars, workshops, and research presentations</p>
 
+        @if($upcomingEvents->count() > 0)
         <div class="events-grid">
-            <!-- Event 1 -->
+            @foreach($upcomingEvents as $event)
             <div class="event-card">
                 <div class="event-header">
-                    <div class="event-date">15</div>
-                    <div class="event-month">January 2026</div>
+                    <div class="event-date">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</div>
+                    <div class="event-month">{{ \Carbon\Carbon::parse($event->event_date)->format('F Y') }}</div>
                 </div>
                 <div class="event-content">
-                    <h3>Advanced Microscopy Workshop</h3>
+                    <h3>{{ $event->title }}</h3>
                     <div class="event-info">
                         <div class="event-info-item">
                             <span class="event-info-icon">🕐</span>
-                            <span>09:00 AM - 05:00 PM</span>
+                            <span>{{ $event->event_time ?? 'All Day' }}</span>
                         </div>
                         <div class="event-info-item">
                             <span class="event-info-icon">📍</span>
-                            <span>Lab Building, Room 301</span>
-                        </div>
-                        <div class="event-info-item">
-                            <span class="event-info-icon">👤</span>
-                            <span>Dr. Sarah Johnson</span>
+                            <span>{{ $event->location ?? 'TBA' }}</span>
                         </div>
                     </div>
-                    <p class="event-description">
-                        Learn advanced techniques in electron microscopy and confocal imaging.
-                        Hands-on session with state-of-the-art equipment.
-                    </p>
+                    <p class="event-description">{{ Str::limit($event->description, 120) }}</p>
                     <div class="event-attendees">
                         <div class="attendees-avatars">
-                            <div class="attendee-avatar">JD</div>
-                            <div class="attendee-avatar">SM</div>
-                            <div class="attendee-avatar">AL</div>
-                            <div class="attendee-avatar">+12</div>
+                            <div class="attendee-avatar">{{ $event->confirmedAttendees()->count() }}</div>
                         </div>
-                        <span class="attendees-count">15 attending</span>
+                        <span class="attendees-count">{{ $event->confirmedAttendees()->count() }} attending</span>
                     </div>
-                    <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
+                    @auth
+                        <a href="{{ route('events.show', $event) }}" class="btn-rsvp">View Details</a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
+                    @endauth
                 </div>
             </div>
-
-            <!-- Event 2 -->
-            <div class="event-card">
-                <div class="event-header">
-                    <div class="event-date">22</div>
-                    <div class="event-month">January 2026</div>
-                </div>
-                <div class="event-content">
-                    <h3>Research Seminar Series</h3>
-                    <div class="event-info">
-                        <div class="event-info-item">
-                            <span class="event-info-icon">🕐</span>
-                            <span>02:00 PM - 04:00 PM</span>
-                        </div>
-                        <div class="event-info-item">
-                            <span class="event-info-icon">📍</span>
-                            <span>Conference Hall A</span>
-                        </div>
-                        <div class="event-info-item">
-                            <span class="event-info-icon">👤</span>
-                            <span>Prof. Michael Chen</span>
-                        </div>
-                    </div>
-                    <p class="event-description">
-                        Presentation on breakthrough findings in molecular biology.
-                        Q&A session and networking opportunity with leading researchers.
-                    </p>
-                    <div class="event-attendees">
-                        <div class="attendees-avatars">
-                            <div class="attendee-avatar">MC</div>
-                            <div class="attendee-avatar">RK</div>
-                            <div class="attendee-avatar">TP</div>
-                            <div class="attendee-avatar">+25</div>
-                        </div>
-                        <span class="attendees-count">28 attending</span>
-                    </div>
-                    <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
-                </div>
-            </div>
-
-            <!-- Event 3 -->
-            <div class="event-card">
-                <div class="event-header">
-                    <div class="event-date">05</div>
-                    <div class="event-month">February 2026</div>
-                </div>
-                <div class="event-content">
-                    <h3>Lab Safety Training</h3>
-                    <div class="event-info">
-                        <div class="event-info-item">
-                            <span class="event-info-icon">🕐</span>
-                            <span>10:00 AM - 12:00 PM</span>
-                        </div>
-                        <div class="event-info-item">
-                            <span class="event-info-icon">📍</span>
-                            <span>Training Center</span>
-                        </div>
-                        <div class="event-info-item">
-                            <span class="event-info-icon">👤</span>
-                            <span>Safety Officer</span>
-                        </div>
-                    </div>
-                    <p class="event-description">
-                        Mandatory safety training for all new lab members.
-                        Covers chemical handling, equipment safety, and emergency procedures.
-                    </p>
-                    <div class="event-attendees">
-                        <div class="attendees-avatars">
-                            <div class="attendee-avatar">NK</div>
-                            <div class="attendee-avatar">LM</div>
-                            <div class="attendee-avatar">+8</div>
-                        </div>
-                        <span class="attendees-count">10 attending</span>
-                    </div>
-                    <a href="{{ route('login') }}" class="btn-rsvp">RSVP Now</a>
-                </div>
-            </div>
+            @endforeach
         </div>
+        @else
+        <p style="text-align: center; color: var(--cool-gray);">No upcoming events at the moment. Check back soon!</p>
+        @endif
     </section>
 
     <!-- Contact Section -->
     <section class="contact" id="contact">
-        <h2 class="section-title">Get In Touch</h2>
-        <p class="section-subtitle">We'd love to hear from you</p>
+        <h2 class="section-title">{{ $settings['contact_title'] ?? 'Get In Touch' }}</h2>
+        <p class="section-subtitle">{{ $settings['contact_subtitle'] ?? "We'd love to hear from you" }}</p>
 
         <div class="contact-container">
             <div class="contact-grid">
                 <div class="contact-info">
                     <div class="contact-icon">📍</div>
-                    <h3>Location</h3>
-                    <p>Research Building<br>University Campus<br>City, Country</p>
+                    <h3>{{ __('Location') }}</h3>
+                    <p>{!! nl2br(e($settings['location_address'] ?? 'Research Building, University Campus, City, Country')) !!}</p>
                 </div>
 
                 <div class="contact-info">
                     <div class="contact-icon">📧</div>
-                    <h3>Email</h3>
-                    <p>info@rlms.edu<br>lab@research.edu</p>
+                    <h3>{{ __('Email') }}</h3>
+                    <p>{{ $settings['contact_email_2'] ?? 'info@lab.edu' }}</p>
+                    <p>{{ $settings['contact_email'] ?? 'lab@research.edu' }}</p>
                 </div>
 
                 <div class="contact-info">
                     <div class="contact-icon">📞</div>
-                    <h3>Phone</h3>
-                    <p>+1 (555) 123-4567<br>Mon-Fri, 9AM-5PM</p>
+                    <h3>{{ __('Phone') }}</h3>
+                    <p>{{ $settings['contact_phone'] ?? '+1 (555) 123-4567' }}</p>
+                    <p>{{ $settings['contact_hours'] ?? 'Mon-Fri, 9AM-5PM' }}</p>
                 </div>
             </div>
 

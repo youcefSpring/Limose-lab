@@ -259,36 +259,19 @@
 
     {{-- User Profile Section --}}
     <div class="mt-auto p-4 border-t border-black/5 dark:border-white/5">
-        {{-- Language Switcher --}}
-        <div class="mb-3">
-            <x-language-switcher />
-        </div>
-
         {{-- User Profile Card --}}
-        <div class="glass-card rounded-xl p-3">
-            <div class="flex items-center gap-2.5">
-                <div class="relative flex-shrink-0">
-                    @if(auth()->user()->avatar)
-                        <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover">
-                    @else
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-accent-violet to-accent-cyan flex items-center justify-center text-white font-semibold text-sm">
-                            {{ substr(auth()->user()->name, 0, 1) }}
-                        </div>
-                    @endif
-                    <div class="absolute -bottom-0.5 {{ app()->getLocale() === 'ar' ? '-left-0.5' : '-right-0.5' }} w-2.5 h-2.5 bg-accent-emerald rounded-full border-2 border-white dark:border-surface-800"></div>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-xs font-medium truncate">{{ auth()->user()->name }}</p>
-                    <p class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">{{ auth()->user()->email }}</p>
-                </div>
-                <form method="POST" action="{{ route('logout') }}" class="flex-shrink-0">
-                    @csrf
-                    <button type="submit" class="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-zinc-500 dark:text-zinc-400 hover:text-accent-rose transition-colors" title="{{ __('Logout') }}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                    </button>
-                </form>
+        <div class="glass rounded-xl p-3 flex items-center gap-3">
+            <div class="relative flex-shrink-0">
+                @if(auth()->user()->avatar)
+                    <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover">
+                @else
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-accent-violet to-accent-cyan flex items-center justify-center text-white font-semibold text-sm">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                @endif
+            </div>
+            <div class="flex-1 min-w-0">
+                <a href="{{ route('profile.edit') }}" class="text-xs font-medium truncate hover:text-accent-amber transition-colors block">{{ auth()->user()->name }}</a>
             </div>
         </div>
     </div>

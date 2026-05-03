@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <!-- Theme Switcher -->
+    <div class="relative">
+        <x-theme-switcher />
+    </div>
+
     <!-- Page Title -->
     <div class="mb-6">
         <h2 class="text-2xl font-semibold">{{ __('Welcome Back') }}</h2>

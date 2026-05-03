@@ -1,25 +1,30 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MaterialController;
-use App\Http\Controllers\MaterialCategoryController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ExperimentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\EventSubmissionController;
-use App\Http\Controllers\MaintenanceLogController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\PublicationController;
-use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ExperimentController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\MaintenanceLogController;
+use App\Http\Controllers\MaterialCategoryController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserController;
+use App\Models\Event;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $upcomingEvents = Event::upcoming()->limit(6)->get();
+    $settings = Setting::getAllSettings();
+
+    return view('welcome', compact('upcomingEvents', 'settings'));
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -97,7 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Public routes
 Route::get('/research/publications', [PublicationController::class, 'publicIndex'])->name('frontend.publications');
 
-// Locale switching route
+// Locale switching route (must be outside auth middleware)
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 require __DIR__.'/auth.php';
