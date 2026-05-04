@@ -541,4 +541,12 @@ return [
     'Date' => 'Date',
     'Time' => 'Time',
     'Provide a detailed description of the event...' => 'Provide a detailed description of the event...',
+
+    // File Upload
+    'Remove File' => 'Remove File',
+    'Upload a file' => 'Upload a file',
+    'or drag and drop' => 'or drag and drop',
+    'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)' => 'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)',
+    'Maximum file size:' => 'Maximum file size:',
+    'Current file:' => 'Current file:',
 ];

@@ -2004,4 +2004,12 @@ return [
     'Date' => 'Date',
     'Time' => 'Heure',
     'Provide a detailed description of the event...' => 'Fournissez une description détaillée de l\'événement...',
+
+    // File Upload
+    'Remove File' => 'Supprimer le fichier',
+    'Upload a file' => 'Télécharger un fichier',
+    'or drag and drop' => 'ou glisser-déposer',
+    'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)' => 'Formats pris en charge: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)',
+    'Maximum file size:' => 'Taille maximale du fichier:',
+    'Current file:' => 'Fichier actuel:',
 ];

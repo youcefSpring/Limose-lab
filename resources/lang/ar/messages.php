@@ -4648,4 +4648,10 @@ return [
     'Update Event' => 'تحديث الفعالية',
     'Provide a detailed description of the event...' => 'قدم وصفاً تفصيلياً للفعالية...',
     'You can edit event details anytime before the event date' => 'يمكنك تعديل تفاصيل الفعالية في أي وقت قبل تاريخ الفعالية',
+    'Upload a file' => 'رفع ملف',
+    'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)' => 'الصيغ المدعومة: صور (JPG, PNG, GIF, SVG, WEBP)، ملفات PDF، مستندات (DOC, DOCX, ODT, TXT)',
+    'Share your thoughts about this event...' => 'شارك أفكارك حول هذه الفعالية...',
+    "You're attending!" => 'أنت تحضر!',
+    'See you there!' => 'أراك هناك!',
+    'Update event details and information' => 'تحديث تفاصيل ومعلومات الفعالية',
 ];
