@@ -86,6 +86,12 @@ class SettingController extends Controller
         // Clear cache
         Setting::clearCache();
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => __('Settings updated successfully!'),
+            ]);
+        }
+
         return redirect()->route('settings.index')
             ->with('success', __('Settings updated successfully!'));
     }

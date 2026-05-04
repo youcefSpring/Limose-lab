@@ -1615,4 +1615,132 @@ return [
 
     // Additional missing
     'Manage your equipment reservations' => 'Gérer vos réservations d\'équipements',
+
+    // Settings - Groups
+    'General' => 'Général',
+    'Laboratory info' => 'Info Laboratoire',
+    'Lab location' => 'Emplacement Laboratoire',
+    'Lab contact' => 'Contact Laboratoire',
+    'Lab social' => 'Réseaux Sociaux',
+    'Research areas' => 'Domaines de Recherche',
+    'Branding' => 'Image de Marque',
+    'Frontend hero' => 'Section Principale',
+    'Frontend about' => 'À Propos',
+    'Frontend contact' => 'Contact',
+    'Frontend slider' => 'Diaporama',
+    'Localization' => 'Localisation',
+
+    // Settings - General
+    'Site name' => 'Nom du Site',
+    'Site tagline' => 'Slogan du Site',
+    'Contact email' => 'Email de Contact',
+    'Contact phone' => 'Téléphone de Contact',
+
+    // Settings - Lab Info
+    'Lab name' => 'Nom du Laboratoire',
+    'Lab full name' => 'Nom Complet du Laboratoire',
+    'Lab description' => 'Description du Laboratoire',
+    'Lab mission' => 'Mission du Laboratoire',
+    'Lab vision' => 'Vision du Laboratoire',
+    'Established year' => 'Année de Création',
+    'Director name' => 'Nom du Directeur',
+
+    // Settings - Lab Location
+    'Building name' => 'Nom du Bâtiment',
+    'Floor number' => 'Numéro d\'Étage',
+    'Room number' => 'Numéro de Salle',
+    'Full address' => 'Adresse Complète',
+    'City' => 'Ville',
+    'Country' => 'Pays',
+    'Postal code' => 'Code Postal',
+    'Latitude' => 'Latitude',
+    'Longitude' => 'Longitude',
+
+    // Settings - Lab Contact
+    'Main phone' => 'Téléphone Principal',
+    'Fax' => 'Fax',
+    'General email' => 'Email Général',
+    'Support email' => 'Email de Support',
+    'Office hours' => 'Heures de Bureau',
+
+    // Settings - Lab Social
+    'Website url' => 'URL du Site Web',
+    'Facebook url' => 'URL Facebook',
+    'Twitter url' => 'URL Twitter',
+    'Linkedin url' => 'URL LinkedIn',
+    'Youtube url' => 'URL YouTube',
+    'Instagram url' => 'URL Instagram',
+
+    // Settings - Research Areas
+    'Research area 1 title' => 'Titre Domaine 1',
+    'Research area 1 desc' => 'Description Domaine 1',
+    'Research area 1 icon' => 'Icône Domaine 1',
+    'Research area 2 title' => 'Titre Domaine 2',
+    'Research area 2 desc' => 'Description Domaine 2',
+    'Research area 2 icon' => 'Icône Domaine 2',
+    'Research area 3 title' => 'Titre Domaine 3',
+    'Research area 3 desc' => 'Description Domaine 3',
+    'Research area 3 icon' => 'Icône Domaine 3',
+    'Research area 4 title' => 'Titre Domaine 4',
+    'Research area 4 desc' => 'Description Domaine 4',
+    'Research area 4 icon' => 'Icône Domaine 4',
+
+    // Settings - Branding
+    'Primary logo' => 'Logo Principal',
+    'Secondary logo' => 'Logo Secondaire',
+    'Logo dark' => 'Logo Sombre',
+    'Favicon' => 'Favicon',
+    'Hero background' => 'Fond Principal',
+    'About image' => 'Image À Propos',
+    'Primary color' => 'Couleur Principale',
+    'Secondary color' => 'Couleur Secondaire',
+    'Accent color' => 'Couleur d\'Accent',
+    'Text color' => 'Couleur du Texte',
+    'Header color' => 'Couleur de l\'En-tête',
+    'Button color' => 'Couleur des Boutons',
+    'Button hover color' => 'Couleur des Boutons au Survol',
+
+    // Settings - Frontend Hero
+    'Hero title' => 'Titre Principal',
+    'Hero subtitle' => 'Sous-titre Principal',
+
+    // Settings - Frontend About
+    'About description' => 'Description À Propos',
+    'Stat equipment' => 'Nombre d\'Équipements',
+    'Stat projects' => 'Nombre de Projets',
+    'Stat researchers' => 'Nombre de Chercheurs',
+    'Stat publications' => 'Nombre de Publications',
+
+    // Settings - Frontend Contact
+    'Location address' => 'Adresse',
+    'Contact email 2' => 'Email de Contact 2',
+    'Contact hours' => 'Heures de Contact',
+
+    // Settings - Slider
+    'Slider enabled' => 'Diaporama Activé',
+    'Slider speed' => 'Vitesse du Diaporama',
+    'Slider slide 1 title' => 'Titre Diapositive 1',
+    'Slider slide 1 subtitle' => 'Sous-titre Diapositive 1',
+    'Slider slide 1 image' => 'Image Diapositive 1',
+    'Slider slide 2 title' => 'Titre Diapositive 2',
+    'Slider slide 2 subtitle' => 'Sous-titre Diapositive 2',
+    'Slider slide 2 image' => 'Image Diapositive 2',
+    'Slider slide 3 title' => 'Titre Diapositive 3',
+    'Slider slide 3 subtitle' => 'Sous-titre Diapositive 3',
+    'Slider slide 3 image' => 'Image Diapositive 3',
+
+    // Settings - Localization
+    'Default locale' => 'Langue par Défaut',
+    'Available locales' => 'Langues Disponibles',
+    'Rtl enabled' => 'RTL Activé',
+    'Logos' => 'Logos',
+    'Colors' => 'Couleurs',
+
+    // Common Settings
+    'Save Settings' => 'Enregistrer les Paramètres',
+    'Supported: JPG, PNG. Max: 2MB' => 'Supporté: JPG, PNG. Max: 2Mo',
+    'Enable' => 'Activer',
+    'Saving...' => 'Enregistrement...',
+    'Settings saved successfully!' => 'Paramètres enregistrés avec succès!',
+    'Error saving settings. Please try again.' => 'Erreur lors de l\'enregistrement. Veuillez réessayer.',
 ];

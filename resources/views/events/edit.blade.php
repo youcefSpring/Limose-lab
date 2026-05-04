@@ -61,24 +61,24 @@
 
                     <!-- Date -->
                     <div>
-                        <label for="date" class="block text-sm font-medium mb-2">
+                        <label for="event_date" class="block text-sm font-medium mb-2">
                             {{ __('messages.Date') }} <span class="text-accent-rose">*</span>
                         </label>
-                        <input type="date" name="date" id="date" required min="{{ date('Y-m-d') }}" value="{{ old('date', $event->date?->format('Y-m-d')) }}"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('date') border-accent-rose @enderror">
-                        @error('date')
+                        <input type="date" name="event_date" id="event_date" required min="{{ date('Y-m-d') }}" value="{{ old('event_date', $event->date?->format('Y-m-d')) }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('event_date') border-accent-rose @enderror">
+                        @error('event_date')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <!-- Time -->
                     <div>
-                        <label for="time" class="block text-sm font-medium mb-2">
+                        <label for="event_time" class="block text-sm font-medium mb-2">
                             {{ __('messages.Time') }} <span class="text-accent-rose">*</span>
                         </label>
-                        <input type="time" name="time" id="time" required value="{{ old('time', $event->date?->format('H:i')) }}"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('time') border-accent-rose @enderror">
-                        @error('time')
+                        <input type="time" name="event_time" id="event_time" required value="{{ old('event_time', $event->date?->format('H:i')) }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('event_time') border-accent-rose @enderror">
+                        @error('event_time')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
@@ -98,13 +98,13 @@
 
                     <!-- Max Attendees -->
                     <div>
-                        <label for="max_attendees" class="block text-sm font-medium mb-2">
+                        <label for="capacity" class="block text-sm font-medium mb-2">
                             {{ __('messages.Maximum Attendees') }}
                         </label>
-                        <input type="number" name="max_attendees" id="max_attendees" min="1" value="{{ old('max_attendees', $event->max_attendees) }}"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('max_attendees') border-accent-rose @enderror"
+                        <input type="number" name="capacity" id="capacity" min="1" value="{{ old('capacity', $event->capacity) }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('capacity') border-accent-rose @enderror"
                             placeholder="{{ __('messages.Unlimited') }}">
-                        @error('max_attendees')
+                        @error('capacity')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                         <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
@@ -146,7 +146,7 @@
                         <x-file-upload
                             name="image"
                             label="{{ __('messages.Event Image') }}"
-                            accept="image/*,.pdf"
+                            accept="image/*"
                             maxSize="10MB"
                             :currentFile="isset($event) && $event->image ? asset('storage/' . $event->image) : null"
                         />
@@ -175,10 +175,6 @@
                                         <li class="flex gap-2">
                                             <span class="text-accent-cyan">•</span>
                                             <span>{{ __('messages.Major changes should be communicated well in advance') }}</span>
-                                        </li>
-                                        <li class="flex gap-2">
-                                            <span class="text-accent-cyan">•</span>
-                                            <span>{{ __('messages.Current attendees') }}: {{ $event->attendees_count ?? 0 }}</span>
                                         </li>
                                     </ul>
                                 </div>

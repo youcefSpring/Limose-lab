@@ -549,4 +549,140 @@ return [
     'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)' => 'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)',
     'Maximum file size:' => 'Maximum file size:',
     'Current file:' => 'Current file:',
+
+    // Event Edit
+    'Update details about your event' => 'Update details about your event',
+    'Update Guidelines' => 'Update Guidelines',
+    'All registered attendees will be notified of any changes' => 'All registered attendees will be notified of any changes',
+    'Ensure all event information remains accurate and complete' => 'Ensure all event information remains accurate and complete',
+    'Major changes should be communicated well in advance' => 'Major changes should be communicated well in advance',
+    'Current attendees' => 'Current attendees',
+
+    // Settings - Groups
+    'General' => 'General',
+    'Laboratory info' => 'Laboratory Info',
+    'Lab location' => 'Lab Location',
+    'Lab contact' => 'Lab Contact',
+    'Lab social' => 'Lab Social',
+    'Research areas' => 'Research Areas',
+    'Branding' => 'Branding',
+    'Frontend hero' => 'Frontend Hero',
+    'Frontend about' => 'Frontend About',
+    'Frontend contact' => 'Frontend Contact',
+    'Frontend slider' => 'Frontend Slider',
+    'Localization' => 'Localization',
+
+    // Settings - General
+    'Site name' => 'Site Name',
+    'Site tagline' => 'Site Tagline',
+    'Contact email' => 'Contact Email',
+    'Contact phone' => 'Contact Phone',
+
+    // Settings - Lab Info
+    'Lab name' => 'Lab Name',
+    'Lab full name' => 'Lab Full Name',
+    'Lab description' => 'Lab Description',
+    'Lab mission' => 'Lab Mission',
+    'Lab vision' => 'Lab Vision',
+    'Established year' => 'Established Year',
+    'Director name' => 'Director Name',
+
+    // Settings - Lab Location
+    'Building name' => 'Building Name',
+    'Floor number' => 'Floor Number',
+    'Room number' => 'Room Number',
+    'Full address' => 'Full Address',
+    'City' => 'City',
+    'Country' => 'Country',
+    'Postal code' => 'Postal Code',
+    'Latitude' => 'Latitude',
+    'Longitude' => 'Longitude',
+
+    // Settings - Lab Contact
+    'Main phone' => 'Main Phone',
+    'Fax' => 'Fax',
+    'General email' => 'General Email',
+    'Support email' => 'Support Email',
+    'Office hours' => 'Office Hours',
+
+    // Settings - Lab Social
+    'Website url' => 'Website URL',
+    'Facebook url' => 'Facebook URL',
+    'Twitter url' => 'Twitter URL',
+    'Linkedin url' => 'LinkedIn URL',
+    'Youtube url' => 'YouTube URL',
+    'Instagram url' => 'Instagram URL',
+
+    // Settings - Research Areas
+    'Research area 1 title' => 'Research Area 1 Title',
+    'Research area 1 desc' => 'Research Area 1 Description',
+    'Research area 1 icon' => 'Research Area 1 Icon',
+    'Research area 2 title' => 'Research Area 2 Title',
+    'Research area 2 desc' => 'Research Area 2 Description',
+    'Research area 2 icon' => 'Research Area 2 Icon',
+    'Research area 3 title' => 'Research Area 3 Title',
+    'Research area 3 desc' => 'Research Area 3 Description',
+    'Research area 3 icon' => 'Research Area 3 Icon',
+    'Research area 4 title' => 'Research Area 4 Title',
+    'Research area 4 desc' => 'Research Area 4 Description',
+    'Research area 4 icon' => 'Research Area 4 Icon',
+
+    // Settings - Branding
+    'Primary logo' => 'Primary Logo',
+    'Secondary logo' => 'Secondary Logo',
+    'Logo dark' => 'Dark Logo',
+    'Favicon' => 'Favicon',
+    'Hero background' => 'Hero Background',
+    'About image' => 'About Image',
+    'Primary color' => 'Primary Color',
+    'Secondary color' => 'Secondary Color',
+    'Accent color' => 'Accent Color',
+    'Text color' => 'Text Color',
+    'Header color' => 'Header Color',
+    'Button color' => 'Button Color',
+    'Button hover color' => 'Button Hover Color',
+
+    // Settings - Frontend Hero
+    'Hero title' => 'Hero Title',
+    'Hero subtitle' => 'Hero Subtitle',
+
+    // Settings - Frontend About
+    'About description' => 'About Description',
+    'Stat equipment' => 'Equipment Count',
+    'Stat projects' => 'Projects Count',
+    'Stat researchers' => 'Researchers Count',
+    'Stat publications' => 'Publications Count',
+
+    // Settings - Frontend Contact
+    'Location address' => 'Location Address',
+    'Contact email 2' => 'Contact Email 2',
+    'Contact hours' => 'Contact Hours',
+
+    // Settings - Slider
+    'Slider enabled' => 'Slider Enabled',
+    'Slider speed' => 'Slider Speed',
+    'Slider slide 1 title' => 'Slide 1 Title',
+    'Slider slide 1 subtitle' => 'Slide 1 Subtitle',
+    'Slider slide 1 image' => 'Slide 1 Image',
+    'Slider slide 2 title' => 'Slide 2 Title',
+    'Slider slide 2 subtitle' => 'Slide 2 Subtitle',
+    'Slider slide 2 image' => 'Slide 2 Image',
+    'Slider slide 3 title' => 'Slide 3 Title',
+    'Slider slide 3 subtitle' => 'Slide 3 Subtitle',
+    'Slider slide 3 image' => 'Slide 3 Image',
+
+    // Settings - Localization
+    'Default locale' => 'Default Locale',
+    'Available locales' => 'Available Locales',
+    'Rtl enabled' => 'RTL Enabled',
+    'Logos' => 'Logos',
+    'Colors' => 'Colors',
+
+    // Common Settings
+    'Save Settings' => 'Save Settings',
+    'Supported: JPG, PNG. Max: 2MB' => 'Supported: JPG, PNG. Max: 2MB',
+    'Enable' => 'Enable',
+    'Saving...' => 'Saving...',
+    'Settings saved successfully!' => 'Settings saved successfully!',
+    'Error saving settings. Please try again.' => 'Error saving settings. Please try again.',
 ];

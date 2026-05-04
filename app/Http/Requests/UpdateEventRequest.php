@@ -28,10 +28,9 @@ class UpdateEventRequest extends FormRequest
             'event_time' => ['required', 'date_format:H:i'],
             'location' => ['required', 'string', 'max:255'],
             'capacity' => ['nullable', 'integer', 'min:1', 'max:1000'],
-            'event_type' => ['required', 'in:public,restricted'],
-            'target_roles' => ['required_if:event_type,restricted', 'array'],
-            'target_roles.*' => ['in:admin,researcher,phd_student,partial_researcher,technician,material_manager,guest'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'type' => ['required', 'string', 'in:seminar,workshop,conference,meeting,training,other'],
+            'agenda' => ['nullable', 'string', 'max:5000'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:10240'],
         ];
     }
 
@@ -43,15 +42,15 @@ class UpdateEventRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'title' => __('event title'),
-            'description' => __('description'),
-            'event_date' => __('event date'),
-            'event_time' => __('event time'),
-            'location' => __('location'),
-            'capacity' => __('capacity'),
-            'event_type' => __('event type'),
-            'target_roles' => __('target roles'),
-            'image' => __('event image'),
+            'title' => __('messages.Event Title'),
+            'description' => __('messages.Description'),
+            'event_date' => __('messages.Date'),
+            'event_time' => __('messages.Time'),
+            'location' => __('messages.Location'),
+            'capacity' => __('messages.Maximum Attendees'),
+            'type' => __('messages.Event Type'),
+            'agenda' => __('messages.Agenda'),
+            'image' => __('messages.Event Image'),
         ];
     }
 }

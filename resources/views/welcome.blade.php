@@ -3,12 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name', 'RLMS') }} - Research Laboratory Management System</title>
+    <title>{{ $settings['site_name'] ?? config('app.name', 'RLMS') }} - {{ $settings['site_tagline'] ?? 'Research Laboratory Management System' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    @php
+        $primaryColor = $settings['primary_color'] ?? '#8C1515';
+        $primaryDark = $settings['button_hover_color'] ?? '#6B0F0F';
+        $secondaryColor = $settings['secondary_color'] ?? '#F9F6F2';
+        $textColor = $settings['text_color'] ?? '#4D4F53';
+        $accentColor = $settings['accent_color'] ?? '#FF6B35';
+    @endphp
 
     <style>
         * {
@@ -18,12 +26,13 @@
         }
 
         :root {
-            --cardinal-red: #8C1515;
-            --cardinal-dark: #6B0F0F;
-            --sandstone: #F9F6F2;
+            --cardinal-red: {{ $primaryColor }};
+            --cardinal-dark: {{ $primaryDark }};
+            --sandstone: {{ $secondaryColor }};
             --sandstone-dark: #D4D1CB;
-            --cool-gray: #4D4F53;
+            --cool-gray: {{ $textColor }};
             --light-sage: #E4F2E7;
+            --accent: {{ $accentColor }};
         }
 
         body {
@@ -828,6 +837,14 @@
             <li><a href="#research">Research</a></li>
             <li><a href="#events">Events</a></li>
             <li><a href="#contact" class="btn-contact">Contact</a></li>
+            <!-- Language Switcher -->
+            <li>
+                <select onchange="window.location.href=this.value" class="bg-transparent text-sm font-medium cursor-pointer border-none outline-none">
+                    <option value="{{ route('locale.switch', 'en') }}" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>EN</option>
+                    <option value="{{ route('locale.switch', 'fr') }}" {{ app()->getLocale() === 'fr' ? 'selected' : '' }}>FR</option>
+                    <option value="{{ route('locale.switch', 'ar') }}" {{ app()->getLocale() === 'ar' ? 'selected' : '' }}>AR</option>
+                </select>
+            </li>
             @auth
                 <li><a href="{{ url('/dashboard') }}" class="btn-primary">Dashboard</a></li>
             @else

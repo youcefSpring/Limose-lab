@@ -4572,4 +4572,132 @@ return [
     'Experiment updates' => 'تحديثات التجربة',
     'Project milestones' => 'مراحل المشروع',
     'System announcements' => 'إعلانات النظام',
+
+    // Settings - Groups
+    'General' => 'عام',
+    'Laboratory info' => 'معلومات المختبر',
+    'Lab location' => 'موقع المختبر',
+    'Lab contact' => 'تواصل المختبر',
+    'Lab social' => 'وسائل التواصل للمختبر',
+    'Research areas' => 'مجالات البحث',
+    'Branding' => 'الهوية البصرية',
+    'Frontend hero' => 'القسم الرئيسي',
+    'Frontend about' => 'قسم من نحن',
+    'Frontend contact' => 'قسم التواصل',
+    'Frontend slider' => 'شرائح الصفحة الرئيسية',
+    'Localization' => 'الإعدادات المحلية',
+
+    // Settings - General
+    'Site name' => 'اسم الموقع',
+    'Site tagline' => 'شعار الموقع',
+    'Contact email' => 'البريد الإلكتروني للتواصل',
+    'Contact phone' => 'هاتف التواصل',
+
+    // Settings - Lab Info
+    'Lab name' => 'اسم المختبر',
+    'Lab full name' => 'الاسم الكامل للمختبر',
+    'Lab description' => 'وصف المختبر',
+    'Lab mission' => 'رسالة المختبر',
+    'Lab vision' => 'رؤية المختبر',
+    'Established year' => 'سنة التأسيس',
+    'Director name' => 'اسم المدير',
+
+    // Settings - Lab Location
+    'Building name' => 'اسم المبنى',
+    'Floor number' => 'رقم الطابق',
+    'Room number' => 'رقم الغرفة',
+    'Full address' => 'العنوان الكامل',
+    'City' => 'المدينة',
+    'Country' => 'البلد',
+    'Postal code' => 'الرمز البريدي',
+    'Latitude' => 'خط العرض',
+    'Longitude' => 'خط الطول',
+
+    // Settings - Lab Contact
+    'Main phone' => 'الهاتف الرئيسي',
+    'Fax' => 'الفاكس',
+    'General email' => 'البريد الإلكتروني العام',
+    'Support email' => 'بريد الدعم',
+    'Office hours' => 'ساعات العمل',
+
+    // Settings - Lab Social
+    'Website url' => 'رابط الموقع',
+    'Facebook url' => 'رابط فيسبوك',
+    'Twitter url' => 'رابط تويتر',
+    'Linkedin url' => 'رابط لينكد إن',
+    'Youtube url' => 'رابط يوتيوب',
+    'Instagram url' => 'رابط إنستغرام',
+
+    // Settings - Research Areas
+    'Research area 1 title' => 'عنوان المجال البحثي 1',
+    'Research area 1 desc' => 'وصف المجال البحثي 1',
+    'Research area 1 icon' => 'أيقونة المجال البحثي 1',
+    'Research area 2 title' => 'عنوان المجال البحثي 2',
+    'Research area 2 desc' => 'وصف المجال البحثي 2',
+    'Research area 2 icon' => 'أيقونة المجال البحثي 2',
+    'Research area 3 title' => 'عنوان المجال البحثي 3',
+    'Research area 3 desc' => 'وصف المجال البحثي 3',
+    'Research area 3 icon' => 'أيقونة المجال البحثي 3',
+    'Research area 4 title' => 'عنوان المجال البحثي 4',
+    'Research area 4 desc' => 'وصف المجال البحثي 4',
+    'Research area 4 icon' => 'أيقونة المجال البحثي 4',
+
+    // Settings - Branding
+    'Primary logo' => 'الشعار الرئيسي',
+    'Secondary logo' => 'الشعار الفرعي',
+    'Logo dark' => 'الشعار الداكن',
+    'Favicon' => 'أيقونة الموقع',
+    'Hero background' => 'خلفية القسم الرئيسي',
+    'About image' => 'صورة من نحن',
+    'Primary color' => 'اللون الأساسي',
+    'Secondary color' => 'اللون الثانوي',
+    'Accent color' => 'لون التمييز',
+    'Text color' => 'لون النص',
+    'Header color' => 'لون الترويسة',
+    'Button color' => 'لون الأزرار',
+    'Button hover color' => 'لون الأزرار عند التحويم',
+
+    // Settings - Frontend Hero
+    'Hero title' => 'عنوان القسم الرئيسي',
+    'Hero subtitle' => 'وصف القسم الرئيسي',
+
+    // Settings - Frontend About
+    'About description' => 'وصف من نحن',
+    'Stat equipment' => 'عدد المعدات',
+    'Stat projects' => 'عدد المشاريع',
+    'Stat researchers' => 'عدد الباحثين',
+    'Stat publications' => 'عدد المنشورات',
+
+    // Settings - Frontend Contact
+    'Location address' => 'عنوان الموقع',
+    'Contact email 2' => 'بريد التواصل 2',
+    'Contact hours' => 'ساعات التواصل',
+
+    // Settings - Slider
+    'Slider enabled' => 'تفعيل الشرائح',
+    'Slider speed' => 'سرعة الشرائح',
+    'Slider slide 1 title' => 'عنوان الشريحة 1',
+    'Slider slide 1 subtitle' => 'وصف الشريحة 1',
+    'Slider slide 1 image' => 'صورة الشريحة 1',
+    'Slider slide 2 title' => 'عنوان الشريحة 2',
+    'Slider slide 2 subtitle' => 'وصف الشريحة 2',
+    'Slider slide 2 image' => 'صورة الشريحة 2',
+    'Slider slide 3 title' => 'عنوان الشريحة 3',
+    'Slider slide 3 subtitle' => 'وصف الشريحة 3',
+    'Slider slide 3 image' => 'صورة الشريحة 3',
+
+    // Settings - Localization
+    'Default locale' => 'اللغة الافتراضية',
+    'Available locales' => 'اللغات المتاحة',
+    'Rtl enabled' => 'تفعيلRTL',
+    'Logos' => 'الشعارات',
+    'Colors' => 'الألوان',
+
+    // Common Settings
+    'Save Settings' => 'حفظ الإعدادات',
+    'Supported: JPG, PNG. Max: 2MB' => 'مدعوم: JPG، PNG. الحد الأقصى: 2 ميجابايت',
+    'Enable' => 'تفعيل',
+    'Saving...' => 'جاري الحفظ...',
+    'Settings saved successfully!' => 'تم حفظ الإعدادات بنجاح!',
+    'Error saving settings. Please try again.' => 'خطأ في حفظ الإعدادات. يرجى المحاولة مرة أخرى.',
 ];

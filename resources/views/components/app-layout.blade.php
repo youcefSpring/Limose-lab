@@ -242,39 +242,45 @@
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
 
         <!-- Scripts -->
-        <script>
-            // Initialize theme from localStorage or default to light
-            function initializeTheme() {
-                if (localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme')) {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            }
-
-// Initialize on first load
-            initializeTheme();
-
-            // Initialize sidebar state
-            function initSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                const mainContent = document.querySelector('main');
-                const header = document.getElementById('header');
-                const isRtl = document.documentElement.dir === 'rtl';
-                
-                if (window.innerWidth >= 1024) {
-                    // Desktop: sidebar visible by default
-                    sidebar.classList.remove('sidebar-hidden');
-                    if (isRtl) {
-                        mainContent.classList.add('lg:mr-64');
-                        mainContent.classList.remove('lg:ml-64');
-                        header.classList.add('lg:right-64');
-                        header.classList.remove('lg:left-64');
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize theme from localStorage or system preference
+                (function() {
+                    const saved = localStorage.getItem('theme');
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (saved === 'dark' || (!saved && prefersDark)) {
+                        document.documentElement.classList.add('dark');
                     } else {
-                        mainContent.classList.add('lg:ml-64');
-                        mainContent.classList.remove('lg:mr-64');
-                        header.classList.add('lg:left-64');
-                        header.classList.remove('lg:right-64');
+                        document.documentElement.classList.remove('dark');
+                    }
+                })();
+
+                // Toggle theme function
+                window.toggleTheme = function() {
+                    const isDark = document.documentElement.classList.toggle('dark');
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                };
+
+                // Initialize sidebar state
+                function initSidebar() {
+                    const sidebar = document.getElementById('sidebar');
+                    const mainContent = document.querySelector('main');
+                    const header = document.getElementById('header');
+                    const isRtl = document.documentElement.dir === 'rtl';
+                    
+                    if (window.innerWidth >= 1024) {
+                        // Desktop: sidebar visible by default
+                        sidebar.classList.remove('sidebar-hidden');
+                        if (isRtl) {
+                            mainContent.classList.add('lg:mr-64');
+                            mainContent.classList.remove('lg:ml-64');
+                            header.classList.add('lg:right-64');
+                            header.classList.remove('lg:left-64');
+                        } else {
+                            mainContent.classList.add('lg:ml-64');
+                            mainContent.classList.remove('lg:mr-64');
+                            header.classList.add('lg:left-64');
+                            header.classList.remove('lg:right-64');
                     }
                 } else {
                     // Mobile: sidebar hidden by default
@@ -393,6 +399,7 @@
                     header.classList.remove('lg:left-64', 'lg:right-64');
                     header.classList.add('left-0');
                 }
+            });
             });
         </script>
         @stack('scripts')

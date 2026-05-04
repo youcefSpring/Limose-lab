@@ -39,13 +39,13 @@
                         @enderror
                     </div>
 
-                    <!-- Event Type -->
+<!-- Event Type -->
                     <div>
                         <label for="type" class="block text-sm font-medium mb-2">
                             {{ __('messages.Event Type') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="type" id="type" required
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('type') border-accent-rose @enderror">
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('type') border-accent-rose @error">
                             <option value="seminar" {{ old('type', 'seminar') == 'seminar' ? 'selected' : '' }}>{{ __('messages.Seminar') }}</option>
                             <option value="workshop" {{ old('type') == 'workshop' ? 'selected' : '' }}>{{ __('messages.Workshop') }}</option>
                             <option value="conference" {{ old('type') == 'conference' ? 'selected' : '' }}>{{ __('messages.Conference') }}</option>
@@ -54,6 +54,30 @@
                             <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>{{ __('messages.Other') }}</option>
                         </select>
                         @error('type')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Date -->
+                    <div>
+                        <label for="event_date" class="block text-sm font-medium mb-2">
+                            {{ __('messages.Date') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <input type="date" name="event_date" id="event_date" required min="{{ date('Y-m-d') }}" value="{{ old('event_date') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('event_date') border-accent-rose @enderror">
+                        @error('event_date')
+                            <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+<!-- Time -->
+                    <div>
+                        <label for="event_time" class="block text-sm font-medium mb-2">
+                            {{ __('messages.Time') }} <span class="text-accent-rose">*</span>
+                        </label>
+                        <input type="time" name="event_time" id="event_time" required value="{{ old('event_time') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('event_time') border-accent-rose @enderror">
+                        @error('event_time')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
@@ -95,15 +119,15 @@
                         @enderror
                     </div>
 
-                    <!-- Max Attendees -->
+<!-- Max Attendees -->
                     <div>
-                        <label for="max_attendees" class="block text-sm font-medium mb-2">
+                        <label for="capacity" class="block text-sm font-medium mb-2">
                             {{ __('messages.Maximum Attendees') }}
                         </label>
-                        <input type="number" name="max_attendees" id="max_attendees" min="1" value="{{ old('max_attendees') }}"
-                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('max_attendees') border-accent-rose @enderror"
+                        <input type="number" name="capacity" id="capacity" min="1" value="{{ old('capacity') }}"
+                            class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('capacity') border-accent-rose @enderror"
                             placeholder="{{ __('messages.Unlimited') }}">
-                        @error('max_attendees')
+                        @error('capacity')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>

@@ -92,11 +92,25 @@ class Setting extends Model
 
     /**
      * Get all settings as key-value pairs
+     * For multilingual settings, returns the value for the current locale
      */
-    public static function getAllSettings()
+    public static function getAllSettings($locale = null)
     {
-        return Cache::remember('all_settings', 3600, function () {
-            return self::pluck('value', 'key')->toArray();
+        $locale = $locale ?? app()->getLocale();
+        $cacheKey = "all_settings_{$locale}";
+
+        return Cache::remember($cacheKey, 3600, function () use ($locale) {
+            $settings = self::pluck('value', 'key')->toArray();
+            $multilingualKeys = self::where('is_multilingual', true)->pluck('key');
+
+            foreach ($multilingualKeys as $key) {
+                $localizedKey = "{$key}_{$locale}";
+                if (isset($settings[$localizedKey]) && ! empty($settings[$localizedKey])) {
+                    $settings[$key] = $settings[$localizedKey];
+                }
+            }
+
+            return $settings;
         });
     }
 
@@ -119,6 +133,7 @@ class Setting extends Model
     public static function getAvailableLocales()
     {
         $locales = self::get('available_locales', 'en,fr,ar');
+
         return explode(',', $locales);
     }
 
@@ -137,6 +152,11 @@ class Setting extends Model
     {
         Cache::forget('all_settings');
         Cache::forget('settings_all_grouped');
+
+        // Clear locale-specific caches
+        foreach (['en', 'fr', 'ar'] as $locale) {
+            Cache::forget("all_settings_{$locale}");
+        }
 
         // Clear group caches
         $groups = self::distinct()->pluck('group');
