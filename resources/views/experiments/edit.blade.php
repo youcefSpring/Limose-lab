@@ -8,8 +8,8 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Edit Experiment') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Update the experiment details') }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('experiments.edit_experiment') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('experiments.update_experiment_information') }}</p>
             </div>
         </div>
     </header>
@@ -21,19 +21,19 @@
 
             <div class="glass-card rounded-2xl p-6">
                 <div class="mb-6">
-                    <h2 class="text-lg font-semibold mb-1">{{ __('messages.Experiment Information') }}</h2>
-                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('messages.Update the experiment details') }}</p>
+                    <h2 class="text-lg font-semibold mb-1">{{ __('experiments.experiment_information') }}</h2>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('experiments.update_experiment_information') }}</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Project Selection - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="project_id" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Project') }} <span class="text-accent-rose">*</span>
+                            {{ __('experiments.project') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="project_id" id="project_id" required
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all @error('project_id') border-accent-rose @enderror">
-                            <option value="">{{ __('messages.Select a project') }}</option>
+                            <option value="">{{ __('experiments.select_project') }}</option>
                             @foreach($projects ?? [] as $project)
                                 <option value="{{ $project->id }}" {{ old('project_id', $experiment->project_id) == $project->id ? 'selected' : '' }}>
                                     {{ $project->title }}
@@ -48,10 +48,10 @@
                     <!-- Title - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="title" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Experiment Title') }} <span class="text-accent-rose">*</span>
+                            {{ __('experiments.experiment_title') }} <span class="text-accent-rose">*</span>
                         </label>
                         <input type="text" name="title" id="title" required value="{{ old('title', $experiment->title) }}"
-                            placeholder="{{ __('messages.Enter experiment title...') }}"
+                            placeholder="{{ __('experiments.enter_experiment_title') }}"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all @error('title') border-accent-rose @enderror">
                         @error('title')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -61,7 +61,7 @@
                     <!-- Experiment Date -->
                     <div>
                         <label for="date" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Experiment Date') }} <span class="text-accent-rose">*</span>
+                            {{ __('experiments.experiment_date') }} <span class="text-accent-rose">*</span>
                         </label>
                         <input type="date" name="date" id="date" required
                             value="{{ old('date', $experiment->date?->format('Y-m-d')) }}"
@@ -74,14 +74,14 @@
                     <!-- Status -->
                     <div>
                         <label for="status" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Status') }} <span class="text-accent-rose">*</span>
+                            {{ __('experiments.status') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="status" id="status" required
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all @error('status') border-accent-rose @enderror">
-                            <option value="planned" {{ old('status', $experiment->status) == 'planned' ? 'selected' : '' }}>{{ __('messages.Planned') }}</option>
-                            <option value="in_progress" {{ old('status', $experiment->status) == 'in_progress' ? 'selected' : '' }}>{{ __('messages.In Progress') }}</option>
-                            <option value="completed" {{ old('status', $experiment->status) == 'completed' ? 'selected' : '' }}>{{ __('messages.Completed') }}</option>
-                            <option value="cancelled" {{ old('status', $experiment->status) == 'cancelled' ? 'selected' : '' }}>{{ __('messages.Cancelled') }}</option>
+<option value="planned" {{ old('status', $experiment->status) == 'planned' ? 'selected' : '' }}>{{ __('experiments.planned') }}</option>
+                        <option value="in_progress" {{ old('status', $experiment->status) == 'in_progress' ? 'selected' : '' }}>{{ __('experiments.in_progress') }}</option>
+                        <option value="completed" {{ old('status', $experiment->status) == 'completed' ? 'selected' : '' }}>{{ __('experiments.completed') }}</option>
+                        <option value="cancelled" {{ old('status', $experiment->status) == 'cancelled' ? 'selected' : '' }}>{{ __('experiments.cancelled') }}</option>
                         </select>
                         @error('status')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -91,7 +91,7 @@
                     <!-- Duration -->
                     <div>
                         <label for="duration" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Duration') }} ({{ __('messages.hours') }})
+                            {{ __('experiments.duration') }} ({{ __('experiments.hours') }})
                         </label>
                         <input type="number" name="duration" id="duration" step="0.5" min="0"
                             value="{{ old('duration', $experiment->duration) }}"
@@ -105,10 +105,10 @@
                     <!-- Description - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="description" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Description') }} <span class="text-accent-rose">*</span>
+                            {{ __('experiments.description') }} <span class="text-accent-rose">*</span>
                         </label>
                         <textarea name="description" id="description" rows="4" required
-                            placeholder="{{ __('messages.Provide a detailed description of the experiment...') }}"
+                            placeholder="{{ __('experiments.provide_detailed_description') }}"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all resize-none @error('description') border-accent-rose @enderror">{{ old('description', $experiment->description) }}</textarea>
                         @error('description')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -118,10 +118,10 @@
                     <!-- Hypothesis - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="hypothesis" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Hypothesis') }}
+                            {{ __('experiments.hypothesis') }}
                         </label>
                         <textarea name="hypothesis" id="hypothesis" rows="3"
-                            placeholder="{{ __('messages.State your hypothesis...') }}"
+                            placeholder="{{ __('experiments.state_your_hypothesis') }}"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all resize-none @error('hypothesis') border-accent-rose @enderror">{{ old('hypothesis', $experiment->hypothesis) }}</textarea>
                         @error('hypothesis')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -131,10 +131,10 @@
                     <!-- Procedure - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="procedure" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Procedure') }}
+                            {{ __('experiments.procedure') }}
                         </label>
                         <textarea name="procedure" id="procedure" rows="5"
-                            placeholder="{{ __('messages.Describe the experimental procedure step by step...') }}"
+                            placeholder="{{ __('experiments.describe_procedure') }}"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all resize-none @error('procedure') border-accent-rose @enderror">{{ old('procedure', $experiment->procedure) }}</textarea>
                         @error('procedure')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -144,10 +144,10 @@
                     <!-- Results - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="results" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Results') }}
+                            {{ __('experiments.results') }}
                         </label>
                         <textarea name="results" id="results" rows="5"
-                            placeholder="{{ __('messages.Document the experiment results...') }}"
+                            placeholder="{{ __('experiments.document_results') }}"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all resize-none @error('results') border-accent-rose @enderror">{{ old('results', $experiment->results) }}</textarea>
                         @error('results')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -157,10 +157,10 @@
                     <!-- Conclusions - Full Width -->
                     <div class="md:col-span-2 lg:col-span-3">
                         <label for="conclusions" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Conclusions') }}
+                            {{ __('experiments.conclusions') }}
                         </label>
                         <textarea name="conclusions" id="conclusions" rows="5"
-                            placeholder="{{ __('messages.Summarize your conclusions and findings...') }}"
+                            placeholder="{{ __('experiments.summarize_conclusions') }}"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-purple/50 focus:border-accent-purple transition-all resize-none @error('conclusions') border-accent-rose @enderror">{{ old('conclusions', $experiment->conclusions) }}</textarea>
                         @error('conclusions')
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
@@ -172,13 +172,13 @@
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-3 mt-6">
                 <x-ui.button variant="secondary" href="{{ route('experiments.show', $experiment) }}" size="md">
-                    {{ __('messages.Cancel') }}
+                    {{ __('experiments.cancel') }}
                 </x-ui.button>
                 <x-ui.button variant="success" type="submit" size="md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
-                    {{ __('messages.Update Experiment') }}
+                    {{ __('experiments.update_experiment') }}
                 </x-ui.button>
             </div>
         </form>

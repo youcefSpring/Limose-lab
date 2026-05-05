@@ -8,12 +8,12 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Create New Reservation') }}</h1>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('reservations.create_new_reservation') }}</h1>
                 <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">
                     @can('manage', \App\Models\Reservation::class)
-                        {{ __('messages.Create a reservation for any user in the system') }}
+                        {{ __('reservations.create_for_user') }}
                     @else
-                        {{ __('messages.Reserve laboratory equipment for your research') }}
+                        {{ __('reservations.reserve_equipment') }}
                     @endcan
                 </p>
             </div>
@@ -26,16 +26,16 @@
             <!-- User Selection Section (Admin Only) -->
             @can('manage', \App\Models\Reservation::class)
             <div class="glass-card rounded-2xl p-6 mb-5">
-                <h2 class="text-lg font-semibold mb-5">{{ __('messages.User Selection') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('reservations.user_selection') }}</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <div class="lg:col-span-2">
                         <label for="user_id" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Select User') }} <span class="text-accent-rose">*</span>
+                            {{ __('reservations.select_user') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="user_id" id="user_id" required
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('user_id') border-accent-rose @enderror">
-                            <option value="">{{ __('messages.Select a user') }}</option>
+                            <option value="">{{ __('reservations.select_a_user') }}</option>
                             @foreach($users ?? [] as $user)
                                 <option value="{{ $user->id }}" {{ old('user_id', auth()->id()) == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }} - {{ $user->email }}
@@ -62,23 +62,23 @@
 
             <!-- Equipment & Quantity Section -->
             <div class="glass-card rounded-2xl p-6 mb-5">
-                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Equipment Selection') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('reservations.equipment_selection') }}</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Material Selection -->
                     <div class="lg:col-span-2">
                         <label for="material_id" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Material / Equipment') }} <span class="text-accent-rose">*</span>
+                            {{ __('reservations.material_equipment') }} <span class="text-accent-rose">*</span>
                         </label>
                         <select name="material_id" id="material_id" required x-model="materialId" @change="checkAvailability()"
                             class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('material_id') border-accent-rose @enderror">
-                            <option value="">{{ __('messages.Select a material') }}</option>
+                            <option value="">{{ __('reservations.select_material') }}</option>
                             @foreach($materials ?? [] as $material)
                                 <option value="{{ $material->id }}"
                                     data-quantity="{{ $material->quantity }}"
                                     data-name="{{ $material->name }}"
                                     {{ old('material_id', request('material')) == $material->id ? 'selected' : '' }}>
-                                    {{ $material->name }} ({{ __('messages.Available') }}: {{ $material->quantity }})
+                                    {{ $material->name }} ({{ __('reservations.available') }}: {{ $material->quantity }})
                                 </option>
                             @endforeach
                         </select>
@@ -90,7 +90,7 @@
                     <!-- Quantity -->
                     <div>
                         <label for="quantity" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Quantity') }} <span class="text-accent-rose">*</span>
+                            {{ __('reservations.quantity') }} <span class="text-accent-rose">*</span>
                         </label>
                         <input type="number" name="quantity" id="quantity" required
                             min="1" :max="maxQuantity"
@@ -110,7 +110,7 @@
                             <svg class="h-4 w-4 text-accent-violet flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                             </svg>
-                            <span><strong x-text="materialName"></strong> - {{ __('messages.Available quantity') }}: <strong x-text="maxQuantity" class="font-mono"></strong></span>
+                            <span><strong x-text="materialName"></strong> - {{ __('reservations.available_quantity') }}: <strong x-text="maxQuantity" class="font-mono"></strong></span>
                         </div>
                     </div>
                 </div>
@@ -118,13 +118,13 @@
 
             <!-- Reservation Details Section -->
             <div class="glass-card rounded-2xl p-6 mb-5">
-                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Reservation Details') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('reservations.reservation_information') }}</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Start Date -->
                     <div>
                         <label for="start_date" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Start Date') }} <span class="text-accent-rose">*</span>
+                            {{ __('reservations.start_date') }} <span class="text-accent-rose">*</span>
                         </label>
                         <input type="date" name="start_date" id="start_date" required
                             min="{{ date('Y-m-d') }}"
@@ -139,7 +139,7 @@
                     <!-- End Date -->
                     <div>
                         <label for="end_date" class="block text-sm font-medium mb-2">
-                            {{ __('messages.End Date') }} <span class="text-accent-rose">*</span>
+                            {{ __('reservations.end_date') }} <span class="text-accent-rose">*</span>
                         </label>
                         <input type="date" name="end_date" id="end_date" required
                             min="{{ date('Y-m-d') }}"
@@ -153,17 +153,17 @@
 
                     <!-- Duration Display (Read-only visual) -->
                     <div x-show="duration > 0" x-cloak>
-                        <label class="block text-sm font-medium mb-2">{{ __('messages.Duration') }}</label>
+                        <label class="block text-sm font-medium mb-2">{{ __('reservations.duration') }}</label>
                         <div class="py-2.5 px-4 bg-zinc-50 dark:bg-surface-700/30 border border-black/10 dark:border-white/10 rounded-xl text-sm font-mono" :class="duration > 30 ? 'text-accent-rose' : ''">
-                            <span x-text="duration"></span> {{ __('messages.days') }}
-                            <span x-show="duration > 30" class="text-xs">({{ __('messages.Max: 30') }})</span>
+                            <span x-text="duration"></span> {{ __('reservations.days') }}
+                            <span x-show="duration > 30" class="text-xs">({{ __('reservations.max_30') }})</span>
                         </div>
                     </div>
 
                     <!-- Purpose (Full Width) -->
                     <div class="lg:col-span-3">
                         <label for="purpose" class="block text-sm font-medium mb-2">
-                            {{ __('messages.Purpose of Reservation') }} <span class="text-accent-rose">*</span>
+                            {{ __('reservations.purpose_reservation') }} <span class="text-accent-rose">*</span>
                         </label>
                         <textarea name="purpose" id="purpose" rows="3" required
                             placeholder="{{ __('messages.Please describe the purpose of this reservation...') }}"

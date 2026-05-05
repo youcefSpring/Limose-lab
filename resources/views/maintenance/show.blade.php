@@ -9,15 +9,15 @@
                 </a>
                 <div>
                     <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                        {{ __('messages.Maintenance Log Details') }}
+                        {{ __('maintenance.maintenance_details') }}
                     </h2>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {{ __('messages.Log') }} #{{ $log->id ?? '---' }}
+                        {{ __('maintenance.log') }} #{{ $log->id ?? '---' }}
                     </p>
                 </div>
             </div>
             <x-badge :status="$log->status ?? 'scheduled'" size="lg">
-                {{ __(ucfirst($log->status ?? 'scheduled')) }}
+                {{ __('maintenance.' . ($log->status ?? 'scheduled')) }}
             </x-badge>
         </div>
     </x-slot>
@@ -28,7 +28,7 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- Material Info -->
                 <x-card>
-                    <x-slot name="title">{{ __('messages.Equipment') }}</x-slot>
+                    <x-slot name="title">{{ __('maintenance.equipment') }}</x-slot>
                     <div class="flex items-start space-x-4 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
                         <div class="flex-shrink-0 h-20 w-20 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                             @if($log->material?->image)
@@ -44,13 +44,13 @@
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                {{ $log->material?->name ?? __('messages.Material') }}
+                                {{ $log->material?->name ?? __('maintenance.material') }}
                             </h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ $log->material?->category->name ?? __('messages.Uncategorized') }}
+                                {{ $log->material?->category->name ?? __('maintenance.uncategorized') }}
                             </p>
                             <a href="{{ route('materials.show', $log->material) }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
-                                {{ __('messages.View material details') }} →
+                                {{ __('maintenance.view_material_details') }} →
                             </a>
                         </div>
                     </div>
@@ -58,30 +58,30 @@
 
                 <!-- Maintenance Details -->
                 <x-card>
-                    <x-slot name="title">{{ __('messages.Maintenance Details') }}</x-slot>
+                    <x-slot name="title">{{ __('maintenance.maintenance_details') }}</x-slot>
                     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('messages.Type') }}</dt>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('maintenance.type') }}</dt>
                             <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ __(ucfirst($log->type)) }}</dd>
                         </div>
                         <div>
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('messages.Scheduled Date') }}</dt>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('maintenance.scheduled_date') }}</dt>
                             <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $log->scheduled_date?->format('l, M d, Y') }}</dd>
                         </div>
                         @if($log->completed_at)
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('messages.Completed At') }}</dt>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('maintenance.completed_at') }}</dt>
                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ $log->completed_at->format('M d, Y H:i') }}</dd>
                             </div>
                         @endif
                         @if($log->cost)
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('messages.Cost') }}</dt>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('maintenance.cost') }}</dt>
                                 <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ number_format($log->cost, 2) }} {{ __('messages.USD') }}</dd>
                             </div>
                         @endif
                         <div class="sm:col-span-2">
-                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('messages.Description') }}</dt>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('maintenance.description') }}</dt>
                             <dd class="mt-1 text-sm text-gray-900 dark:text-white whitespace-pre-line">{{ $log->description }}</dd>
                         </div>
                     </dl>
@@ -90,7 +90,7 @@
                 <!-- Work Performed -->
                 @if($log->work_performed)
                     <x-card>
-                        <x-slot name="title">{{ __('messages.Work Performed') }}</x-slot>
+                        <x-slot name="title">{{ __('maintenance.work_performed') }}</x-slot>
                         <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $log->work_performed }}</p>
                     </x-card>
                 @endif
@@ -98,7 +98,7 @@
                 <!-- Notes -->
                 @if($log->notes)
                     <x-card>
-                        <x-slot name="title">{{ __('messages.Additional Notes') }}</x-slot>
+                        <x-slot name="title">{{ __('maintenance.additional_notes') }}</x-slot>
                         <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $log->notes }}</p>
                     </x-card>
                 @endif
@@ -109,7 +109,7 @@
                 <!-- Technician Info -->
                 @if($log->technician)
                     <x-card>
-                        <x-slot name="title">{{ __('messages.Technician') }}</x-slot>
+                        <x-slot name="title">{{ __('maintenance.technician') }}</x-slot>
                         <div class="flex items-center space-x-3 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
                             <div class="h-12 w-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                                 <span class="text-lg font-medium text-gray-700 dark:text-gray-300">
@@ -128,7 +128,7 @@
                 @if($log->status != 'completed')
                     @can('update', $log)
                         <x-card>
-                            <x-slot name="title">{{ __('messages.Actions') }}</x-slot>
+                            <x-slot name="title">{{ __('maintenance.actions') }}</x-slot>
                             <div class="space-y-2">
                                 <form method="POST" action="{{ route('maintenance.complete', $log) }}">
                                     @csrf
@@ -136,7 +136,7 @@
                                         <svg class="h-4 w-4 {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        {{ __('messages.Mark as Complete') }}
+                                        {{ __('maintenance.mark_complete') }}
                                     </x-button>
                                 </form>
                                 <a href="{{ route('maintenance.edit', $log) }}">
@@ -144,7 +144,7 @@
                                         <svg class="h-4 w-4 {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                         </svg>
-                                        {{ __('messages.Edit Log') }}
+                                        {{ __('maintenance.edit_log') }}
                                     </x-button>
                                 </a>
                             </div>

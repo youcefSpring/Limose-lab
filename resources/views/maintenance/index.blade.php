@@ -2,8 +2,8 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div>
-            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Maintenance Logs') }}</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Track equipment maintenance and service records') }}</p>
+            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('maintenance.maintenance_logs') }}</h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('maintenance.track_maintenance') }}</p>
         </div>
         <div class="flex items-center gap-3">
             <button @click="$dispatch('open-modal', 'filter-modal')" class="flex items-center gap-2 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all relative">
@@ -20,7 +20,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    {{ __('messages.Log Maintenance') }}
+                    {{ __('maintenance.log_maintenance') }}
                 </a>
             @endcan
         </div>
@@ -29,7 +29,7 @@
     <!-- Filter Modal -->
     <x-modal name="filter-modal" :show="false" maxWidth="lg">
         <div class="p-6">
-            <h2 class="text-xl font-semibold mb-6">{{ __('messages.Filter Maintenance Logs') }}</h2>
+            <h2 class="text-xl font-semibold mb-6">{{ __('maintenance.filter_logs') }}</h2>
             <form method="GET" action="{{ route('maintenance.index') }}" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-2">{{ __('messages.Search') }}</label>
@@ -41,22 +41,22 @@
                     <label class="block text-sm font-medium mb-2">{{ __('messages.Status') }}</label>
                     <select name="status"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
-                        <option value="">{{ __('messages.All Statuses') }}</option>
-                        <option value="scheduled" {{ request('status') == 'scheduled' ? 'selected' : '' }}>{{ __('messages.Scheduled') }}</option>
-                        <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>{{ __('messages.In Progress') }}</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('messages.Completed') }}</option>
-                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('messages.Cancelled') }}</option>
+                        <option value="">{{ __('maintenance.all_statuses') }}</option>
+                        <option value="scheduled" {{ request('status') == 'scheduled' ? 'selected' : '' }}>{{ __('maintenance.scheduled') }}</option>
+                        <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>{{ __('maintenance.in_progress') }}</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('maintenance.completed') }}</option>
+                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('maintenance.cancelled') }}</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">{{ __('messages.Type') }}</label>
                     <select name="type"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
-                        <option value="">{{ __('messages.All Types') }}</option>
-                        <option value="preventive" {{ request('type') == 'preventive' ? 'selected' : '' }}>{{ __('messages.Preventive') }}</option>
-                        <option value="corrective" {{ request('type') == 'corrective' ? 'selected' : '' }}>{{ __('messages.Corrective') }}</option>
-                        <option value="inspection" {{ request('type') == 'inspection' ? 'selected' : '' }}>{{ __('messages.Inspection') }}</option>
-                        <option value="calibration" {{ request('type') == 'calibration' ? 'selected' : '' }}>{{ __('messages.Calibration') }}</option>
+                        <option value="">{{ __('maintenance.all_types') }}</option>
+                        <option value="preventive" {{ request('type') == 'preventive' ? 'selected' : '' }}>{{ __('maintenance.preventive') }}</option>
+                        <option value="corrective" {{ request('type') == 'corrective' ? 'selected' : '' }}>{{ __('maintenance.corrective') }}</option>
+                        <option value="inspection" {{ request('type') == 'inspection' ? 'selected' : '' }}>{{ __('maintenance.inspection') }}</option>
+                        <option value="calibration" {{ request('type') == 'calibration' ? 'selected' : '' }}>{{ __('maintenance.calibration') }}</option>
                     </select>
                 </div>
                 <div class="flex gap-3 pt-4">
@@ -92,13 +92,13 @@
                 <table class="w-full">
                     <thead class="bg-zinc-50 dark:bg-surface-800/50 border-b border-black/5 dark:border-white/5">
                         <tr>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Material') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Type') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Scheduled Date') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Technician') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Cost') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Status') }}</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('messages.Actions') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.material') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.type') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.scheduled_date') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.technician') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.cost') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.status') }}</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('maintenance.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-black/5 dark:divide-white/5">
@@ -121,7 +121,7 @@
                                             @endif
                                         </div>
                                         <div class="min-w-0">
-                                            <p class="font-medium truncate">{{ $log->material?->name ?? __('messages.Material') }}</p>
+                                            <p class="font-medium truncate">{{ $log->material?->name ?? __('maintenance.material') }}</p>
                                             @if($log->description)
                                                 <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-1">{{ $log->description }}</p>
                                             @endif
@@ -142,7 +142,7 @@
                                         <div class="font-mono">{{ $log->scheduled_date?->format('d M Y') ?? '-' }}</div>
                                         @if($log->completed_date)
                                             <div class="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
-                                                {{ __('messages.Completed') }}: {{ $log->completed_date->format('d M Y') }}
+                                                {{ __('maintenance.completed') }}: {{ $log->completed_date->format('d M Y') }}
                                             </div>
                                         @endif
                                     </div>

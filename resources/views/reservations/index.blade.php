@@ -2,8 +2,8 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div>
-            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.My Reservations') }}</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Manage your equipment reservations') }}</p>
+            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('reservations.my_reservations') }}</h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('reservations.manage_reservations') }}</p>
         </div>
         <div class="flex items-center gap-2">
             <!-- Filter Button -->
@@ -21,13 +21,13 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <span class="hidden sm:inline">{{ __('messages.Calendar View') }}</span>
+                <span class="hidden sm:inline">{{ __('reservations.calendar_view') }}</span>
             </a>
             <a href="{{ route('reservations.create') }}" class="flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-4 lg:px-5 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
-                {{ __('messages.New Reservation') }}
+                {{ __('reservations.create_reservation') }}
             </a>
         </div>
     </header>
@@ -36,7 +36,7 @@
     <x-modal name="filter-modal" :show="false" maxWidth="lg">
         <div class="p-6">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold">{{ __('messages.Filter Reservations') }}</h2>
+                <h2 class="text-xl font-semibold">{{ __('reservations.filter_reservations') }}</h2>
                 <button @click="$dispatch('close-modal', 'filter-modal')" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-surface-700 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -53,7 +53,7 @@
                         name="search"
                         id="modal-search"
                         value="{{ request('search') }}"
-                        placeholder="{{ __('messages.Search by material, user, or purpose...') }}"
+                        placeholder="{{ __('reservations.search_reservations') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
                     >
                 </div>
@@ -66,22 +66,22 @@
                         id="modal-filter"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2.5 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all"
                     >
-                        <option value="">{{ __('messages.All Statuses') }}</option>
-                        <option value="pending" {{ request('filter') == 'pending' ? 'selected' : '' }}>{{ __('messages.Pending') }}</option>
-                        <option value="approved" {{ request('filter') == 'approved' ? 'selected' : '' }}>{{ __('messages.Approved') }}</option>
-                        <option value="rejected" {{ request('filter') == 'rejected' ? 'selected' : '' }}>{{ __('messages.Rejected') }}</option>
-                        <option value="completed" {{ request('filter') == 'completed' ? 'selected' : '' }}>{{ __('messages.Completed') }}</option>
-                        <option value="cancelled" {{ request('filter') == 'cancelled' ? 'selected' : '' }}>{{ __('messages.Cancelled') }}</option>
-                        <option value="my" {{ request('filter') == 'my' ? 'selected' : '' }}>{{ __('messages.My Reservations Only') }}</option>
+                        <option value="">{{ __('reservations.all_statuses') }}</option>
+                        <option value="pending" {{ request('filter') == 'pending' ? 'selected' : '' }}>{{ __('reservations.pending') }}</option>
+                        <option value="approved" {{ request('filter') == 'approved' ? 'selected' : '' }}>{{ __('reservations.approved') }}</option>
+                        <option value="rejected" {{ request('filter') == 'rejected' ? 'selected' : '' }}>{{ __('reservations.rejected') }}</option>
+                        <option value="completed" {{ request('filter') == 'completed' ? 'selected' : '' }}>{{ __('reservations.completed') }}</option>
+                        <option value="cancelled" {{ request('filter') == 'cancelled' ? 'selected' : '' }}>{{ __('reservations.cancelled') }}</option>
+                        <option value="my" {{ request('filter') == 'my' ? 'selected' : '' }}>{{ __('reservations.my_reservations_only') }}</option>
                     </select>
                 </div>
 
                 <div class="flex items-center justify-between gap-3 pt-4 border-t border-black/5 dark:border-white/5">
                     <a href="{{ route('reservations.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
-                        {{ __('messages.Clear Filters') }}
-                    </a>
-                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-accent-amber to-accent-coral text-white text-sm font-medium hover:opacity-90 transition-opacity">
-                        {{ __('messages.Apply Filters') }}
+{{ __('reservations.clear_filters') }}
+                    </button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-accent-amber to-accent-coral px-4 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
+                        {{ __('reservations.apply_filters') }}
                     </button>
                 </div>
             </form>
@@ -97,7 +97,7 @@
                 </span>
                 @if(request()->has('search') || request()->has('filter'))
                     <a href="{{ route('reservations.index') }}" class="text-accent-rose hover:underline">
-                        {{ __('messages.Clear all filters') }}
+                        {{ __('reservations.clear_all_filters') }}
                     </a>
                 @endif
             </div>
@@ -112,7 +112,7 @@
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                 </svg>
                 <p class="text-sm">
-                    {{ __('messages.You have') }} <strong class="font-semibold">{{ $activeReservationsCount ?? 0 }}</strong> {{ __('messages.active reservations out of maximum') }} <strong class="font-semibold">{{ $activeReservationsLimit }}</strong>.
+                    {{ __('reservations.active_reservations', ['count' => $activeReservationsCount ?? 0, 'limit' => $activeReservationsLimit]) }}
                 </p>
             </div>
         </div>
@@ -126,22 +126,22 @@
                     <thead class="bg-zinc-50 dark:bg-surface-800/50">
                         <tr>
                             <th class="px-4 py-3 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">
-                                {{ __('messages.Material') }}
+                                {{ __('reservations.material') }}
                             </th>
                             <th class="px-4 py-3 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">
-                                {{ __('messages.User') }}
+                                {{ __('reservations.user') }}
                             </th>
                             <th class="px-4 py-3 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">
-                                {{ __('messages.Period') }}
+                                {{ __('reservations.period') }}
                             </th>
                             <th class="px-4 py-3 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">
-                                {{ __('messages.Quantity') }}
+                                {{ __('reservations.quantity') }}
                             </th>
                             <th class="px-4 py-3 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">
-                                {{ __('messages.Status') }}
+                                {{ __('reservations.status') }}
                             </th>
                             <th class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider">
-                                {{ __('messages.Actions') }}
+                                {{ __('reservations.actions') }}
                             </th>
                         </tr>
                     </thead>
@@ -164,10 +164,10 @@
                                         </div>
                                         <div class="min-w-0">
                                             <a href="{{ route('materials.show', $reservation->material) }}" class="font-semibold hover:text-accent-amber transition-colors">
-                                                {{ $reservation->material?->name ?? __('messages.Material') }}
+                                                {{ $reservation->material?->name ?? __('reservations.material') }}
                                             </a>
                                             <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                                                {{ $reservation->material?->category->name ?? __('messages.Uncategorized') }}
+                                                {{ $reservation->material?->category->name ?? __('reservations.uncategorized') }}
                                             </p>
                                         </div>
                                     </div>
@@ -175,15 +175,15 @@
 
                                 <!-- User -->
                                 <td class="px-4 py-3">
-                                    <span class="text-sm">{{ $reservation->user?->name ?? __('messages.Unknown') }}</span>
+                                    <span class="text-sm">{{ $reservation->user?->name ?? __('reservations.unknown_user') }}</span>
                                 </td>
 
                                 <!-- Period -->
                                 <td class="px-4 py-3">
                                     <div class="flex flex-col text-sm">
                                         <span class="font-medium">{{ $reservation->start_date?->format('d M Y') }}</span>
-                                        <span class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('messages.to') }} {{ $reservation->end_date?->format('d M Y') }}</span>
-                                        <span class="text-xs text-zinc-500 dark:text-zinc-400 font-mono">{{ $reservation->start_date?->diffInDays($reservation->end_date) }} {{ __('messages.days') }}</span>
+                                        <span class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('reservations.to') }} {{ $reservation->end_date?->format('d M Y') }}</span>
+                                        <span class="text-xs text-zinc-500 dark:text-zinc-400 font-mono">{{ $reservation->start_date?->diffInDays($reservation->end_date) }} {{ __('reservations.days') }}</span>
                                     </div>
                                 </td>
 
@@ -216,7 +216,7 @@
                                         </a>
 
                                         @if(in_array($reservation->status, ['pending', 'approved']) && $reservation->start_date > now())
-                                            <form action="{{ route('reservations.cancel', $reservation) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('messages.Are you sure you want to cancel this reservation?') }}');">
+                                            <form action="{{ route('reservations.cancel', $reservation) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('reservations.cancel_reservation') }}');">
                                                 @csrf
                                                 <button type="submit" class="p-1.5 rounded-lg hover:bg-accent-rose/10 text-accent-rose transition-colors" title="{{ __('messages.Cancel') }}">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,10 +237,10 @@
         <!-- Pagination -->
         <div class="flex items-center justify-between mt-6">
             <div class="text-sm text-zinc-500 dark:text-zinc-400">
-                {{ __('messages.Showing') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->firstItem() }}</span>
-                {{ __('messages.to') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->lastItem() }}</span>
-                {{ __('messages.of') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->total() }}</span>
-                {{ __('messages.reservations') }}
+                {{ __('reservations.showing') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->firstItem() }}</span>
+                {{ __('reservations.to') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->lastItem() }}</span>
+                {{ __('reservations.of') }} <span class="font-semibold text-zinc-800 dark:text-white">{{ $reservations->total() }}</span>
+                {{ __('reservations.reservations') }}
             </div>
             <div>
                 {{ $reservations->appends(request()->query())->links() }}
@@ -254,16 +254,15 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">{{ __('messages.No reservations found') }}</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 mb-6 max-w-md mx-auto">
-                {{ request('status') ? __('messages.No reservations with this status.') : __('messages.You have not made any reservations yet.') }}
+<h3 class="text-xl font-semibold mb-2">{{ __('reservations.no_reservations_found') }}</h3>
+            <p class="text-zinc-500 dark:text-zinc-400 mb-6 text-center">
+                {{ request('status') ? __('reservations.no_reservations_status') : __('reservations.no_reservations_yet') }}
             </p>
-            <a href="{{ route('reservations.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                {{ __('messages.Make Your First Reservation') }}
-            </a>
-        </div>
-    @endif
+            @if(!request('status'))
+                <div class="text-center">
+                    <a href="{{ route('reservations.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity">
+                        {{ __('reservations.make_first_reservation') }}
+                    </a>
+                </div>
+            @endif
 </x-app-layout>

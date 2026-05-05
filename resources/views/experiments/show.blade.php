@@ -8,8 +8,8 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ $experiment->title ?? __('messages.Experiment Details') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Experiment') }} #{{ $experiment->id ?? '---' }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ $experiment->title ?? __('experiments.experiment_details') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('experiments.experiment') }} #{{ $experiment->id ?? '---' }}</p>
             </div>
         </div>
         <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium
@@ -18,7 +18,7 @@
             {{ $experiment->status === 'planned' ? 'bg-accent-amber/10 text-accent-amber' : '' }}
             {{ $experiment->status === 'cancelled' ? 'bg-zinc-500/10 text-zinc-500' : '' }}">
             <span class="w-2 h-2 rounded-full bg-current"></span>
-            {{ __(ucfirst($experiment->status ?? 'pending')) }}
+            {{ __('experiments.' . ($experiment->status ?? 'planned')) }}
         </span>
     </header>
 
@@ -27,23 +27,23 @@
         <div class="lg:col-span-2 space-y-6">
             <!-- Experiment Overview -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Experiment Overview') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('experiments.experiment_overview') }}</h2>
                 <div class="space-y-5">
                     <div>
-                        <h3 class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Description') }}</h3>
+                        <h3 class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">{{ __('experiments.description') }}</h3>
                         <p class="text-zinc-900 dark:text-zinc-100 whitespace-pre-line leading-relaxed">{{ $experiment->description }}</p>
                     </div>
 
                     @if($experiment->hypothesis)
                         <div>
-                            <h3 class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Hypothesis') }}</h3>
+                            <h3 class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">{{ __('experiments.hypothesis') }}</h3>
                             <p class="text-zinc-900 dark:text-zinc-100 whitespace-pre-line leading-relaxed">{{ $experiment->hypothesis }}</p>
                         </div>
                     @endif
 
                     @if($experiment->procedure)
                         <div>
-                            <h3 class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">{{ __('messages.Procedure') }}</h3>
+                            <h3 class="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2">{{ __('experiments.procedure') }}</h3>
                             <p class="text-zinc-900 dark:text-zinc-100 whitespace-pre-line leading-relaxed">{{ $experiment->procedure }}</p>
                         </div>
                     @endif
@@ -53,7 +53,7 @@
             <!-- Results -->
             @if($experiment->results)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Results') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('experiments.results') }}</h2>
                     <div class="prose dark:prose-invert max-w-none">
                         <p class="text-zinc-900 dark:text-zinc-100 whitespace-pre-line leading-relaxed">{{ $experiment->results }}</p>
                     </div>
@@ -63,7 +63,7 @@
             <!-- Conclusions -->
             @if($experiment->conclusions)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Conclusions') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('experiments.conclusions') }}</h2>
                     <div class="prose dark:prose-invert max-w-none">
                         <p class="text-zinc-900 dark:text-zinc-100 whitespace-pre-line leading-relaxed">{{ $experiment->conclusions }}</p>
                     </div>
@@ -73,11 +73,11 @@
             <!-- Attached Files -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
                 <div class="flex justify-between items-center mb-5">
-                    <h2 class="text-lg font-semibold">{{ __('messages.Attached Files') }} ({{ $experiment->files?->count() ?? 0 }})</h2>
+                    <h2 class="text-lg font-semibold">{{ __('experiments.attached_files', ['count' => $experiment->files?->count() ?? 0]) }}</h2>
                     @can('update', $experiment)
                         <button onclick="document.getElementById('file-upload-form').classList.toggle('hidden')"
                             class="text-sm text-accent-violet hover:text-accent-violet/80 font-medium">
-                            {{ __('messages.Upload File') }}
+                            {{ __('experiments.upload_file') }}
                         </button>
                     @endcan
                 </div>
@@ -88,17 +88,17 @@
                         <form method="POST" action="{{ route('experiments.upload-file', $experiment) }}" enctype="multipart/form-data" class="space-y-3">
                             @csrf
                             <div>
-                                <label class="block text-sm font-medium mb-2">{{ __('messages.Select File') }}</label>
+                                <label class="block text-sm font-medium mb-2">{{ __('experiments.select_file') }}</label>
                                 <input type="file" name="file" required
                                     class="block w-full text-sm text-zinc-500 dark:text-zinc-400 file:{{ app()->getLocale() === 'ar' ? 'ml' : 'mr' }}-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-accent-violet/10 file:text-accent-violet hover:file:bg-accent-violet/20 cursor-pointer">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-2">{{ __('messages.Description') }}</label>
-                                <input type="text" name="description" placeholder="{{ __('messages.Optional file description') }}"
+                                <label class="block text-sm font-medium mb-2">{{ __('experiments.description') }}</label>
+                                <input type="text" name="description" placeholder="{{ __('experiments.optional_file_description') }}"
                                     class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-2 px-3 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
                             </div>
                             <button type="submit" class="px-4 py-2 rounded-xl bg-accent-violet/10 text-accent-violet hover:bg-accent-violet/20 text-sm font-medium transition-all">
-                                {{ __('messages.Upload') }}
+                                {{ __('experiments.upload') }}
                             </button>
                         </form>
                     </div>
@@ -120,7 +120,7 @@
                                         <p class="text-sm font-medium truncate">{{ $file->filename }}</p>
                                         <p class="text-xs text-zinc-500 dark:text-zinc-400">
                                             {{ $file->size ? number_format($file->size / 1024, 2) . ' KB' : '' }}
-                                            • {{ __('messages.Uploaded') }} {{ $file->created_at?->diffForHumans() }}
+                                            • {{ __('experiments.uploaded') }} {{ $file->created_at?->diffForHumans() }}
                                         </p>
                                         @if($file->description)
                                             <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">{{ $file->description }}</p>
@@ -136,7 +136,7 @@
                                     </a>
                                     @can('update', $experiment)
                                         <form method="POST" action="{{ route('experiments.delete-file', [$experiment, $file]) }}"
-                                            onsubmit="return confirm('{{ __('messages.Are you sure you want to delete this file?') }}')">
+                                            onsubmit="return confirm('{{ __('experiments.are_you_sure_delete_file') }}')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="p-2 rounded-xl bg-accent-rose/10 text-accent-rose hover:bg-accent-rose/20 transition-all">
@@ -151,13 +151,13 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-center text-zinc-500 dark:text-zinc-400 py-8">{{ __('messages.No files attached yet') }}</p>
+                    <p class="text-center text-zinc-500 dark:text-zinc-400 py-8">{{ __('experiments.no_files_attached') }}</p>
                 @endif
             </div>
 
             <!-- Comments Section -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Comments') }} ({{ $experiment->comments?->count() ?? 0 }})</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('experiments.comments', ['count' => $experiment->comments?->count() ?? 0]) }}</h2>
 
                 <!-- Add Comment Form -->
                 <form method="POST" action="{{ route('experiments.add-comment', $experiment) }}" class="mb-6">
@@ -170,11 +170,11 @@
                         </div>
                         <div class="flex-1">
                             <textarea name="comment" rows="2" required
-                                placeholder="{{ __('messages.Add a comment...') }}"
+                                placeholder="{{ __('experiments.add_comment_placeholder') }}"
                                 class="w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none"></textarea>
                             <div class="mt-2">
                                 <button type="submit" class="px-4 py-2 rounded-xl bg-gradient-to-r from-accent-amber to-accent-coral text-sm font-medium text-white hover:opacity-90 transition-opacity">
-                                    {{ __('messages.Post Comment') }}
+                                    {{ __('experiments.post_comment') }}
                                 </button>
                             </div>
                         </div>
@@ -205,7 +205,7 @@
                     </div>
                 @else
                     <p class="text-center text-zinc-500 dark:text-zinc-400 py-8 border-t border-black/5 dark:border-white/5">
-                        {{ __('messages.No comments yet. Be the first to comment!') }}
+                        {{ __('experiments.no_comments') }}
                     </p>
                 @endif
             </div>
@@ -215,10 +215,10 @@
         <div class="space-y-6">
             <!-- Experiment Info -->
             <div class="glass-card rounded-2xl p-5 lg:p-6">
-                <h2 class="text-lg font-semibold mb-5">{{ __('messages.Experiment Information') }}</h2>
+                <h2 class="text-lg font-semibold mb-5">{{ __('experiments.experiment_information') }}</h2>
                 <dl class="space-y-4">
                     <div>
-                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Project') }}</dt>
+                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('experiments.project') }}</dt>
                         <dd class="text-sm font-medium">
                             <a href="{{ route('projects.show', $experiment->project) }}" class="text-accent-violet hover:text-accent-violet/80">
                                 {{ $experiment->project?->title }}
@@ -226,23 +226,23 @@
                         </dd>
                     </div>
                     <div>
-                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Researcher') }}</dt>
+                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('experiments.researcher') }}</dt>
                         <dd class="text-sm font-medium">{{ $experiment->researcher?->name }}</dd>
                     </div>
                     <div>
-                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Date') }}</dt>
+                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('experiments.date') }}</dt>
                         <dd class="text-sm font-medium font-mono">{{ $experiment->date?->format('M d, Y') }}</dd>
                     </div>
                     @if($experiment->duration)
                         <div>
-                            <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Duration') }}</dt>
+                            <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('experiments.duration') }}</dt>
                             <dd class="text-sm font-medium">
-                                <span class="font-mono">{{ $experiment->duration }}</span> {{ __('messages.hours') }}
+                                <span class="font-mono">{{ $experiment->duration }}</span> {{ __('experiments.hours') }}
                             </dd>
                         </div>
                     @endif
                     <div>
-                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Status') }}</dt>
+                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('experiments.status') }}</dt>
                         <dd class="mt-1">
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
                                 {{ $experiment->status === 'completed' ? 'bg-accent-emerald/10 text-accent-emerald' : '' }}
@@ -254,7 +254,7 @@
                         </dd>
                     </div>
                     <div>
-                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('messages.Created') }}</dt>
+                        <dt class="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">{{ __('experiments.created') }}</dt>
                         <dd class="text-sm font-medium font-mono">{{ $experiment->created_at?->format('M d, Y') }}</dd>
                     </div>
                 </dl>
@@ -263,7 +263,7 @@
             <!-- Materials Used -->
             @if($experiment->materials && $experiment->materials->count() > 0)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Materials Used') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('experiments.materials_used') }}</h2>
                     <div class="space-y-2">
                         @foreach($experiment->materials as $material)
                             <div class="flex items-center justify-between p-3 glass rounded-xl">
@@ -282,24 +282,24 @@
             <!-- Actions -->
             @can('update', $experiment)
                 <div class="glass-card rounded-2xl p-5 lg:p-6">
-                    <h2 class="text-lg font-semibold mb-4">{{ __('messages.Actions') }}</h2>
+                    <h2 class="text-lg font-semibold mb-4">{{ __('experiments.actions') }}</h2>
                     <div class="space-y-2">
                         <a href="{{ route('experiments.edit', $experiment) }}" class="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-accent-amber to-accent-coral px-4 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
-                            {{ __('messages.Edit Experiment') }}
+                            {{ __('experiments.edit_experiment') }}
                         </a>
                         @can('delete', $experiment)
                             <form method="POST" action="{{ route('experiments.destroy', $experiment) }}"
-                                onsubmit="return confirm('{{ __('messages.Are you sure you want to delete this experiment?') }}')">
+                                onsubmit="return confirm('{{ __('experiments.confirm_delete_experiment') }}')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-accent-rose/10 text-accent-rose hover:bg-accent-rose/20 font-medium text-sm transition-all">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
-                                    {{ __('messages.Delete Experiment') }}
+                                    {{ __('experiments.delete_experiment') }}
                                 </button>
                             </form>
                         @endcan

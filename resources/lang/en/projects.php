@@ -98,6 +98,8 @@ return [
     'no_projects_match_filters' => 'No projects match your current filters. Try adjusting your search criteria.',
     'get_started_new_project' => 'Get started by creating a new research project.',
     'create_first_project' => 'Create First Project',
+    'progress' => 'Progress',
+    'no_projects_found' => 'No projects found',
 
     // Create/Edit Page
     'create_new_project' => 'Create New Project',

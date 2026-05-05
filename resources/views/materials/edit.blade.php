@@ -185,7 +185,7 @@
                             name="image"
                             accept="image/*"
                             maxSize="2MB"
-                            :currentFile="$material->image ? Storage::disk('public')->url($material->image) : null"
+                            :currentFile="$material->image ? asset('storage/' . $material->image) : null"
                         />
                     </div>
 

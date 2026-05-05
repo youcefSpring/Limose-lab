@@ -1,100 +1,100 @@
 @php
     $settingKeyMap = [
-        'site_name' => 'Site name',
-        'site_tagline' => 'Site tagline',
-        'contact_email' => 'Contact email',
-        'contact_phone' => 'Contact phone',
-        'lab_name' => 'Lab name',
-        'lab_full_name' => 'Lab full name',
-        'lab_description' => 'Lab description',
-        'lab_mission' => 'Lab mission',
-        'lab_vision' => 'Lab vision',
-        'established_year' => 'Established year',
-        'director_name' => 'Director name',
-        'building_name' => 'Building name',
-        'floor_number' => 'Floor number',
-        'room_number' => 'Room number',
-        'full_address' => 'Full address',
-        'city' => 'City',
-        'country' => 'Country',
-        'postal_code' => 'Postal code',
-        'latitude' => 'Latitude',
-        'longitude' => 'Longitude',
-        'main_phone' => 'Main phone',
-        'fax' => 'Fax',
-        'general_email' => 'General email',
-        'support_email' => 'Support email',
-        'office_hours' => 'Office hours',
-        'website_url' => 'Website url',
-        'facebook_url' => 'Facebook url',
-        'twitter_url' => 'Twitter url',
-        'linkedin_url' => 'Linkedin url',
-        'youtube_url' => 'Youtube url',
-        'instagram_url' => 'Instagram url',
-        'research_area_1_title' => 'Research area 1 title',
-        'research_area_1_desc' => 'Research area 1 desc',
-        'research_area_1_icon' => 'Research area 1 icon',
-        'research_area_2_title' => 'Research area 2 title',
-        'research_area_2_desc' => 'Research area 2 desc',
-        'research_area_2_icon' => 'Research area 2 icon',
-        'research_area_3_title' => 'Research area 3 title',
-        'research_area_3_desc' => 'Research area 3 desc',
-        'research_area_3_icon' => 'Research area 3 icon',
-        'research_area_4_title' => 'Research area 4 title',
-        'research_area_4_desc' => 'Research area 4 desc',
-        'research_area_4_icon' => 'Research area 4 icon',
-        'primary_logo' => 'Primary logo',
-        'secondary_logo' => 'Secondary logo',
-        'logo_dark' => 'Logo dark',
-        'favicon' => 'Favicon',
-        'hero_background' => 'Hero background',
-        'about_image' => 'About image',
-        'primary_color' => 'Primary color',
-        'secondary_color' => 'Secondary color',
-        'accent_color' => 'Accent color',
-        'text_color' => 'Text color',
-        'header_color' => 'Header color',
-        'button_color' => 'Button color',
-        'button_hover_color' => 'Button hover color',
-        'hero_title' => 'Hero title',
-        'hero_subtitle' => 'Hero subtitle',
-        'about_description' => 'About description',
-        'stat_equipment' => 'Stat equipment',
-        'stat_projects' => 'Stat projects',
-        'stat_researchers' => 'Stat researchers',
-        'stat_publications' => 'Stat publications',
-        'location_address' => 'Location address',
-        'contact_email_2' => 'Contact email 2',
-        'contact_hours' => 'Contact hours',
-        'slider_enabled' => 'Slider enabled',
-        'slider_speed' => 'Slider speed',
-        'slider_slide_1_title' => 'Slider slide 1 title',
-        'slider_slide_1_subtitle' => 'Slider slide 1 subtitle',
-        'slider_slide_1_image' => 'Slider slide 1 image',
-        'slider_slide_2_title' => 'Slider slide 2 title',
-        'slider_slide_2_subtitle' => 'Slider slide 2 subtitle',
-        'slider_slide_2_image' => 'Slider slide 2 image',
-        'slider_slide_3_title' => 'Slider slide 3 title',
-        'slider_slide_3_subtitle' => 'Slider slide 3 subtitle',
-        'slider_slide_3_image' => 'Slider slide 3 image',
-        'default_locale' => 'Default locale',
-        'available_locales' => 'Available locales',
-        'rtl_enabled' => 'Rtl enabled',
+        'site_name' => 'site_name',
+        'site_tagline' => 'site_tagline',
+        'contact_email' => 'contact_email',
+        'contact_phone' => 'contact_phone',
+        'lab_name' => 'lab_name',
+        'lab_full_name' => 'lab_full_name',
+        'lab_description' => 'lab_description',
+        'lab_mission' => 'lab_mission',
+        'lab_vision' => 'lab_vision',
+        'established_year' => 'established_year',
+        'director_name' => 'director_name',
+        'building_name' => 'building_name',
+        'floor_number' => 'floor_number',
+        'room_number' => 'room_number',
+        'full_address' => 'full_address',
+        'city' => 'city',
+        'country' => 'country',
+        'postal_code' => 'postal_code',
+        'latitude' => 'latitude',
+        'longitude' => 'longitude',
+        'main_phone' => 'main_phone',
+        'fax' => 'fax',
+        'general_email' => 'general_email',
+        'support_email' => 'support_email',
+        'office_hours' => 'office_hours',
+        'website_url' => 'website_url',
+        'facebook_url' => 'facebook_url',
+        'twitter_url' => 'twitter_url',
+        'linkedin_url' => 'linkedin_url',
+        'youtube_url' => 'youtube_url',
+        'instagram_url' => 'instagram_url',
+        'research_area_1_title' => 'research_area_1_title',
+        'research_area_1_desc' => 'research_area_1_desc',
+        'research_area_1_icon' => 'research_area_1_icon',
+        'research_area_2_title' => 'research_area_2_title',
+        'research_area_2_desc' => 'research_area_2_desc',
+        'research_area_2_icon' => 'research_area_2_icon',
+        'research_area_3_title' => 'research_area_3_title',
+        'research_area_3_desc' => 'research_area_3_desc',
+        'research_area_3_icon' => 'research_area_3_icon',
+        'research_area_4_title' => 'research_area_4_title',
+        'research_area_4_desc' => 'research_area_4_desc',
+        'research_area_4_icon' => 'research_area_4_icon',
+        'primary_logo' => 'primary_logo',
+        'secondary_logo' => 'secondary_logo',
+        'logo_dark' => 'logo_dark',
+        'favicon' => 'favicon',
+        'hero_background' => 'hero_background',
+        'about_image' => 'about_image',
+        'primary_color' => 'primary_color',
+        'secondary_color' => 'secondary_color',
+        'accent_color' => 'accent_color',
+        'text_color' => 'text_color',
+        'header_color' => 'header_color',
+        'button_color' => 'button_color',
+        'button_hover_color' => 'button_hover_color',
+        'hero_title' => 'hero_title',
+        'hero_subtitle' => 'hero_subtitle',
+        'about_description' => 'about_description',
+        'stat_equipment' => 'stat_equipment',
+        'stat_projects' => 'stat_projects',
+        'stat_researchers' => 'stat_researchers',
+        'stat_publications' => 'stat_publications',
+        'location_address' => 'location_address',
+        'contact_email_2' => 'contact_email_2',
+        'contact_hours' => 'contact_hours',
+        'slider_enabled' => 'slider_enabled',
+        'slider_speed' => 'slider_speed',
+        'slider_slide_1_title' => 'slider_slide_1_title',
+        'slider_slide_1_subtitle' => 'slider_slide_1_subtitle',
+        'slider_slide_1_image' => 'slider_slide_1_image',
+        'slider_slide_2_title' => 'slider_slide_2_title',
+        'slider_slide_2_subtitle' => 'slider_slide_2_subtitle',
+        'slider_slide_2_image' => 'slider_slide_2_image',
+        'slider_slide_3_title' => 'slider_slide_3_title',
+        'slider_slide_3_subtitle' => 'slider_slide_3_subtitle',
+        'slider_slide_3_image' => 'slider_slide_3_image',
+        'default_locale' => 'default_locale',
+        'available_locales' => 'available_locales',
+        'rtl_enabled' => 'rtl_enabled',
     ];
     
     $groupKeyMap = [
-        'general' => 'General',
-        'lab_info' => 'Laboratory info',
-        'lab_location' => 'Lab location',
-        'lab_contact' => 'Lab contact',
-        'lab_social' => 'Lab social',
-        'research_areas' => 'Research areas',
-        'branding' => 'Branding',
-        'frontend_hero' => 'Frontend hero',
-        'frontend_about' => 'Frontend about',
-        'frontend_contact' => 'Frontend contact',
-        'frontend_slider' => 'Frontend slider',
-        'localization' => 'Localization',
+        'general' => 'general',
+        'lab_info' => 'lab_info',
+        'lab_location' => 'lab_location',
+        'lab_contact' => 'lab_contact',
+        'lab_social' => 'lab_social',
+        'research_areas' => 'research_areas',
+        'branding' => 'branding',
+        'frontend_hero' => 'frontend_hero',
+        'frontend_about' => 'frontend_about',
+        'frontend_contact' => 'frontend_contact',
+        'frontend_slider' => 'frontend_slider',
+        'localization' => 'localization',
     ];
 @endphp
 
@@ -102,7 +102,7 @@
     <!-- Header -->
     <header class="mb-6 lg:mb-8">
         <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Settings') }}</h1>
-        <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Manage website settings and frontend content') }}</p>
+        <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('settings.manage_website_settings') }}</p>
     </header>
 
     <!-- Alert Container -->
@@ -117,37 +117,37 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    {{ __('messages.General') }}
+                    {{ __('settings.general') }}
                 </button>
                 <button type="button" class="tab-button w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-left" data-tab="lab-info">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                     </svg>
-                    {{ __('messages.Laboratory Info') }}
+                    {{ __('settings.lab_info') }}
                 </button>
                 <button type="button" class="tab-button w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-left" data-tab="branding">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                     </svg>
-                    {{ __('messages.Branding') }}
+                    {{ __('settings.branding') }}
                 </button>
                 <button type="button" class="tab-button w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-left" data-tab="frontend">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                     </svg>
-                    {{ __('messages.Frontend') }}
+                    {{ __('settings.frontend_hero') }}
                 </button>
                 <button type="button" class="tab-button w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-left" data-tab="slider">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    {{ __('messages.Slider') }}
+                    {{ __('settings.frontend_slider') }}
                 </button>
                 <button type="button" class="tab-button w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-left" data-tab="localization">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
                     </svg>
-                    {{ __('messages.Localization') }}
+                    {{ __('settings.localization') }}
                 </button>
             </nav>
         </div>
@@ -169,13 +169,13 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.' . ($groupKeyMap[$group] ?? $group)) }}
+                                    {{ trans('settings.' . ($groupKeyMap[$group] ?? $group)) }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                             <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                             </label>
                                             @include('settings.partials.field', ['setting' => $setting])
                                         </div>
@@ -197,13 +197,13 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.' . ($groupKeyMap[$group] ?? $group)) }}
+                                    {{ trans('settings.' . ($groupKeyMap[$group] ?? $group)) }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                             <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                             </label>
                                             @include('settings.partials.field', ['setting' => $setting])
                                         </div>
@@ -230,14 +230,14 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.Logos') }}
+                                    {{ trans('settings.logos') }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         @if(in_array($setting->key, $logoKeys))
                                             <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                                 <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                    {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                    {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                                 </label>
                                                 @include('settings.partials.field', ['setting' => $setting])
                                             </div>
@@ -253,14 +253,14 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.Colors') }}
+                                    {{ trans('settings.colors') }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         @if(in_array($setting->key, $colorKeys))
                                             <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                                 <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                    {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                    {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                                 </label>
                                                 @include('settings.partials.field', ['setting' => $setting])
                                             </div>
@@ -283,13 +283,13 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.' . ($groupKeyMap[$group] ?? $group)) }}
+                                    {{ trans('settings.' . ($groupKeyMap[$group] ?? $group)) }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                             <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                             </label>
                                             @include('settings.partials.field', ['setting' => $setting])
                                         </div>
@@ -311,13 +311,13 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.' . ($groupKeyMap[$group] ?? $group)) }}
+                                    {{ trans('settings.' . ($groupKeyMap[$group] ?? $group)) }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                             <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                             </label>
                                             @include('settings.partials.field', ['setting' => $setting])
                                         </div>
@@ -339,13 +339,13 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
                                         </svg>
                                     </span>
-                                    {{ trans('messages.' . ($groupKeyMap[$group] ?? $group)) }}
+                                    {{ trans('settings.' . ($groupKeyMap[$group] ?? $group)) }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     @foreach($groupSettings as $setting)
                                         <div class="{{ $setting->type === 'textarea' ? 'md:col-span-2' : '' }}">
                                             <label for="{{ $setting->key }}" class="block text-sm font-medium mb-2">
-                                                {{ trans('messages.' . ($settingKeyMap[$setting->key] ?? ucfirst(str_replace('_', ' ', $setting->key)))) }}
+                                                {{ trans('settings.' . ($settingKeyMap[$setting->key] ?? str_replace('_', ' ', $setting->key))) }}
                                             </label>
                                             @include('settings.partials.field', ['setting' => $setting])
                                         </div>
@@ -362,7 +362,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                        {{ __('messages.Save Settings') }}
+                        {{ __('settings.save_settings') }}
                     </button>
                 </div>
             </form>

@@ -2,8 +2,8 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div>
-            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Experiments') }}</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.View and manage laboratory experiments') }}</p>
+            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('experiments.experiments') }}</h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('experiments.view_manage_experiments') }}</p>
         </div>
         <div class="flex items-center gap-3">
             <button @click="$dispatch('open-modal', 'filter-modal')" class="flex items-center gap-2 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all relative">
@@ -20,7 +20,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    {{ __('messages.New Experiment') }}
+                    {{ __('experiments.create_experiment') }}
                 </a>
             @endcan
         </div>
@@ -29,30 +29,30 @@
     <!-- Filter Modal -->
     <x-modal name="filter-modal" :show="false" maxWidth="lg">
         <div class="p-6">
-            <h2 class="text-xl font-semibold mb-6">{{ __('messages.Filter Experiments') }}</h2>
+            <h2 class="text-xl font-semibold mb-6">{{ __('experiments.filter_experiments') }}</h2>
             <form method="GET" action="{{ route('experiments.index') }}" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-2">{{ __('messages.Search') }}</label>
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="{{ __('messages.Search experiments...') }}"
+                        placeholder="{{ __('experiments.search_experiments') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-2">{{ __('messages.Status') }}</label>
+                    <label class="block text-sm font-medium mb-2">{{ __('experiments.status') }}</label>
                     <select name="status"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
-                        <option value="">{{ __('messages.All Statuses') }}</option>
-                        <option value="planned" {{ request('status') == 'planned' ? 'selected' : '' }}>{{ __('messages.Planned') }}</option>
-                        <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>{{ __('messages.In Progress') }}</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('messages.Completed') }}</option>
-                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('messages.Cancelled') }}</option>
+                        <option value="">{{ __('experiments.all_statuses') }}</option>
+                        <option value="planned" {{ request('status') == 'planned' ? 'selected' : '' }}>{{ __('experiments.planned') }}</option>
+                        <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>{{ __('experiments.in_progress') }}</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('experiments.completed') }}</option>
+                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('experiments.cancelled') }}</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-2">{{ __('messages.Project') }}</label>
+                    <label class="block text-sm font-medium mb-2">{{ __('experiments.project') }}</label>
                     <select name="project"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
-                        <option value="">{{ __('messages.All Projects') }}</option>
+                        <option value="">{{ __('experiments.all_projects') }}</option>
                         @foreach($projects ?? [] as $project)
                             <option value="{{ $project->id }}" {{ request('project') == $project->id ? 'selected' : '' }}>
                                 {{ $project->title }}
@@ -62,10 +62,10 @@
                 </div>
                 <div class="flex gap-3 pt-4">
                     <button type="submit" class="flex-1 bg-gradient-to-r from-accent-amber to-accent-coral px-4 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
-                        {{ __('messages.Apply Filters') }}
+                        {{ __('experiments.apply_filters') }}
                     </button>
                     <a href="{{ route('experiments.index') }}" class="flex-1 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium text-center transition-all">
-                        {{ __('messages.Clear') }}
+                        {{ __('experiments.clear') }}
                     </a>
                 </div>
             </form>
@@ -80,7 +80,7 @@
             </span>
             @if(request()->hasAny(['search', 'status', 'project']))
                 <a href="{{ route('experiments.index') }}" class="text-sm text-accent-amber hover:text-accent-coral transition-colors font-medium">
-                    {{ __('messages.Clear all filters') }}
+                    {{ __('experiments.clear_all_filters') }}
                 </a>
             @endif
         </div>
@@ -94,11 +94,11 @@
                     <thead class="bg-zinc-50 dark:bg-surface-800/50 border-b border-black/5 dark:border-white/5">
                         <tr>
                             <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Title') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Project') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Researcher') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.project') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.researcher') }}</th>
                             <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Start Date') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Status') }}</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('messages.Actions') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.status') }}</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('experiments.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-black/5 dark:divide-white/5">
@@ -152,7 +152,7 @@
                                         @if($experiment->status === 'in_progress')
                                             <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
                                         @endif
-                                        {{ __(ucfirst(str_replace('_', ' ', $experiment->status))) }}
+                                        {{ __('experiments.' . $experiment->status) }}
                                     </span>
                                 </td>
 
@@ -216,12 +216,12 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                 </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">{{ __('messages.No experiments found') }}</h3>
+            <h3 class="text-xl font-semibold mb-2">{{ __('experiments.no_experiments_found') }}</h3>
             <p class="text-zinc-500 dark:text-zinc-400 mb-6 max-w-md mx-auto">
                 @if(request()->hasAny(['search', 'status', 'project']))
-                    {{ __('messages.No experiments match your current filters. Try adjusting your search criteria.') }}
+                    {{ __('experiments.no_experiments_match_filters') }}
                 @else
-                    {{ __('messages.Get started by creating a new experiment.') }}
+                    {{ __('experiments.get_started_new_experiment') }}
                 @endif
             </p>
             @if(request()->hasAny(['search', 'status', 'project']))
@@ -234,7 +234,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
-                        {{ __('messages.Create First Experiment') }}
+                        {{ __('experiments.create_first_experiment') }}
                     </a>
                 @endcan
             @endif

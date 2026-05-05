@@ -8,8 +8,8 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Create New Project') }}</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Define a new research project') }}</p>
+                <h1 class="text-xl sm:text-2xl font-semibold">{{ __('projects.create_new_project') }}</h1>
+                <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('projects.define_new_project') }}</p>
             </div>
         </div>
     </header>
@@ -20,16 +20,16 @@
 
         <!-- Form Card -->
         <div class="glass-card rounded-2xl p-5 lg:p-6">
-            <h2 class="text-lg font-semibold mb-6">{{ __('messages.Project Information') }}</h2>
+            <h2 class="text-lg font-semibold mb-6">{{ __('projects.project_information') }}</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 <!-- Title - Full Width -->
                 <div class="lg:col-span-3">
                     <label for="title" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Project Title') }} <span class="text-accent-rose">*</span>
+                        {{ __('projects.project_title') }} <span class="text-accent-rose">*</span>
                     </label>
                     <input type="text" name="title" id="title" required value="{{ old('title') }}"
-                        placeholder="{{ __('messages.Enter project title...') }}"
+                        placeholder="{{ __('projects.enter_project_title') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('title') border-accent-rose @enderror">
                     @error('title')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
@@ -39,10 +39,10 @@
                 <!-- Description - Full Width -->
                 <div class="lg:col-span-3">
                     <label for="description" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Description') }} <span class="text-accent-rose">*</span>
+                        {{ __('projects.description') }} <span class="text-accent-rose">*</span>
                     </label>
                     <textarea name="description" id="description" rows="4" required
-                        placeholder="{{ __('messages.Provide a detailed description of the research project...') }}"
+                        placeholder="{{ __('projects.provide_detailed_description') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('description') border-accent-rose @enderror">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
@@ -52,26 +52,26 @@
                 <!-- Objectives -->
                 <div class="lg:col-span-3">
                     <label for="objectives" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Research Objectives') }}
-                    </label>
-                    <textarea name="objectives" id="objectives" rows="3"
-                        placeholder="{{ __('messages.List the main objectives of this research project...') }}"
+{{ __('projects.research_objectives') }}
+                        </label>
+                        <textarea name="objectives" id="objectives" rows="3"
+                            placeholder="{{ __('projects.list_main_objectives') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('objectives') border-accent-rose @enderror">{{ old('objectives') }}</textarea>
                     @error('objectives')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                     @enderror
                     <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        {{ __('messages.Optional: Define the specific goals and objectives you aim to achieve') }}
+                        {{ __('projects.optional_define_goals') }}
                     </p>
                 </div>
 
                 <!-- Methodology -->
                 <div class="lg:col-span-3">
                     <label for="methodology" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Methodology') }}
-                    </label>
-                    <textarea name="methodology" id="methodology" rows="3"
-                        placeholder="{{ __('messages.Describe the research methodology and approach...') }}"
+{{ __('projects.methodology') }}
+                        </label>
+                        <textarea name="methodology" id="methodology" rows="3"
+                            placeholder="{{ __('projects.describe_methodology') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all resize-none @error('methodology') border-accent-rose @enderror">{{ old('methodology') }}</textarea>
                     @error('methodology')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
@@ -81,7 +81,7 @@
                 <!-- Start Date -->
                 <div>
                     <label for="start_date" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Start Date') }} <span class="text-accent-rose">*</span>
+                        {{ __('projects.start_date') }} <span class="text-accent-rose">*</span>
                     </label>
                     <input type="date" name="start_date" id="start_date" required value="{{ old('start_date') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('start_date') border-accent-rose @enderror">
@@ -93,7 +93,7 @@
                 <!-- End Date -->
                 <div>
                     <label for="end_date" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Expected End Date') }}
+                        {{ __('projects.expected_end_date') }}
                     </label>
                     <input type="date" name="end_date" id="end_date" value="{{ old('end_date') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('end_date') border-accent-rose @enderror">
@@ -101,20 +101,20 @@
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                     @enderror
                     <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        {{ __('messages.Leave blank if end date is not yet determined') }}
+                        {{ __('projects.leave_blank_end_date') }}
                     </p>
                 </div>
 
                 <!-- Status -->
                 <div>
                     <label for="status" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Project Status') }} <span class="text-accent-rose">*</span>
+                        {{ __('projects.project_status') }} <span class="text-accent-rose">*</span>
                     </label>
                     <select name="status" id="status" required
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('status') border-accent-rose @enderror">
-                        <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>{{ __('messages.Active') }}</option>
-                        <option value="on_hold" {{ old('status') == 'on_hold' ? 'selected' : '' }}>{{ __('messages.On Hold') }}</option>
-                        <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>{{ __('messages.Completed') }}</option>
+                        <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>{{ __('projects.active') }}</option>
+                        <option value="on_hold" {{ old('status') == 'on_hold' ? 'selected' : '' }}>{{ __('projects.on_hold') }}</option>
+                        <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>{{ __('projects.completed') }}</option>
                     </select>
                     @error('status')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
@@ -124,7 +124,7 @@
                 <!-- Budget -->
                 <div>
                     <label for="budget" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Budget') }} ({{ __('messages.USD') }})
+                        {{ __('projects.budget_usd') }}
                     </label>
                     <input type="number" name="budget" id="budget" step="0.01" min="0" value="{{ old('budget') }}"
                         placeholder="0.00"
@@ -137,10 +137,10 @@
                 <!-- Funding Source -->
                 <div>
                     <label for="funding_source" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Funding Source') }}
+                        {{ __('projects.funding_source') }}
                     </label>
                     <input type="text" name="funding_source" id="funding_source" value="{{ old('funding_source') }}"
-                        placeholder="{{ __('messages.e.g., NSF, Private Grant, University...') }}"
+                        placeholder="{{ __('projects.funding_source_placeholder') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('funding_source') border-accent-rose @enderror">
                     @error('funding_source')
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
@@ -150,7 +150,7 @@
                 <!-- Progress -->
                 <div>
                     <label for="progress" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Initial Progress') }} (%)
+                        {{ __('projects.initial_progress') }} (%)
                     </label>
                     <input type="number" name="progress" id="progress" min="0" max="100" value="{{ old('progress', 0) }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all font-mono @error('progress') border-accent-rose @enderror">

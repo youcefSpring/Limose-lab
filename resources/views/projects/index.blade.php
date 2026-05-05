@@ -2,8 +2,8 @@
     <!-- Header -->
     <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 lg:mb-8">
         <div>
-            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('messages.Research Projects') }}</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('messages.Manage and collaborate on research projects') }}</p>
+            <h1 class="text-xl sm:text-2xl font-semibold">{{ __('projects.research_projects') }}</h1>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm mt-1">{{ __('projects.manage_collaborate_projects') }}</p>
         </div>
         <div class="flex items-center gap-3">
             <button @click="$dispatch('open-modal', 'filter-modal')" class="flex items-center gap-2 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all relative">
@@ -20,7 +20,7 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    {{ __('messages.New Project') }}
+                    {{ __('projects.create_new_project') }}
                 </a>
             @endcan
         </div>
@@ -29,7 +29,7 @@
     <!-- Filter Modal -->
     <x-modal name="filter-modal" :show="false" maxWidth="lg">
         <div class="p-6">
-            <h2 class="text-xl font-semibold mb-6">{{ __('messages.Filter Projects') }}</h2>
+            <h2 class="text-xl font-semibold mb-6">{{ __('projects.filter_projects') }}</h2>
             <form method="GET" action="{{ route('projects.index') }}" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-2">{{ __('messages.Search') }}</label>
@@ -41,18 +41,18 @@
                     <label class="block text-sm font-medium mb-2">{{ __('messages.Status') }}</label>
                     <select name="status"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
-                        <option value="">{{ __('messages.All Statuses') }}</option>
-                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>{{ __('messages.Active') }}</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('messages.Completed') }}</option>
-                        <option value="on_hold" {{ request('status') == 'on_hold' ? 'selected' : '' }}>{{ __('messages.On Hold') }}</option>
+                        <option value="">{{ __('projects.all_statuses') }}</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>{{ __('projects.active') }}</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>{{ __('projects.completed') }}</option>
+                        <option value="on_hold" {{ request('status') == 'on_hold' ? 'selected' : '' }}>{{ __('projects.on_hold') }}</option>
                     </select>
                 </div>
                 <div class="flex gap-3 pt-4">
                     <button type="submit" class="flex-1 bg-gradient-to-r from-accent-amber to-accent-coral px-4 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
-                        {{ __('messages.Apply Filters') }}
+                        {{ __('projects.apply_filters') }}
                     </button>
                     <a href="{{ route('projects.index') }}" class="flex-1 px-4 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium text-center transition-all">
-                        {{ __('messages.Clear') }}
+                        {{ __('projects.clear') }}
                     </a>
                 </div>
             </form>
@@ -67,7 +67,7 @@
             </span>
             @if(request()->hasAny(['search', 'status']))
                 <a href="{{ route('projects.index') }}" class="text-sm text-accent-amber hover:text-accent-coral transition-colors font-medium">
-                    {{ __('messages.Clear all filters') }}
+                    {{ __('projects.clear_all_filters') }}
                 </a>
             @endif
         </div>
@@ -80,13 +80,13 @@
                 <table class="w-full">
                     <thead class="bg-zinc-50 dark:bg-surface-800/50 border-b border-black/5 dark:border-white/5">
                         <tr>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Project') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Principal Investigator') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Status') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Progress') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Period') }}</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('messages.Members') }}</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('messages.Actions') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('projects.project') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('projects.principal_investigator') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('projects.status') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('projects.progress') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('projects.period') }}</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('projects.members') }}</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('projects.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-black/5 dark:divide-white/5">
@@ -232,13 +232,17 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
             </div>
-            <h3 class="text-xl font-semibold mb-2">{{ __('messages.No projects found') }}</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 mb-6 max-w-md mx-auto">
-                @if(request()->hasAny(['search', 'status']))
-                    {{ __('messages.No projects match your current filters. Try adjusting your search criteria.') }}
-                @else
-                    {{ __('messages.Get started by creating a new research project.') }}
-                @endif
+<h3 class="text-xl font-semibold mb-2">{{ __('projects.no_projects_match_filters') }}</h3>
+            <p class="text-zinc-500 dark:text-zinc-400 mb-6 text-center">
+                {{ request('status') ? __('projects.no_projects_match_filters') : __('projects.get_started_new_project') }}
+            </p>
+            @if(!request('status'))
+                <div class="text-center">
+                    <a href="{{ route('projects.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-3 rounded-xl font-medium text-white hover:opacity-90 transition-opacity">
+                        {{ __('projects.create_first_project') }}
+                    </a>
+                </div>
+            @endif
             </p>
             @if(request()->hasAny(['search', 'status']))
                 <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass hover:glass-card font-medium transition-all">
