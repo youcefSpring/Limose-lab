@@ -22,6 +22,7 @@
     fileType: '{{ $currentFile ? 'image' : '' }}',
     previewUrl: '{{ $currentFile ?? '' }}',
     isDragging: false,
+    isNewFile: false,
 
     init() {
         // Auto-detect file type from currentFile if it exists
@@ -47,6 +48,7 @@
     },
 
     processFile(file) {
+        this.isNewFile = true;
         this.fileName = file.name;
         this.fileSize = this.formatFileSize(file.size);
         this.fileType = this.getFileType(file);
@@ -150,18 +152,26 @@
             <!-- Image Preview -->
             <div x-show="fileType === 'image'" class="space-y-4">
                 <div class="flex justify-center">
-                    <img :src="previewUrl" :alt="fileName" class="max-h-48 rounded-lg shadow-lg">
+                    <div class="relative group max-w-full">
+                        <img :src="previewUrl" :alt="isNewFile ? fileName : '{{ __('messages.Current Material Image') }}'" class="max-h-64 md:max-h-80 w-auto rounded-xl shadow-lg object-contain bg-zinc-50 dark:bg-surface-800/50 p-2 border border-black/5 dark:border-white/5 transition-transform duration-300 group-hover:scale-[1.02]">
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center pointer-events-none">
+                            <span class="text-white text-xs font-medium px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10">
+                                <span x-text="isNewFile ? '{{ __('messages.New Image') }}' : '{{ __('messages.Current Image') }}'"></span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center">
-                    <p class="text-sm font-medium" x-text="fileName"></p>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400" x-text="fileSize"></p>
+                    <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 truncate max-w-xs mx-auto" 
+                       x-text="isNewFile ? fileName : '{{ __('messages.Current Material Image') }}'"></p>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1" x-show="isNewFile" x-text="fileSize"></p>
                 </div>
             </div>
 
             <!-- PDF Preview -->
             <div x-show="fileType === 'pdf'" class="space-y-4">
                 <div class="flex justify-center">
-                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-accent-rose/10">
+                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-accent-rose/10 border border-accent-rose/20 shadow-inner">
                         <svg class="w-12 h-12 text-accent-rose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6"/>
@@ -169,33 +179,35 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <p class="text-sm font-medium" x-text="fileName"></p>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400" x-text="fileSize"></p>
+                    <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 truncate max-w-xs mx-auto" 
+                       x-text="isNewFile ? fileName : '{{ __('messages.Current PDF Document') }}'"></p>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1" x-show="isNewFile" x-text="fileSize"></p>
                 </div>
             </div>
 
             <!-- Document Preview -->
             <div x-show="fileType === 'document'" class="space-y-4">
                 <div class="flex justify-center">
-                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-accent-cyan/10">
+                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-accent-cyan/10 border border-accent-cyan/20 shadow-inner">
                         <svg class="w-12 h-12 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
                     </div>
                 </div>
                 <div class="text-center">
-                    <p class="text-sm font-medium" x-text="fileName"></p>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400" x-text="fileSize"></p>
+                    <p class="text-sm font-semibold text-zinc-800 dark:text-zinc-100 truncate max-w-xs mx-auto" 
+                       x-text="isNewFile ? fileName : '{{ __('messages.Current Document') }}'"></p>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1" x-show="isNewFile" x-text="fileSize"></p>
                 </div>
             </div>
 
             <!-- Remove Button -->
-            <div class="flex justify-center mt-4">
+            <div class="flex justify-center mt-6">
                 <button
                     type="button"
                     @click="removeFile()"
-                    class="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:glass-card text-sm font-medium transition-all hover:text-accent-rose">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="group flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white dark:bg-surface-700 border border-black/5 dark:border-white/5 shadow-sm hover:shadow-md hover:border-accent-rose/30 transition-all duration-300 text-sm font-medium hover:text-accent-rose">
+                    <svg class="w-4 h-4 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
                     {{ __('messages.Remove File') }}
@@ -205,32 +217,30 @@
 
         <!-- Upload Prompt (shown when no file is selected) -->
         <div x-show="!fileName" x-cloak class="space-y-3 text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent-violet/10 mb-2 transition-all" :class="isDragging ? 'scale-110' : 'scale-100'">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-accent-violet/10 mb-2 transition-all duration-300" :class="isDragging ? 'scale-110 rotate-3' : 'scale-100'">
                 <svg class="w-8 h-8 text-accent-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                 </svg>
             </div>
 
-            <div class="flex text-sm justify-center">
-                <label for="{{ $uniqueId }}" class="relative cursor-pointer rounded-md font-medium text-accent-violet hover:text-accent-amber transition-colors px-2">
-                    <span>{{ __('messages.Upload a file') }}</span>
-                </label>
-                <p class="text-zinc-500 dark:text-zinc-400">{{ __('messages.or drag and drop') }}</p>
-            </div>
-
-            <div class="space-y-1">
-                <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                    {{ __('messages.Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)') }}
-                </p>
-                <p class="text-xs text-zinc-500 dark:text-zinc-400">
-                    {{ __('messages.Maximum file size:') }} {{ $maxSize }}
-                </p>
+            <div class="flex flex-col items-center gap-1">
+                <div class="flex items-center text-sm">
+                    <label for="{{ $uniqueId }}" class="relative cursor-pointer rounded-md font-semibold text-accent-violet hover:text-accent-amber transition-colors px-1">
+                        <span>{{ __('messages.Click to upload') }}</span>
+                    </label>
+                    <p class="text-zinc-500 dark:text-zinc-400">{{ __('messages.or drag and drop') }}</p>
+                </div>
+                <p class="text-xs text-zinc-400 dark:text-zinc-500">{{ __('messages.SVG, PNG, JPG or GIF (max. 10MB)') }}</p>
             </div>
 
             @if($currentFile)
-                <div class="pt-3 mt-3 border-t border-black/10 dark:border-white/10">
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400">{{ __('messages.Current file:') }}</p>
-                    <p class="text-sm font-medium text-accent-amber mt-1">{{ basename($currentFile) }}</p>
+                <div class="pt-4 mt-4 border-t border-black/5 dark:border-white/5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent-amber/5 border border-accent-amber/10 text-xs font-medium text-accent-amber">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                        </svg>
+                        {{ __('messages.Existing file preserved') }}
+                    </div>
                 </div>
             @endif
         </div>

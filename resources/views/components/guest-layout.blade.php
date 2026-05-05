@@ -103,6 +103,19 @@
         @stack('styles')
     </head>
     <body class="min-h-screen text-zinc-800 dark:text-white {{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-outfit' }}">
+        <!-- Global Loader -->
+        <div id="global-loader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-50 dark:bg-[#18181b] transition-all duration-500">
+            <div class="flex flex-col items-center gap-4">
+                <div class="relative w-16 h-16">
+                    <div class="absolute inset-0 rounded-full border-4 border-accent-amber/10"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-t-accent-amber animate-spin"></div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sm font-medium tracking-wider uppercase text-zinc-500 animate-pulse">{{ config('app.name', 'RLMS') }}</span>
+                </div>
+            </div>
+        </div>
+
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
             <!-- Logo -->
             <div>
@@ -119,6 +132,15 @@
 
         <!-- Scripts -->
         <script>
+            // Global Loader Handler
+            window.addEventListener('load', () => {
+                const loader = document.getElementById('global-loader');
+                if (loader) {
+                    loader.classList.add('opacity-0', 'invisible');
+                    setTimeout(() => loader.remove(), 500);
+                }
+            });
+
             // Initialize theme from localStorage or default to light
             if (localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme')) {
                 document.documentElement.classList.add('dark');

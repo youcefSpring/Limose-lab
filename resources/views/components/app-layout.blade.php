@@ -174,6 +174,19 @@
         @stack('styles')
     </head>
     <body class="min-h-screen text-zinc-800 dark:text-white {{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-outfit' }}">
+        <!-- Global Loader -->
+        <div id="global-loader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-50 dark:bg-[#18181b] transition-all duration-500">
+            <div class="flex flex-col items-center gap-4">
+                <div class="relative w-16 h-16">
+                    <div class="absolute inset-0 rounded-full border-4 border-accent-amber/10"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-t-accent-amber animate-spin"></div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sm font-medium tracking-wider uppercase text-zinc-500 animate-pulse">{{ config('app.name', 'RLMS') }}</span>
+                </div>
+            </div>
+        </div>
+
         <div class="flex min-h-screen">
             <!-- Mobile Overlay -->
             <div id="sidebar-overlay" 
@@ -242,166 +255,93 @@
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
 
         <!-- Scripts -->
-<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Initialize theme from localStorage or system preference
-                (function() {
-                    const saved = localStorage.getItem('theme');
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (saved === 'dark' || (!saved && prefersDark)) {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                    }
-                })();
-
-                // Toggle theme function
-                window.toggleTheme = function() {
-                    const isDark = document.documentElement.classList.toggle('dark');
-                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                };
-
-                // Initialize sidebar state
-                function initSidebar() {
-                    const sidebar = document.getElementById('sidebar');
-                    const mainContent = document.querySelector('main');
-                    const header = document.getElementById('header');
-                    const isRtl = document.documentElement.dir === 'rtl';
-                    
-                    if (window.innerWidth >= 1024) {
-                        // Desktop: sidebar visible by default
-                        sidebar.classList.remove('sidebar-hidden');
-                        if (isRtl) {
-                            mainContent.classList.add('lg:mr-64');
-                            mainContent.classList.remove('lg:ml-64');
-                            header.classList.add('lg:right-64');
-                            header.classList.remove('lg:left-64');
-                        } else {
-                            mainContent.classList.add('lg:ml-64');
-                            mainContent.classList.remove('lg:mr-64');
-                            header.classList.add('lg:left-64');
-                            header.classList.remove('lg:right-64');
-                    }
-                } else {
-                    // Mobile: sidebar hidden by default
-                    sidebar.classList.add('sidebar-hidden');
-                    mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
-                    header.classList.remove('lg:left-64', 'lg:right-64');
-                    header.classList.add('left-0');
+        <script>
+            // Global Loader Handler
+            window.addEventListener('load', () => {
+                const loader = document.getElementById('global-loader');
+                if (loader) {
+                    loader.classList.add('opacity-0', 'invisible');
+                    setTimeout(() => loader.remove(), 500);
                 }
+            });
+
+            // Turbo Compatibility
+            document.addEventListener('turbo:load', () => {
+                const loader = document.getElementById('global-loader');
+                if (loader) {
+                    loader.classList.add('opacity-0', 'invisible');
+                    setTimeout(() => {
+                        if (loader.parentNode) loader.remove();
+                    }, 500);
+                }
+            });
+
+            // Initialize theme
+            (function() {
+                const saved = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (saved === 'dark' || (!saved && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            })();
+
+            // Toggle theme
+            function toggleTheme() {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
             }
-            initSidebar();
+            window.toggleTheme = toggleTheme;
 
-            // Toggle sidebar function
-            function toggleSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                const overlay = document.getElementById('sidebar-overlay');
-                const hamburger = document.getElementById('hamburger');
-                const header = document.getElementById('header');
-                const mainContent = document.querySelector('main');
-                const body = document.body;
-                const isRtl = document.documentElement.dir === 'rtl';
-                
-                if (window.innerWidth < 1024) {
-                    // Mobile: slide sidebar
-                    sidebar.classList.toggle('sidebar-hidden');
-
-                    if (sidebar.classList.contains('sidebar-hidden')) {
-                        overlay.classList.add('opacity-0', 'invisible');
-                        body.classList.remove('sidebar-open');
-                    } else {
-                        overlay.classList.remove('opacity-0', 'invisible');
-                        body.classList.add('sidebar-open');
-                    }
-                } else {
-                    // Desktop: toggle sidebar
-                    sidebar.classList.toggle('sidebar-hidden');
-
-                    if (sidebar.classList.contains('sidebar-hidden')) {
-                        mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
-                        header.classList.remove('lg:left-64', 'lg:right-64');
-                        if (isRtl) {
-                            header.classList.add('lg:right-0');
-                        } else {
-                            header.classList.add('lg:left-0');
-                        }
-                    } else {
-                        if (isRtl) {
-                            mainContent.classList.add('lg:mr-64');
-                            header.classList.remove('lg:right-0');
-                            header.classList.add('lg:right-64');
-                        } else {
-                            mainContent.classList.add('lg:ml-64');
-                            header.classList.remove('lg:left-0');
-                            header.classList.add('lg:left-64');
-                        }
-                    }
-                }
-
-                if (hamburger) {
-                    hamburger.classList.toggle('active');
-                }
-            }
-            
-            // Close mobile sidebar on navigation
-            document.addEventListener('turbo:before-visit', function() {
-                if (window.innerWidth < 1024) {
-                    const sidebar = document.getElementById('sidebar');
-                    const overlay = document.getElementById('sidebar-overlay');
-                    const body = document.body;
-                    
-                    if (sidebar && !sidebar.classList.contains('sidebar-hidden')) {
-                        sidebar.classList.add('sidebar-hidden');
-                        overlay.classList.add('opacity-0', 'invisible');
-                        body.classList.remove('sidebar-open');
-                    }
-                }
-            });
-
-            // Scroll to top on navigation
-            document.addEventListener('turbo:load', function() {
-                window.scrollTo(0, 0);
-            });
-
-            // Scroll to top on navigation
-            document.addEventListener('turbo:load', function() {
-                window.scrollTo(0, 0);
-            });
-
-// Handle window resize
-            window.addEventListener('resize', function() {
+            // Initialize sidebar
+            (function() {
                 const sidebar = document.getElementById('sidebar');
                 const mainContent = document.querySelector('main');
                 const header = document.getElementById('header');
-                const overlay = document.getElementById('sidebar-overlay');
-                const body = document.body;
                 const isRtl = document.documentElement.dir === 'rtl';
                 
                 if (window.innerWidth >= 1024) {
-                    // Switch to desktop: show sidebar
                     sidebar.classList.remove('sidebar-hidden');
-                    mainContent.classList.remove('ml-0', 'mr-0');
                     if (isRtl) {
                         mainContent.classList.add('lg:mr-64');
-                        header.classList.remove('lg:right-0');
                         header.classList.add('lg:right-64');
                     } else {
                         mainContent.classList.add('lg:ml-64');
-                        header.classList.remove('lg:left-0');
                         header.classList.add('lg:left-64');
                     }
-                    overlay.classList.add('opacity-0', 'invisible');
-                    body.classList.remove('sidebar-open');
                 } else {
-                    // Switch to mobile: hide sidebar
                     sidebar.classList.add('sidebar-hidden');
-                    mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
-                    header.classList.remove('lg:left-64', 'lg:right-64');
-                    header.classList.add('left-0');
                 }
-            });
-            });
+            })();
+
+            // Toggle sidebar
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                const isRtl = document.documentElement.dir === 'rtl';
+                const mainContent = document.querySelector('main');
+                const header = document.getElementById('header');
+                
+                sidebar.classList.toggle('sidebar-hidden');
+                
+                if (window.innerWidth >= 1024) {
+                    if (sidebar.classList.contains('sidebar-hidden')) {
+                        mainContent.classList.remove('lg:ml-64', 'lg:mr-64');
+                        header.classList.remove('lg:left-64', 'lg:right-64');
+                    } else {
+                        if (isRtl) {
+                            mainContent.classList.add('lg:mr-64');
+                            header.classList.add('lg:right-64');
+                        } else {
+                            mainContent.classList.add('lg:ml-64');
+                            header.classList.add('lg:left-64');
+                        }
+                    }
+                }
+            }
+            window.toggleSidebar = toggleSidebar;
         </script>
+        @stack('scripts')
+    </body>
+</html>
         @stack('scripts')
     </body>
 </html>

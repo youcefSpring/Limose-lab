@@ -96,6 +96,20 @@ return [
     'Current Password' => 'كلمة المرور الحالية',
     'New Password' => 'كلمة المرور الجديدة',
 
+    // File Upload Component
+    'New Image' => 'صورة جديدة',
+    'Current Image' => 'الصورة الحالية',
+    'Current Material Image' => 'صورة المادة الحالية',
+    'Current PDF Document' => 'ملف PDF الحالي',
+    'Current Document' => 'المستند الحالي',
+    'Selected Image' => 'الصورة المختارة',
+    'Click to upload' => 'انقر للرفع',
+    'or drag and drop' => 'أو قم بالسحب والإفلات',
+    'Remove File' => 'إزالة الملف',
+    'Current:' => 'الحالي:',
+    'Existing file preserved' => 'تم الحفاظ على الملف الحالي',
+    'SVG, PNG, JPG or GIF (max. 10MB)' => 'SVG, PNG, JPG أو GIF (بحد أقصى 10 ميجابايت)',
+
     // Messages
     'Language changed successfully!' => 'تم تغيير اللغة بنجاح!',
     'Invalid language selection.' => 'اختيار اللغة غير صالح.',

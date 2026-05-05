@@ -153,7 +153,7 @@
                                 <td class="px-4 py-3">
                                     <div class="w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-surface-700 dark:to-surface-600">
                                         @if($material->image)
-                                            <img src="{{ asset('storage/' . $material->image) }}" alt="{{ $material->name }}" class="w-full h-full object-cover">
+                                            <img src="{{ Storage::disk('public')->url($material->image) }}" alt="{{ $material->name }}" class="w-full h-full object-cover">
                                         @else
                                             <div class="flex items-center justify-center h-full">
                                                 <svg class="w-6 h-6 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

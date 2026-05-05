@@ -96,6 +96,20 @@ return [
     'Current Password' => 'Current Password',
     'New Password' => 'New Password',
 
+    // File Upload Component
+    'New Image' => 'New Image',
+    'Current Image' => 'Current Image',
+    'Current Material Image' => 'Current Material Image',
+    'Current PDF Document' => 'Current PDF Document',
+    'Current Document' => 'Current Document',
+    'Selected Image' => 'Selected Image',
+    'Click to upload' => 'Click to upload',
+    'or drag and drop' => 'or drag and drop',
+    'Remove File' => 'Remove File',
+    'Current:' => 'Current:',
+    'Existing file preserved' => 'Existing file preserved',
+    'SVG, PNG, JPG or GIF (max. 10MB)' => 'SVG, PNG, JPG or GIF (max. 10MB)',
+
     // Messages
     'Language changed successfully!' => 'Language changed successfully!',
     'Invalid language selection.' => 'Invalid language selection.',

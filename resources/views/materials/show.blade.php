@@ -39,7 +39,7 @@
             <div class="glass-card rounded-2xl overflow-hidden">
                 <div class="relative h-80 lg:h-96 bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-surface-700 dark:to-surface-600">
                     @if($material->image)
-                        <img src="{{ asset('storage/' . $material->image) }}" alt="{{ $material->name }}" class="w-full h-full object-contain p-6">
+                        <img src="{{ Storage::disk('public')->url($material->image) }}" alt="{{ $material->name }}" class="w-full h-full object-contain p-6">
                     @else
                         <div class="flex items-center justify-center h-full">
                             <svg class="h-32 w-32 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

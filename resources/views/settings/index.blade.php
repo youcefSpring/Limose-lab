@@ -371,89 +371,32 @@
 
     @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var tabButtons = document.querySelectorAll('.tab-button');
-            var tabContents = document.querySelectorAll('.tab-content');
-            var form = document.getElementById('settings-form');
-            var alertContainer = document.getElementById('settings-alert');
-            var submitBtn = form.querySelector('button[type="submit"]');
-
-            function initTabs() {
-                tabButtons.forEach(function(btn) {
-                    btn.classList.remove('active', 'bg-accent-amber/10', 'text-accent-amber');
-                    btn.classList.add('text-zinc-500', 'hover:bg-black/5', 'dark:hover:bg-white/5');
-                });
-                if (tabButtons.length > 0) {
-                    tabButtons[0].classList.add('active', 'bg-accent-amber/10', 'text-accent-amber');
-                    tabButtons[0].classList.remove('text-zinc-500');
-                }
-            }
-
-            initTabs();
-
-            tabButtons.forEach(function(button) {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var tabName = this.getAttribute('data-tab');
-
-                    tabButtons.forEach(function(btn) {
-                        btn.classList.remove('active', 'bg-accent-amber/10', 'text-accent-amber');
-                        btn.classList.add('text-zinc-500', 'hover:bg-black/5', 'dark:hover:bg-white/5');
-                    });
-
-                    this.classList.add('active', 'bg-accent-amber/10', 'text-accent-amber');
-                    this.classList.remove('text-zinc-500', 'hover:bg-black/5', 'dark:hover:bg-white/5');
-
-                    tabContents.forEach(function(content) {
-                        content.classList.add('hidden');
-                    });
-
-                    var targetTab = document.getElementById(tabName + '-tab');
-                    if (targetTab) {
-                        targetTab.classList.remove('hidden');
-                    }
-                });
-            });
-
-            // AJAX Form Submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+        // Tabs
+        document.querySelectorAll('.tab-button').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                var tabName = this.getAttribute('data-tab');
                 
-                var formData = new FormData(form);
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> {{ __('messages.Saving...') }}';
-
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(function(response) {
-                    return response.json();
-                })
-                .then(function(data) {
-                    alertContainer.className = 'mb-6 p-4 rounded-xl bg-accent-emerald/10 border border-accent-emerald/20 text-accent-emerald';
-                    alertContainer.innerHTML = '<div class="flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>' + (data.message || '{{ __('messages.Settings saved successfully!') }}') + '</span></div>';
-                    alertContainer.classList.remove('hidden');
-                    
-                    setTimeout(function() {
-                        alertContainer.classList.add('hidden');
-                    }, 5000);
-                })
-                .catch(function(error) {
-                    alertContainer.className = 'mb-6 p-4 rounded-xl bg-accent-rose/10 border border-accent-rose/20 text-accent-rose';
-                    alertContainer.innerHTML = '<div class="flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>{{ __('messages.Error saving settings. Please try again.') }}</span></div>';
-                    alertContainer.classList.remove('hidden');
-                })
-                .finally(function() {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> {{ __('messages.Save Settings') }}';
+                document.querySelectorAll('.tab-button').forEach(function(b) {
+                    b.classList.remove('active', 'bg-accent-amber/10', 'text-accent-amber');
+                    b.classList.add('text-zinc-500');
                 });
+                
+                this.classList.add('active', 'bg-accent-amber/10', 'text-accent-amber');
+                this.classList.remove('text-zinc-500');
+                
+                document.querySelectorAll('.tab-content').forEach(function(c) {
+                    c.classList.add('hidden');
+                });
+                
+                document.getElementById(tabName + '-tab').classList.remove('hidden');
             });
+        });
+
+        // Form - simple non-AJAX submit
+        document.getElementById('settings-form').addEventListener('submit', function() {
+            var btn = this.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = 'Saving...';
         });
     </script>
     @endpush
