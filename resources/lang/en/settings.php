@@ -108,6 +108,7 @@ return [
     'location_address' => 'Location Address',
     'contact_email_2' => 'Contact Email 2',
     'contact_hours' => 'Contact Hours',
+    'map_embed' => 'Map Embed Code',
 
     // Frontend - Slider
     'slider_enabled' => 'Slider Enabled',

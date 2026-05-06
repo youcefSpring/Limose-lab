@@ -107,6 +107,7 @@ class SettingSeeder extends Seeder
             ['key' => 'contact_email_2', 'value' => 'lab@research.edu', 'type' => 'text', 'group' => 'frontend_contact', 'order' => 2],
             ['key' => 'contact_hours', 'value' => 'Mon-Fri, 9AM-5PM', 'type' => 'text', 'group' => 'frontend_contact', 'order' => 3],
             ['key' => 'contact_phone', 'value' => '+1 (555) 123-4567', 'type' => 'text', 'group' => 'frontend_contact', 'order' => 4],
+            ['key' => 'map_embed', 'value' => '', 'type' => 'textarea', 'group' => 'frontend_contact', 'order' => 5],
 
             // Frontend - Slider
             ['key' => 'slider_enabled', 'value' => '1', 'type' => 'boolean', 'group' => 'frontend_slider', 'order' => 1],

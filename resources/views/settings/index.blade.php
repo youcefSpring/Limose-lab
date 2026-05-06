@@ -66,6 +66,7 @@
         'location_address' => 'location_address',
         'contact_email_2' => 'contact_email_2',
         'contact_hours' => 'contact_hours',
+        'map_embed' => 'map_embed',
         'slider_enabled' => 'slider_enabled',
         'slider_speed' => 'slider_speed',
         'slider_slide_1_title' => 'slider_slide_1_title',

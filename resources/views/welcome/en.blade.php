@@ -11,12 +11,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     @php
-        $primaryColor = $settings['primary_color'] ?? '#8C1515';
-        $primaryDark = $settings['button_hover_color'] ?? '#6B0F0F';
-        $secondaryColor = $settings['secondary_color'] ?? '#F9F6F2';
-        $textColor = $settings['text_color'] ?? '#4D4F53';
-        $accentColor = $settings['accent_color'] ?? '#FF6B35';
-    @endphp
+    $primaryColor = $settings['primary_color'] ?? '#8C1515';
+    $primaryDark = $settings['button_hover_color'] ?? '#6B0F0F';
+    $secondaryColor = $settings['secondary_color'] ?? '#F9F6F2';
+    $textColor = $settings['text_color'] ?? '#4D4F53';
+    $accentColor = $settings['accent_color'] ?? '#FF6B35';
+    $logoUrl = $settings['primary_logo'] ?? null;
+@endphp
 
     <style>
         * {
@@ -636,42 +637,33 @@
         }
 
         .contact-container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .contact-grid {
+        .contact-bottom-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
-            margin-bottom: 3rem;
         }
 
-        .contact-info {
-            text-align: center;
-            padding: 2rem;
-            background: var(--sandstone);
+        .contact-map {
             border-radius: 15px;
+            overflow: hidden;
+            background: var(--sandstone);
+            min-height: 400px;
         }
 
-        .contact-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-info p {
+        .map-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 400px;
+            background: var(--sandstone);
             color: var(--cool-gray);
-        }
-
-        .contact-form {
-            background: var(--sandstone);
-            padding: 2rem;
             border-radius: 15px;
+            padding: 2rem;
         }
 
         .form-group {
@@ -808,6 +800,14 @@
                 flex-direction: column;
             }
 
+            .contact-bottom-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-map iframe {
+                min-height: 300px;
+            }
+
             .section-title {
                 font-size: 2rem;
             }
@@ -821,7 +821,13 @@
 <body>
     <!-- Navigation -->
     <nav id="navbar">
-        <a href="/" class="logo">RLMS</a>
+        @if($logoUrl && file_exists(public_path('storage/' . $logoUrl)))
+            <a href="/" class="logo">
+                <img src="{{ asset('storage/' . $logoUrl) }}" alt="{{ $settings['site_name'] ?? 'RLMS' }}" style="max-height: 50px; max-width: 200px;">
+            </a>
+        @else
+            <a href="/" class="logo">RLMS</a>
+        @endif
 
         <!-- Hamburger Menu -->
         <div class="hamburger" id="hamburger">
@@ -864,6 +870,9 @@
         <div class="grid-overlay"></div>
 
         <div class="hero-content">
+            @if($logoUrl && file_exists(public_path('storage/' . $logoUrl)))
+                <img src="{{ asset('storage/' . $logoUrl) }}" alt="{{ $settings['site_name'] ?? 'RLMS' }}" style="max-height: 120px; margin-bottom: 2rem;">
+            @endif
             <h1>Research Laboratory<br>Management System</h1>
             <p>Streamline your research operations with our comprehensive lab management platform</p>
             <div class="hero-buttons">
@@ -1101,30 +1110,63 @@
                 </div>
             </div>
 
-            <div class="contact-form">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
+            <div class="contact-bottom-grid">
+                <div class="contact-form">
+                    @csrf
+                    @if(session('success'))
+                        <div class="mb-4 p-3 rounded-lg bg-emerald-500/10 text-emerald-600 text-sm">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('contact.store') }}">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
 
-                    <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
-                </form>
+                        <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+
+                <div class="contact-map">
+                    @php
+                        $mapEmbed = $settings['map_embed'] ?? '';
+                        $mapSrc = $mapEmbed;
+                        if (preg_match('/src="([^"]+)"/', $mapEmbed, $matches)) {
+                            $mapSrc = $matches[1];
+                        }
+                    @endphp
+                    @if(!empty($mapSrc))
+                        <iframe 
+                            src="{{ $mapSrc }}" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0; min-height: 400px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    @else
+                        <div class="map-placeholder">
+                            <p>No map configured. Add map embed code in settings.</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </section>

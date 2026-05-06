@@ -108,6 +108,7 @@ return [
     'location_address' => 'العنوان',
     'contact_email_2' => 'البريد الإلكتروني 2',
     'contact_hours' => 'ساعات الاتصال',
+    'map_embed' => 'كود خريطة التضمين',
 
     // Frontend - Slider
     'slider_enabled' => 'الشرائح مفعلة',

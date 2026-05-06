@@ -23,12 +23,12 @@ class LocaleController extends Controller
         }
 
         // Store locale in session
-        Session::put('locale', $locale);
+        session()->put('locale', $locale);
 
         // Also store in cookie for persistence
-        Cookie::queue('locale', $locale, 60 * 24 * 365); // 1 year
+        cookie()->queue('locale', $locale, 60 * 24 * 365); // 1 year
 
-        // Redirect back - will reload with new locale
-        return redirect()->back();
+        // Redirect to the homepage which will now use the new locale
+        return redirect('/');
     }
 }

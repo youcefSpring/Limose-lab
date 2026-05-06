@@ -23,16 +23,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $upcomingEvents = Event::upcoming()->limit(6)->get();
     $settings = Setting::getAllSettings();
+    $locale = app()->getLocale();
 
-    return view('welcome', compact('upcomingEvents', 'settings'));
+    return view('welcome.'.$locale, compact('upcomingEvents', 'settings'));
 });
 
 // Locale switching route (must be outside auth middleware)
 Route::get('/locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
+// Contact form public route
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Contact messages admin routes
+    Route::get('/contact-messages', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact-messages.index');
+    Route::delete('/contact-messages/{contactMessage}', [\App\Http\Controllers\ContactController::class, 'destroy'])->name('contact-messages.destroy');
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

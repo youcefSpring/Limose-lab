@@ -108,6 +108,7 @@ return [
     'location_address' => 'Adresse',
     'contact_email_2' => 'Email de Contact 2',
     'contact_hours' => 'Heures de Contact',
+    'map_embed' => 'Code d\'intégration de la carte',
 
     // Frontend - Slider
     'slider_enabled' => 'Diaporama Activé',

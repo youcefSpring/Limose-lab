@@ -294,6 +294,13 @@
         </div>
     @endif
 
+    <!-- Pagination -->
+    @if($materials->hasPages())
+        <div class="mt-6">
+            {{ $materials->links() }}
+        </div>
+    @endif
+
     <!-- Delete Confirmation Modal -->
     <x-confirm-delete-modal name="delete-material-modal" />
 </x-app-layout>
