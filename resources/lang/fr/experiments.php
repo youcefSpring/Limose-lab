@@ -133,4 +133,21 @@ return [
 
     // Time
     'hours' => 'heures',
+    'filter' => 'Filtrer',
+    'search' => 'Rechercher',
+    'view' => 'Voir',
+    'edit' => 'Modifier',
+    'delete' => 'Supprimer',
+
+    // File Upload
+    'click_to_upload' => 'Cliquez pour télécharger',
+    'or_drag_and_drop' => 'ou glissez-déposez',
+    'max_file_size' => 'SVG, PNG, JPG ou PDF (max 10Mo)',
+    'remove_file' => 'Supprimer le fichier',
+    'current_file' => 'Fichier actuel',
+    'new_file' => 'Nouveau fichier',
+    'existing_file_preserved' => 'Fichier existant préservé',
+    'current_image' => 'Image actuelle',
+    'current_pdf' => 'Document PDF actuel',
+    'current_document' => 'Document actuel',
 ];

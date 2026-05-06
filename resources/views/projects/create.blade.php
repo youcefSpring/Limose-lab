@@ -158,18 +158,18 @@
                         <p class="mt-2 text-sm text-accent-rose">{{ $message }}</p>
                     @enderror
                     <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-                        {{ __('messages.Set initial progress percentage (0-100)') }}
+                        {{ __('projects.set_initial_progress') }}
                     </p>
                 </div>
 
                 <!-- Principal Investigator -->
                 <div class="lg:col-span-3">
                     <label for="principal_investigator_id" class="block text-sm font-medium mb-2">
-                        {{ __('messages.Principal Investigator') }} <span class="text-accent-rose">*</span>
+                        {{ __('projects.select_principal_investigator') }} <span class="text-accent-rose">*</span>
                     </label>
                     <select name="principal_investigator_id" id="principal_investigator_id" required
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} py-3 px-4 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all @error('principal_investigator_id') border-accent-rose @enderror">
-                        <option value="">{{ __('messages.Select Principal Investigator') }}</option>
+                        <option value="">{{ __('projects.select_principal_investigator') }}</option>
                         @foreach($researchers ?? [] as $researcher)
                             <option value="{{ $researcher->id }}" {{ old('principal_investigator_id', auth()->id()) == $researcher->id ? 'selected' : '' }}>
                                 {{ $researcher->name }}
@@ -190,12 +190,12 @@
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                 </svg>
                 <div>
-                    <p class="text-sm font-semibold mb-2">{{ __('messages.Project Guidelines') }}:</p>
+                    <p class="text-sm font-semibold mb-2">{{ __('projects.project_guidelines') }}:</p>
                     <ul class="list-disc {{ app()->getLocale() === 'ar' ? 'mr-4' : 'ml-4' }} text-sm space-y-1 text-zinc-600 dark:text-zinc-300">
-                        <li>{{ __('messages.Ensure all project information is accurate and complete') }}</li>
-                        <li>{{ __('messages.You can add team members after creating the project') }}</li>
-                        <li>{{ __('messages.Progress can be updated at any time') }}</li>
-                        <li>{{ __('messages.All team members will be notified of project updates') }}</li>
+                        <li>{{ __('projects.ensure_information_accurate') }}</li>
+                        <li>{{ __('projects.add_members_after_creation') }}</li>
+                        <li>{{ __('projects.progress_update_anytime') }}</li>
+                        <li>{{ __('projects.members_notified_updates') }}</li>
                     </ul>
                 </div>
             </div>
@@ -204,13 +204,10 @@
         <!-- Form Actions -->
         <div class="flex items-center justify-end gap-3 pt-2">
             <a href="{{ route('projects.index') }}" class="px-5 py-2.5 rounded-xl glass hover:glass-card text-sm font-medium transition-all">
-                {{ __('messages.Cancel') }}
-            </a>
-            <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                {{ __('messages.Create Project') }}
+{{ __('projects.cancel') }}
+                </a>
+                <button type="submit" class="flex items-center gap-2 bg-gradient-to-r from-accent-amber to-accent-coral px-6 py-2.5 rounded-xl font-medium text-sm text-white hover:opacity-90 transition-opacity">
+                    {{ __('projects.create_project') }}
             </button>
         </div>
         </form>

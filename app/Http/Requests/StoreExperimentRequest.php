@@ -29,6 +29,7 @@ class StoreExperimentRequest extends FormRequest
             'experiment_date' => ['required', 'date', 'before_or_equal:today'],
             'files' => ['nullable', 'array', 'max:5'],
             'files.*' => ['file', 'mimes:pdf,doc,docx,xls,xlsx,csv,zip', 'max:10240'],
+            'file' => ['nullable', 'file', 'mimes:jpeg,jpg,png,gif,svg,webp,pdf,doc,docx,odt,txt', 'max:10240'],
         ];
     }
 

@@ -10,7 +10,7 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
                 </svg>
-                <span class="hidden sm:inline">{{ __('messages.Filter') }}</span>
+                <span class="hidden sm:inline">{{ __('experiments.filter') }}</span>
                 @if(request()->has('search') || request()->has('status') || request()->has('project'))
                     <span class="absolute -top-1 {{ app()->getLocale() === 'ar' ? '-left-1' : '-right-1' }} w-2 h-2 rounded-full bg-accent-amber"></span>
                 @endif
@@ -32,7 +32,7 @@
             <h2 class="text-xl font-semibold mb-6">{{ __('experiments.filter_experiments') }}</h2>
             <form method="GET" action="{{ route('experiments.index') }}" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-2">{{ __('messages.Search') }}</label>
+                    <label class="block text-sm font-medium mb-2">{{ __('experiments.search') }}</label>
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="{{ __('experiments.search_experiments') }}"
                         class="block w-full {{ app()->getLocale() === 'ar' ? 'text-right' : '' }} px-4 py-2.5 bg-white dark:bg-surface-700/50 border border-black/10 dark:border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-amber/50 focus:border-accent-amber transition-all">
@@ -93,10 +93,10 @@
                 <table class="w-full">
                     <thead class="bg-zinc-50 dark:bg-surface-800/50 border-b border-black/5 dark:border-white/5">
                         <tr>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Title') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.title') }}</th>
                             <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.project') }}</th>
                             <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.researcher') }}</th>
-                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('messages.Start Date') }}</th>
+                            <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.start_date') }}</th>
                             <th class="px-6 py-4 text-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }} text-xs font-semibold uppercase tracking-wider">{{ __('experiments.status') }}</th>
                             <th class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">{{ __('experiments.actions') }}</th>
                         </tr>
@@ -161,7 +161,7 @@
                                     <div class="flex items-center justify-center gap-2">
                                         <a href="{{ route('experiments.show', $experiment) }}"
                                             class="p-2 rounded-lg hover:bg-accent-cyan/10 text-accent-cyan transition-colors"
-                                            title="{{ __('messages.View') }}">
+                                            title="{{ __('experiments.view') }}">
                                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -170,7 +170,7 @@
                                         @can('update', $experiment)
                                             <a href="{{ route('experiments.edit', $experiment) }}"
                                                 class="p-2 rounded-lg hover:bg-accent-violet/10 text-accent-violet transition-colors"
-                                                title="{{ __('messages.Edit') }}">
+                                                title="{{ __('experiments.edit') }}">
                                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
@@ -181,7 +181,7 @@
                                                 x-data
                                                 onclick="openDeleteModal({{ $experiment->id }}, '{{ route('experiments.destroy', ':id') }}'.replace(':id', {{ $experiment->id }}))"
                                                 class="p-2 rounded-lg hover:bg-accent-rose/10 text-accent-rose transition-colors"
-                                                title="{{ __('messages.Delete') }}">
+                                                title="{{ __('experiments.delete') }}">
                                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                                 </svg>
@@ -226,7 +226,7 @@
             </p>
             @if(request()->hasAny(['search', 'status', 'project']))
                 <a href="{{ route('experiments.index') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass hover:glass-card font-medium transition-all">
-                    {{ __('messages.Clear Filters') }}
+                    {{ __('experiments.clear_filters') }}
                 </a>
             @else
                 @can('create', App\Models\Experiment::class)

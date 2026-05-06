@@ -133,4 +133,21 @@ return [
 
     // Time
     'hours' => 'ساعات',
+    'filter' => 'تصفية',
+    'search' => 'بحث',
+    'view' => 'عرض',
+    'edit' => 'تعديل',
+    'delete' => 'حذف',
+
+    // File Upload
+    'click_to_upload' => 'انقر للرفع',
+    'or_drag_and_drop' => 'أو اسحب وأفلت',
+    'max_file_size' => 'SVG، PNG، JPG أو PDF (بحد أقصى 10 ميجابايت)',
+    'remove_file' => 'إزالة الملف',
+    'current_file' => 'الملف الحالي',
+    'new_file' => 'ملف جديد',
+    'existing_file_preserved' => 'الملف الحالي محفوظ',
+    'current_image' => 'الصورة الحالية',
+    'current_pdf' => 'مستند PDF الحالي',
+    'current_document' => 'المستند الحالي',
 ];

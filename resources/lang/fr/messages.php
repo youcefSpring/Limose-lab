@@ -2075,6 +2075,14 @@ return [
     'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)' => 'Formats pris en charge: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)',
     'Maximum file size:' => 'Taille maximale du fichier:',
     'Current file:' => 'Fichier actuel:',
+    'Click to upload' => 'Cliquez pour télécharger',
+    'SVG, PNG, JPG or GIF (max. 10MB)' => 'SVG, PNG, JPG ou PDF (max 10Mo)',
+    'Current Material Image' => 'Image actuelle du matériau',
+    'New Image' => 'Nouvelle image',
+    'Current Image' => 'Image actuelle',
+    'Current PDF Document' => 'Document PDF actuel',
+    'Current Document' => 'Document actuel',
+    'Existing file preserved' => 'Fichier existant préservé',
 
     // Event Edit
     'Update details about your event' => 'Mettre à jour les détails de votre événement',

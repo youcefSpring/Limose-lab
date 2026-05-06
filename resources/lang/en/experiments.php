@@ -131,4 +131,21 @@ return [
 
     // Time
     'hours' => 'hours',
+    'filter' => 'Filter',
+    'search' => 'Search',
+    'view' => 'View',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+
+    // File Upload
+    'click_to_upload' => 'Click to upload',
+    'or_drag_and_drop' => 'or drag and drop',
+    'max_file_size' => 'SVG, PNG, JPG or PDF (max. 10MB)',
+    'remove_file' => 'Remove File',
+    'current_file' => 'Current File',
+    'new_file' => 'New File',
+    'existing_file_preserved' => 'Existing file preserved',
+    'current_image' => 'Current Image',
+    'current_pdf' => 'Current PDF Document',
+    'current_document' => 'Current Document',
 ];

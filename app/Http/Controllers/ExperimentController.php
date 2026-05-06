@@ -76,7 +76,22 @@ class ExperimentController extends Controller
 
     public function update(StoreExperimentRequest $request, Experiment $experiment): RedirectResponse
     {
-        $experiment->update($request->validated());
+        $validated = $request->validated();
+        $experiment->update($validated);
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $path = $file->store('experiments', 'public');
+
+            $experiment->files()->create([
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => $path,
+                'file_type' => $file->getMimeType(),
+                'file_size' => $file->getSize(),
+                'user_id' => auth()->id(),
+            ]);
+        }
 
         return redirect()->route('experiments.show', $experiment)
             ->with('success', __('Experiment updated successfully.'));

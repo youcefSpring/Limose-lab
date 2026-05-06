@@ -586,6 +586,14 @@ return [
     'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)' => 'Supported formats: Images (JPG, PNG, GIF, SVG, WEBP), PDFs, Documents (DOC, DOCX, ODT, TXT)',
     'Maximum file size:' => 'Maximum file size:',
     'Current file:' => 'Current file:',
+    'Click to upload' => 'Click to upload',
+    'SVG, PNG, JPG or GIF (max. 10MB)' => 'SVG, PNG, JPG or GIF (max. 10MB)',
+    'Current Material Image' => 'Current Material Image',
+    'New Image' => 'New Image',
+    'Current Image' => 'Current Image',
+    'Current PDF Document' => 'Current PDF Document',
+    'Current Document' => 'Current Document',
+    'Existing file preserved' => 'Existing file preserved',
 
     // Event Edit
     'Update details about your event' => 'Update details about your event',

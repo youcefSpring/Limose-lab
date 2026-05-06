@@ -166,6 +166,16 @@
                             <p class="mt-1.5 text-xs text-accent-rose">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <!-- File Upload - Full Width -->
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <x-file-upload
+                            name="file"
+                            label="{{ __('experiments.experiment_file') }}"
+                            accept="image/*,.pdf,.doc,.docx,.odt,.txt"
+                            maxSize="10MB"
+                        />
+                    </div>
                 </div>
             </div>
 
